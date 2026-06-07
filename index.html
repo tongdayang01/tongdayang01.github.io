@@ -1545,430 +1545,408 @@
     <script>
     (function() {
         'use strict';
-        
-        // ========== 1. Loading Screen ==========
-        const loadingScreen = document.getElementById('loading-screen');
-        const loadingBar = document.getElementById('loading-bar');
+
+        /* =====================================================
+           GLSL Shaders for Glow Effect
+           ===================================================== */
+        const vertexShader = `
+            attribute vec3 color;
+            uniform float uTime;
+            uniform vec2 uMouse;
+            varying vec3 vColor;
+            varying float vAlpha;
+            void main() {
+                vColor = color;
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                float dist = length(mvPosition.xy - uMouse * 10.0);
+                float infl = smoothstep(3.0, 0.0, dist);
+                float pulse = sin(uTime * 2.0 + position.y * 4.0) * 0.5 + 0.5;
+                vAlpha = 0.4 + pulse * 0.6 + infl * 0.5;
+                gl_PointSize = (3.0 + pulse * 5.0 + infl * 8.0) * (300.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+        const fragmentShader = `
+            varying vec3 vColor;
+            varying float vAlpha;
+            void main() {
+                float d = length(gl_PointCoord - vec2(0.5));
+                if (d > 0.5) discard;
+                float glow = exp(-d * 4.0);
+                gl_FragColor = vec4(vColor * (0.7 + glow * 0.6), vAlpha * glow);
+            }
+        `;
+
+        /* =====================================================
+           1. Loading Screen
+           ===================================================== */
+        const loadingScreen  = document.getElementById('loading-screen');
+        const loadingBar     = document.getElementById('loading-bar');
         const openingCanvas = document.getElementById('opening-canvas');
-        const openingThreeCanvas = document.getElementById('opening-three-canvas');
-        const openingText = document.getElementById('opening-text');
-        
-        let loadProgress = 0;
-        const loadInterval = setInterval(() => {
-            loadProgress += Math.random() * 15 + 5;
-            if (loadProgress > 100) loadProgress = 100;
-            loadingBar.style.width = loadProgress + '%';
-            if (loadProgress >= 100) {
-                clearInterval(loadInterval);
+        const openingThree  = document.getElementById('opening-three-canvas');
+        const openingText   = document.getElementById('opening-text');
+
+        let loadPct = 0;
+        const loadTimer = setInterval(() => {
+            loadPct = Math.min(100, loadPct + Math.random() * 14 + 4);
+            loadingBar.style.width = loadPct + '%';
+            if (loadPct >= 100) {
+                clearInterval(loadTimer);
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
-                    startOpeningAnimation();
-                }, 800);
+                    startOpening();
+                }, 700);
             }
-        }, 200);
-        
-        // ========== 2. Opening Animation ==========
-        function startOpeningAnimation() {
+        }, 180);
+
+        /* =====================================================
+           2. Opening Animation  (3.5 s cinematic)
+           ===================================================== */
+        function startOpening() {
             openingCanvas.style.display = 'flex';
-            
-            // Three.js opening scene
-            const scene = new THREE.Scene();
+            const scene   = new THREE.Scene();
             scene.background = new THREE.Color(0x020815);
-            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 0, 5);
-            
-            const renderer = new THREE.WebGLRenderer({ canvas: openingThreeCanvas, antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            
-            // Particles - exploding from center
-            const particleCount = 2000;
-            const positions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3);
-            const velocities = [];
-            
-            for (let i = 0; i < particleCount; i++) {
-                positions[i * 3] = 0;
-                positions[i * 3 + 1] = 0;
-                positions[i * 3 + 2] = 0;
-                
-                // Gold and cyan colors
-                const isGold = Math.random() > 0.5;
-                colors[i * 3] = isGold ? 0.79 : 0;
-                colors[i * 3 + 1] = isGold ? 0.66 : 0.83;
-                colors[i * 3 + 2] = isGold ? 0.43 : 0.67;
-                
-                velocities.push({
-                    x: (Math.random() - 0.5) * 0.1,
-                    y: (Math.random() - 0.5) * 0.1,
-                    z: (Math.random() - 0.5) * 0.1
-                });
+            const camera  = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 6);
+            const renderer = new THREE.WebGLRenderer({ canvas: openingThree, antialias: true, alpha: true });
+            renderer.setSize(innerWidth, innerHeight);
+            renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+            const PCNT = 2500;
+            const posArr  = new Float32Array(PCNT * 3);
+            const colArr  = new Float32Array(PCNT * 3);
+            const vels   = [];
+            for (let i = 0; i < PCNT; i++) {
+                posArr[i*3] = 0; posArr[i*3+1] = 0; posArr[i*3+2] = 0;
+                const g = Math.random() > 0.45;
+                colArr[i*3]   = g ? 0.79 : 0.0;
+                colArr[i*3+1] = g ? 0.66 : 0.83;
+                colArr[i*3+2] = g ? 0.43 : 0.67;
+                vels.push({ x: (Math.random()-0.5)*0.12, y: (Math.random()-0.5)*0.12, z: (Math.random()-0.5)*0.12 });
             }
-            
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-            
-            const material = new THREE.PointsMaterial({
-                size: 0.03,
-                vertexColors: true,
-                transparent: true,
-                opacity: 1,
-                blending: THREE.AdditiveBlending
-            });
-            
-            const particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-            
-            // Double helix formation target
-            const helixPositions = [];
-            const helixCount = 500;
-            for (let i = 0; i < helixCount; i++) {
-                const t = (i / helixCount) * Math.PI * 8;
-                const r = 1.5;
-                // Helix 1 (gold)
-                helixPositions.push({
-                    x: Math.cos(t) * r,
-                    y: (i / helixCount) * 6 - 3,
-                    z: Math.sin(t) * r
-                });
-                // Helix 2 (blue)
-                helixPositions.push({
-                    x: Math.cos(t + Math.PI) * r,
-                    y: (i / helixCount) * 6 - 3,
-                    z: Math.sin(t + Math.PI) * r
-                });
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+            geo.setAttribute('color',    new THREE.BufferAttribute(colArr, 3));
+
+            // opening uses simple material (no shader) for performance
+            const mat = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 1.0, blending: THREE.AdditiveBlending, depthWrite: false });
+            const pts = new THREE.Points(geo, mat);
+            scene.add(pts);
+
+            // helix formation targets
+            const helixTgts = [];
+            for (let i = 0; i < 600; i++) {
+                const t = (i / 600) * Math.PI * 10;
+                const r = 1.8;
+                helixTgts.push({ x: Math.cos(t)*r, y: (i/600)*7-3.5, z: Math.sin(t)*r });
+                helixTgts.push({ x: Math.cos(t+Math.PI)*r, y: (i/600)*7-3.5, z: Math.sin(t+Math.PI)*r });
             }
-            
-            let openingTime = 0;
-            const openingDuration = 4; // seconds
-            
-            function animateOpening() {
-                openingTime += 0.016;
-                const progress = Math.min(openingTime / openingDuration, 1);
-                
-                const positions = particles.geometry.attributes.position.array;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    if (i < helixPositions.length && progress > 0.3) {
-                        // Form double helix
-                        const hp = helixPositions[i % helixPositions.length];
-                        const targetX = hp.x;
-                        const targetY = hp.y;
-                        const targetZ = hp.z;
-                        positions[i * 3] += (targetX - positions[i * 3]) * 0.05;
-                        positions[i * 3 + 1] += (targetY - positions[i * 3 + 1]) * 0.05;
-                        positions[i * 3 + 2] += (targetZ - positions[i * 3 + 2]) * 0.05;
+
+            let elapsed = 0;
+            const DURATION = 3.8;
+            const startCamPos = { x: 0, y: 0, z: 6 };
+            const endCamPos   = { x: 0, y: -2.5, z: 4 };
+
+            (function tick() {
+                elapsed += 0.016;
+                const p = Math.min(elapsed / DURATION, 1);
+                const e = 1 - Math.pow(1 - p, 3);  // ease-out cubic
+
+                const arr = pts.geometry.attributes.position.array;
+                for (let i = 0; i < PCNT; i++) {
+                    if (p > 0.25 && i < helixTgts.length) {
+                        const t = helixTgts[i % helixTgts.length];
+                        arr[i*3]   += (t.x - arr[i*3])   * 0.06;
+                        arr[i*3+1] += (t.y - arr[i*3+1]) * 0.06;
+                        arr[i*3+2] += (t.z - arr[i*3+2]) * 0.06;
                     } else {
-                        // Explode outward
-                        positions[i * 3] += velocities[i].x;
-                        positions[i * 3 + 1] += velocities[i].y;
-                        positions[i * 3 + 2] += velocities[i].z;
-                        velocities[i].x *= 1.02;
-                        velocities[i].y *= 1.02;
-                        velocities[i].z *= 1.02;
+                        arr[i*3]   += vels[i].x;
+                        arr[i*3+1] += vels[i].y;
+                        arr[i*3+2] += vels[i].z;
+                        vels[i].x *= 1.018; vels[i].y *= 1.018; vels[i].z *= 1.018;
                     }
                 }
-                
-                particles.geometry.attributes.position.needsUpdate = true;
-                
-                // Camera movement
-                camera.position.y = -progress * 3;
+                pts.geometry.attributes.position.needsUpdate = true;
+
+                // smooth camera path
+                camera.position.x = startCamPos.x + (endCamPos.x - startCamPos.x) * e;
+                camera.position.y = startCamPos.y + (endCamPos.y - startCamPos.y) * e;
+                camera.position.z = startCamPos.z + (endCamPos.z - startCamPos.z) * e;
                 camera.lookAt(0, 0, 0);
-                
                 renderer.render(scene, camera);
-                
-                if (progress < 1 || openingTime < openingDuration + 1) {
-                    requestAnimationFrame(animateOpening);
+
+                if (p < 1 || elapsed < DURATION + 1.2) {
+                    requestAnimationFrame(tick);
                 } else {
-                    // Show text and end opening
-                    openingText.style.opacity = 1;
-                    openingText.style.transition = 'opacity 1.5s ease';
+                    openingText.style.opacity = '1';
+                    openingText.style.transition = 'opacity 1.6s ease';
                     openingText.textContent = '从"学科拼盘"到"产业战场"';
-                    
                     setTimeout(() => {
                         openingCanvas.classList.add('hidden');
                         initMainScene();
                         initScrollAnimations();
                         initECharts();
                         initCountUp();
-                    }, 2000);
+                        initMouseInteraction();
+                    }, 2200);
                 }
-            }
-            
-            animateOpening();
+            })();
         }
-        
-        // ========== 3. Main Three.js Scene (Persistent Background) ==========
-        let mainScene, mainCamera, mainRenderer, mainParticles;
-        
+
+        /* =====================================================
+           3. Main Three.js Scene  (persistent background)
+           ===================================================== */
+        let mScene, mCamera, mRenderer, mPoints, mMaterial;
+        let mouseNDC = { x: 0, y: 0 };  // normalised device coords (-1…+1)
+
         function initMainScene() {
-            mainScene = new THREE.Scene();
-            mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            mainCamera.position.set(0, 0, 8);
-            
-            mainRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true, alpha: true });
-            mainRenderer.setSize(window.innerWidth, window.innerHeight);
-            mainRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            mainRenderer.setClearColor(0x000000, 0);
-            
-            // Double helix particles (persistent, subtle)
-            const helixParticleCount = 300;
-            const hPositions = new Float32Array(helixParticleCount * 3);
-            const hColors = new Float32Array(helixParticleCount * 3);
-            
-            for (let i = 0; i < helixParticleCount; i++) {
-                const t = (i / helixParticleCount) * Math.PI * 10;
-                const r = 3 + Math.sin(t * 0.5) * 0.5;
-                const isGold = i % 2 === 0;
-                
-                hPositions[i * 3] = Math.cos(t + (isGold ? 0 : Math.PI)) * r;
-                hPositions[i * 3 + 1] = (i / helixParticleCount) * 10 - 5;
-                hPositions[i * 3 + 2] = Math.sin(t + (isGold ? 0 : Math.PI)) * r;
-                
-                if (isGold) {
-                    hColors[i * 3] = 0.79; hColors[i * 3 + 1] = 0.66; hColors[i * 3 + 2] = 0.43;
-                } else {
-                    hColors[i * 3] = 0.23; hColors[i * 3 + 1] = 0.49; hColors[i * 3 + 2] = 0.85;
-                }
+            mScene = new THREE.Scene();
+            mCamera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+            mCamera.position.set(0, 0, 10);
+
+            mRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true, alpha: true });
+            mRenderer.setSize(innerWidth, innerHeight);
+            mRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+            mRenderer.setClearColor(0x000000, 0);
+
+            const HCNT = 400;
+            const hPos = new Float32Array(HCNT * 3);
+            const hCol = new Float32Array(HCNT * 3);
+            for (let i = 0; i < HCNT; i++) {
+                const t = (i / HCNT) * Math.PI * 12;
+                const r = 3.5 + Math.sin(t * 0.4) * 0.6;
+                const isG = i % 2 === 0;
+                hPos[i*3]   = Math.cos(t + (isG ? 0 : Math.PI)) * r;
+                hPos[i*3+1] = (i / HCNT) * 12 - 6;
+                hPos[i*3+2] = Math.sin(t + (isG ? 0 : Math.PI)) * r;
+                if (isG) { hCol[i*3]=0.79; hCol[i*3+1]=0.66; hCol[i*3+2]=0.43; }
+                else      { hCol[i*3]=0.23; hCol[i*3+1]=0.49; hCol[i*3+2]=0.85; }
             }
-            
-            const hGeometry = new THREE.BufferGeometry();
-            hGeometry.setAttribute('position', new THREE.BufferAttribute(hPositions, 3));
-            hGeometry.setAttribute('color', new THREE.BufferAttribute(hColors, 3));
-            
-            const hMaterial = new THREE.PointsMaterial({
-                size: 0.05,
-                vertexColors: true,
+            const hGeo = new THREE.BufferGeometry();
+            hGeo.setAttribute('position', new THREE.BufferAttribute(hPos, 3));
+            hGeo.setAttribute('color',    new THREE.BufferAttribute(hCol, 3));
+
+            // Use custom shader material for glow effect
+            const shaderUniforms = {
+                uTime:  { value: 0 },
+                uMouse: { value: new THREE.Vector2(0, 0) }
+            };
+            mMaterial = new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                uniforms: shaderUniforms,
                 transparent: true,
-                opacity: 0.6,
-                blending: THREE.AdditiveBlending
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
             });
-            
-            mainParticles = new THREE.Points(hGeometry, hMaterial);
-            mainScene.add(mainParticles);
-            
+            // Also set vertexColors so "color" attribute is picked up
+            mMaterial.vertexColors = true;  // not a standard prop – we pass color via varyings
+
+            // THREE.ShaderMaterial doesn't auto-pick "color" attr; we must use "attribute color" in the shader (already done)
+            mPoints = new THREE.Points(hGeo, mMaterial);
+            mScene.add(mPoints);
+
             // Render loop
-            function animate() {
-                requestAnimationFrame(animate);
-                if (mainParticles) {
-                    mainParticles.rotation.y += 0.002;
+            const clock = new THREE.Clock();
+            (function anim() {
+                requestAnimationFrame(anim);
+                const t = clock.getElapsedTime();
+                if (mPoints) {
+                    mPoints.rotation.y += 0.0012;
+                    mPoints.rotation.x = Math.sin(t * 0.15) * 0.04;
                 }
-                mainRenderer.render(mainScene, mainCamera);
-            }
-            animate();
-            
+                // scroll-linked camera rotation
+                const scrollPct = window.scrollY / (document.body.scrollHeight - innerHeight || 1);
+                mCamera.position.x = Math.sin(scrollPct * Math.PI * 2) * 1.2;
+                mCamera.position.z = 10 + Math.sin(scrollPct * Math.PI) * 1.5;
+                mCamera.lookAt(0, 0, 0);
+
+                if (mMaterial && mMaterial.uniforms) {
+                    mMaterial.uniforms.uTime.value = t;
+                    mMaterial.uniforms.uMouse.value.set(mouseNDC.x, mouseNDC.y);
+                }
+                mRenderer.render(mScene, mCamera);
+            })();
+
             window.addEventListener('resize', () => {
-                mainCamera.aspect = window.innerWidth / window.innerHeight;
-                mainCamera.updateProjectionMatrix();
-                mainRenderer.setSize(window.innerWidth, window.innerHeight);
+                mCamera.aspect = innerWidth / innerHeight;
+                mCamera.updateProjectionMatrix();
+                mRenderer.setSize(innerWidth, innerHeight);
             });
         }
-        
-        // ========== 4. Scroll Animations (GSAP) ==========
+
+        /* =====================================================
+           4. Mouse Interaction  (particles react to mouse)
+           ===================================================== */
+        function initMouseInteraction() {
+            window.addEventListener('mousemove', (e) => {
+                mouseNDC.x =  (e.clientX / innerWidth)  * 2 - 1;
+                mouseNDC.y = -(e.clientY / innerHeight) * 2 + 1;
+            });
+            // touch support
+            window.addEventListener('touchmove', (e) => {
+                const t = e.touches[0];
+                mouseNDC.x =  (t.clientX / innerWidth)  * 2 - 1;
+                mouseNDC.y = -(t.clientY / innerHeight) * 2 + 1;
+            }, { passive: true });
+        }
+
+        /* =====================================================
+           5. Scroll Animations  (GSAP + ScrollTrigger)
+           ===================================================== */
         function initScrollAnimations() {
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-                // Fallback: just show elements
                 document.querySelectorAll('.fade-in-up').forEach(el => el.classList.add('visible'));
                 return;
             }
-            
             gsap.registerPlugin(ScrollTrigger);
-            
-            // Fade in up elements
+
             document.querySelectorAll('.fade-in-up').forEach(el => {
                 gsap.fromTo(el,
-                    { opacity: 0, y: 50 },
-                    {
-                        opacity: 1, y: 0,
-                        duration: 1,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: el,
-                            start: 'top 85%',
-                            toggleActions: 'play none none reverse'
-                        }
-                    }
+                    { opacity: 0, y: 60 },
+                    { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
+                      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none reverse' } }
                 );
             });
-            
-            // Nav dots update
-            const sections = [
-                'hero-section', 'hall-darkness', 'hall-theory',
-                'hall-workshop', 'hall-life', 'hall-data', 'hall-future'
+
+            const SECTION_IDS = [
+                'hero-section','hall-darkness','hall-theory',
+                'hall-workshop','hall-life','hall-data','hall-future'
             ];
-            
-            sections.forEach((id, index) => {
+            SECTION_IDS.forEach((id, idx) => {
                 const el = document.getElementById(id);
-                if (el) {
-                    ScrollTrigger.create({
-                        trigger: el,
-                        start: 'top center',
-                        end: 'bottom center',
-                        onEnter: () => setActiveDot(index),
-                        onEnterBack: () => setActiveDot(index)
-                    });
-                }
+                if (!el) return;
+                ScrollTrigger.create({
+                    trigger: el, start: 'top center', end: 'bottom center',
+                    onEnter: () => setActiveDot(idx), onEnterBack: () => setActiveDot(idx)
+                });
             });
         }
-        
-        function setActiveDot(index) {
-            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+
+        function setActiveDot(idx) {
+            document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
         }
-        
-        // Nav dot click
+
         document.querySelectorAll('.nav-dot').forEach(dot => {
             dot.addEventListener('click', () => {
-                const target = dot.getAttribute('data-target');
-                const el = document.getElementById(target);
+                const el = document.getElementById(dot.getAttribute('data-target'));
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
             });
         });
-        
-        // ========== 5. ECharts Data Visualization ==========
+
+        /* =====================================================
+           6. ECharts  (data visualisation)
+           ===================================================== */
         function initECharts() {
-            const chartDom = document.getElementById('main-chart');
-            if (!chartDom || typeof echarts === 'undefined') return;
-            
-            const chart = echarts.init(chartDom, null, { renderer: 'canvas' });
-            
-            const option = {
+            const dom = document.getElementById('main-chart');
+            if (!dom || typeof echarts === 'undefined') return;
+
+            const chart = echarts.init(dom, null, { renderer: 'canvas' });
+            chart.setOption({
                 backgroundColor: 'transparent',
                 tooltip: {
                     trigger: 'axis',
                     backgroundColor: 'rgba(10,22,40,0.95)',
                     borderColor: 'rgba(201,169,110,0.3)',
-                    textStyle: { color: '#E8E8E8', fontSize: 13 }
+                    textStyle: { color: '#E8E8E8', fontSize: 13 },
+                    axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(201,169,110,0.05)' } }
                 },
-                legend: {
-                    data: ['2018年', '2026年'],
-                    top: 10,
-                    textStyle: { color: '#8A8A9A', fontSize: 13 }
-                },
-                grid: { left: '3%', right: '4%', bottom: '10%', top: '15%', containLabel: true },
+                legend: { data: ['2018年','2026年'], top: 12, textStyle: { color: '#8A8A9A', fontSize: 13, fontFamily: 'Noto Sans SC' } },
+                grid: { left: '4%', right: '5%', bottom: '12%', top: '16%', containLabel: true },
                 xAxis: {
                     type: 'category',
-                    data: ['在校生规模', '课堂参与度', '文化课平均分', '本科上线/年', '高分段增长', '世赛奖项', '帮扶学校'],
+                    data: ['在校生','课堂参与','文化课均分','本科上线','高分段','世赛奖项','帮扶学校'],
                     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-                    axisLabel: { color: '#8A8A9A', fontSize: 11, interval: 0, rotate: 20 }
+                    axisLabel: { color: '#8A8A9A', fontSize: 11, interval: 0, rotate: 15, fontFamily: 'Noto Sans SC' },
+                    axisTick: { show: false }
                 },
                 yAxis: {
                     type: 'value',
                     axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
                     axisLabel: { color: '#8A8A9A', fontSize: 11 }
                 },
                 series: [
                     {
-                        name: '2018年',
-                        type: 'bar',
-                        barWidth: '35%',
+                        name: '2018年', type: 'bar', barWidth: '38%', barGap: '20%',
                         data: [400, 35, 45, 0, 10, 0, 1],
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                { offset: 0, color: '#E74C3C' },
-                                { offset: 1, color: '#C0392B' }
-                            ]),
-                            borderRadius: [4, 4, 0, 0]
-                        }
+                        itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#E74C3C'},{offset:1,color:'#C0392B'}]), borderRadius: [6,6,0,0] },
+                        animationDelay: idx => idx * 120
                     },
                     {
-                        name: '2026年',
-                        type: 'bar',
-                        barWidth: '35%',
+                        name: '2026年', type: 'bar', barWidth: '38%',
                         data: [2200, 92, 80, 150, 40, 46, 6],
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                { offset: 0, color: '#00D4AA' },
-                                { offset: 1, color: '#00AA88' }
-                            ]),
-                            borderRadius: [4, 4, 0, 0]
-                        }
+                        itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#00D4AA'},{offset:1,color:'#00AA88'}]), borderRadius: [6,6,0,0] },
+                        animationDelay: idx => idx * 120 + 60
                     }
                 ],
-                animationDuration: 2000,
+                animationDuration: 2200,
                 animationEasing: 'cubicOut'
-            };
-            
-            chart.setOption(option);
-            
-            // Growth line chart
-            const chart2 = echarts.init(chartDom, null, { renderer: 'canvas' });
-            // Will be swapped on scroll
+            });
+            window.addEventListener('resize', () => chart.resize());
         }
-        
-        // ========== 6. Count-Up Animation ==========
+
+        /* =====================================================
+           7. Count-Up Animation
+           ===================================================== */
         function initCountUp() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const el = entry.target;
-                        const target = parseInt(el.getAttribute('data-count'));
-                        animateCount(el, 0, target, 2000);
-                        observer.unobserve(el);
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(en => {
+                    if (en.isIntersecting) {
+                        const el = en.target;
+                        animateCount(el, 0, parseInt(el.getAttribute('data-count')) || 0, 2200);
+                        obs.unobserve(el);
                     }
                 });
             }, { threshold: 0.5 });
-            
-            document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+            document.querySelectorAll('[data-count]').forEach(el => obs.observe(el));
         }
-        
-        function animateCount(el, start, end, duration) {
-            const range = end - start;
-            const startTime = performance.now();
-            
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-                const current = Math.floor(start + range * eased);
-                el.textContent = current.toLocaleString();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(update);
+
+        function animateCount(el, start, end, dur) {
+            const range = end - start, t0 = performance.now();
+            (function step(now) {
+                const p = Math.min((now - t0) / dur, 1);
+                const e = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(start + range * e).toLocaleString();
+                if (p < 1) requestAnimationFrame(step);
+            })(t0);
+        }
+
+        /* =====================================================
+           8. Achievement System
+           ===================================================== */
+        const ach = { scrolled: false, viewedCharts: false, readStories: false };
+        function checkAch() {
+            if (!ach.scrolled && window.scrollY > innerHeight * 0.45) {
+                ach.scrolled = true;
+                showToast('👁️', '见证者', '您已开始探索改革之旅');
+            }
+            const dataEl = document.getElementById('hall-data');
+            if (!ach.viewedCharts && dataEl) {
+                const r = dataEl.getBoundingClientRect();
+                if (r.top < innerHeight * 0.75) {
+                    ach.viewedCharts = true;
+                    showToast('📊', '数据解读员', '您已查看关键数据对比');
                 }
             }
-            
-            requestAnimationFrame(update);
-        }
-        
-        // ========== 7. Achievement System ==========
-        let achievements = {
-            scrolled: false,
-            viewedCharts: false,
-            readStories: false
-        };
-        
-        function checkAchievements() {
-            // Scrolled past first section
-            if (!achievements.scrolled && window.scrollY > window.innerHeight * 0.5) {
-                achievements.scrolled = true;
-                showAchievement('👁️', '见证者', '您已开始探索改革之旅');
-            }
-            // Viewed data chart
-            const chartEl = document.getElementById('hall-data');
-            if (!achievements.viewedCharts && chartEl) {
-                const rect = chartEl.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.8) {
-                    achievements.viewedCharts = true;
-                    showAchievement('📊', '数据解读员', '您已查看关键数据对比');
-                }
+            // Extra: all stories viewed
+            const storyCards = document.querySelectorAll('.student-card');
+            if (!ach.readStories && storyCards.length) {
+                let allVisible = true;
+                storyCards.forEach(c => { if (c.getBoundingClientRect().top > innerHeight) allVisible = false; });
+                if (allVisible) { ach.readStories = true; showToast('🎓', '育人见证者', '您已读完四个孩子的逆袭故事'); }
             }
         }
-        
-        function showAchievement(icon, title, desc) {
-            const toast = document.getElementById('achievement-toast');
+        function showToast(icon, title, desc) {
+            const t = document.getElementById('achievement-toast');
             document.getElementById('toast-icon').textContent = icon;
             document.getElementById('toast-title').textContent = title;
             document.getElementById('toast-desc').textContent = desc;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 4200);
         }
-        
-        window.addEventListener('scroll', checkAchievements);
-        
+        window.addEventListener('scroll', checkAch);
+
     })();
     </script>
 </body>
