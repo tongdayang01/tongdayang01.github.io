@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长故事 —— 宁强方案</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary:#1a365d; --accent:#c9a96e; --gold:#f6c343; --bg:#f8f9fa; --text:#2d3748; }
+        body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
+        a { color:var(--primary); text-decoration:none; }
+        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; }
+        .navbar-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .nav-links { display:flex; gap:8px; list-style:none; }
+        .nav-links a { color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:0.95rem; transition:all 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(201,169,110,0.3); }
+        .main { max-width:1100px; margin:0 auto; padding:40px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; padding:48px 0 0; }
+        .page-header .tag { display:inline-block; background:linear-gradient(135deg,#e8d5a8,#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
+        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:16px; }
+        .page-header p { color:#718096; font-size:1.05rem; max-width:640px; margin:0 auto; }
+
+        .story-hero { background:linear-gradient(135deg,var(--primary),#2a4a7f); border-radius:20px; padding:64px 48px; color:white; margin-bottom:48px; position:relative; overflow:hidden; }
+        .story-hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle at 30% 50%, rgba(201,169,110,0.08) 0%, transparent 50%); }
+        .story-hero h2 { font-size:1.6rem; margin-bottom:16px; position:relative; }
+        .story-hero p { font-size:1.05rem; opacity:0.8; line-height:1.9; position:relative; max-width:700px; }
+
+        .story-detail { background:white; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08); margin-bottom:40px; }
+        .story-detail-header { padding:36px 40px 28px; position:relative; }
+        .story-detail-header::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; background:linear-gradient(90deg,var(--accent),var(--gold)); }
+        .story-badge { display:inline-block; padding:4px 14px; border-radius:50px; font-size:0.8rem; font-weight:600; margin-bottom:12px; }
+        .story-detail-header h2 { font-size:1.5rem; color:var(--primary); margin-bottom:10px; }
+        .story-meta { color:#718096; font-size:0.9rem; }
+        .story-detail-body { padding:0 40px 40px; }
+        .story-detail-body p { margin-bottom:14px; line-height:1.95; font-size:0.97rem; }
+        .story-detail-body strong { color:var(--primary); }
+        .story-quote { background:linear-gradient(135deg,#fffbeb,#fef3c7); border-left:4px solid var(--gold); padding:20px 24px; border-radius:0 12px 12px 0; margin:20px 0; font-style:italic; color:var(--primary); line-height:1.9; }
+        .story-quote .author { font-style:normal; font-weight:600; font-size:0.88rem; margin-top:10px; display:block; }
+
+        .story-timeline { padding:0 40px 40px; }
+        .story-timeline h3 { font-size:1.1rem; color:var(--primary); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid #e2e8f0; }
+        .tl { position:relative; padding-left:36px; margin-bottom:24px; }
+        .tl::before { content:''; position:absolute; left:10px; top:0; bottom:-24px; width:2px; background:linear-gradient(180deg,var(--accent),transparent); }
+        .tl:last-child::before { display:none; }
+        .tl::after { content:''; position:absolute; left:6px; top:6px; width:10px; height:10px; background:var(--accent); border-radius:50%; border:2px solid white; box-shadow:0 0 0 2px var(--accent); }
+        .tl .tl-time { font-size:0.82rem; color:var(--accent); font-weight:600; margin-bottom:4px; }
+        .tl .tl-text { font-size:0.93rem; color:var(--text); line-height:1.7; }
+
+        .story-data { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; padding:0 40px 40px; }
+        .story-data-item { background:var(--bg); border-radius:12px; padding:20px; text-align:center; }
+        .story-data-item .num { font-size:2rem; font-weight:800; color:var(--primary); display:block; line-height:1.2; }
+        .story-data-item .lbl { font-size:0.82rem; color:#718096; margin-top:6px; display:block; }
+
+        .footer { background:#0f172a; color:rgba(255,255,255,0.6); padding:40px 0; text-align:center; font-size:0.9rem; }
+        .footer a { color:#e8d5a8; }
+
+        @media(max-width:768px){
+            .nav-links{display:none;}
+            .story-hero{padding:40px 24px;}
+            .story-detail-header,.story-detail-body,.story-timeline,.story-data{padding-left:20px;padding-right:20px;}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>宁强方案</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="theory.html">理论框架</a></li>
+            <li><a href="cases.html">典型案例</a></li>
+            <li><a href="stories.html" class="active">成长故事</a></li>
+            <li><a href="videos.html">视频展示</a></li>
+            <li><a href="generator.html">工单生成</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <span class="tag">🌟 成长故事</span>
+        <h1>用生命见证改变</h1>
+        <p>每一个数字背后，都是一个活生生的生命重新站起来</p>
+    </div>
+
+    <!-- HERO -->
+    <div class="story-hero">
+        <h2>📖 三个故事，一种可能</h2>
+        <p>在宁强县职业高级中学，我们记录下了这些真实的成长轨迹。<br>
+        不是"特例宣传"，而是"人人出彩"的制度化结果。<br>
+        每一位学生，都有权利拥有属于自己的"逆袭故事"。</p>
+    </div>
+
+    <!-- Story 1: Li Xingjun -->
+    <div class="story-detail">
+        <div class="story-detail-header" style="background:linear-gradient(135deg,#f8f9fa,white);">
+            <span class="story-badge" style="background:#fee2e2; color:#991b1b;">🏆 逆袭典型</span>
+            <h2>李兴军 · 从"废人"到全省第98名</h2>
+            <div class="story-meta">2019级烹饪专业 → 2025年全省职教高考第98名 · 本科录取</div>
+        </div>
+        <div class="story-data">
+            <div class="story-data-item"><span class="num">91</span><span class="lbl">入校厌学得分（/100，重度厌学）</span></div>
+            <div class="story-data-item"><span class="num">0</span><span class="lbl">入校时技能基础</span></div>
+            <div class="story-data-item"><span class="num">3年</span><span class="lbl">从洗菜工到掌勺师傅</span></div>
+            <div class="story-data-item"><span class="num">98</span><span class="lbl">全省职教高考排名</span></div>
+            <div class="story-data-item"><span class="num">✓</span><span class="lbl">本科录取</span></div>
+        </div>
+        <div class="story-detail-body">
+            <p><strong>入校第一天（2019年9月）：</strong>李兴军是被"劝"来的。初中辍学半年，他抱着"混日子"的心态进了烹饪专业。入学基线测评：<strong>厌学量表得分91/100</strong>（满分100，分数越高厌学越严重）。他在自我描述里写了五个字：<strong>"我可能真的没用。"</strong></p>
+            <p><strong>转折点（2019年11月）：</strong>值餐工坊第一次接到真实订单——"今天中午有12份锅塌豆腐"。在"1+8+N"课堂的"导"环节，老师把订单工单贴在黑板上时，李兴军的眼神<strong>第一次从涣散变成了聚焦</strong>。"有人真的需要我做的东西"——他后来这样描述那一刻。</p>
+            <p><strong>"思"环节：</strong>对照《赋能导学提纲》，他第一次完整看完了一道菜的制作流程。以前上课"听不进去"，这次是自己想看懂——因为"明天要上手"。</p>
+            <p><strong>"展"环节（第一次高峰体验）：</strong>第一盘豆腐被客户签收，工单上写着"好吃，火候刚好"。那是他人生中<strong>第一次因为"做出来的东西有用"而被肯定</strong>。他后来在成长日记里写："原来我不是废物，我做的豆腐是甜的。"</p>
+            <p><strong>三年轨迹：</strong>洗菜工（2019秋）→ 切配助手（2020春）→ 掌勺师傅（2021秋）→ 工坊轮值组长（2022春）。每一步都有真实客户评价记录，每一步都是"被需要的感觉"叠加起来的自信。</p>
+            <p><strong>2025年6月：</strong>职教高考成绩公布，李兴军<strong>全省第98名</strong>，被本科院校录取。拿到录取通知书那天，他站在值餐工坊的灶台前，哭了将近十分钟。</p>
+            <div class="story-quote">
+                "以前觉得这辈子完了，现在我知道——职业教育给了我另一条通天大道。那盘锅塌豆腐，救了我的命。"
+                <span class="author">—— 李兴军，2025年7月于宁强职中</span>
+            </div>
+        </div>
+        <div class="story-timeline">
+            <h3>📅 成长时间线</h3>
+            <div class="tl"><div class="tl-time">2019年9月</div><div class="tl-text">入校，厌学91分，自认"废人"，被劝入烹饪专业</div></div>
+            <div class="tl"><div class="tl-time">2019年11月</div><div class="tl-text">值餐工坊接到首份真实订单（12份锅塌豆腐），眼神第一次聚焦</div></div>
+            <div class="tl"><div class="tl-time">2020年1月</div><div class="tl-text">第一份客户评价"好吃"——人生第一次因"有用"被肯定</div></div>
+            <div class="tl"><div class="tl-time">2020年9月</div><div class="tl-text">升为切配助手，在"融创者市集"独立售卖面点，当日营收120+元</div></div>
+            <div class="tl"><div class="tl-time">2021年9月</div><div class="tl-text">成为掌勺师傅，负责工坊周三特色菜；课堂活力指数测评：他给自己的评分是96/100</div></div>
+            <div class="tl"><div class="tl-time">2022年5月</div><div class="tl-text">担任工坊轮值组长，带领6人小组完成"校庆宴"全案（87份套餐）</div></div>
+            <div class="tl"><div class="tl-time">2025年6月</div><div class="tl-text">全省职教高考第98名，被本科院校录取</div></div>
+        </div>
+    </div>
+
+    <!-- Story 2: Zhao Jiaming Team -->
+    <div class="story-detail">
+        <div class="story-detail-header" style="background:linear-gradient(135deg,#f0fff4,white);">
+            <span class="story-badge" style="background:#d1fae5; color:#065f46;">🏆 世赛典型</span>
+            <h2>赵佳明团队 · 世赛银奖与三条上升通道</h2>
+            <div class="story-meta">2024年世界职业院校技能大赛银奖 · 陕西省首枚 · 陕南零突破</div>
+        </div>
+        <div class="story-data">
+            <div class="story-data-item"><span class="num">4</span><span class="lbl">团队成员</span></div>
+            <div class="story-data-item"><span class="num">2000+</span><span class="lbl">年均真实服务人次</span></div>
+            <div class="story-data-item"><span class="num">🥈</span><span class="lbl">世赛银奖</span></div>
+            <div class="story-data-item"><span class="num">3</span><span class="lbl">免试升本人数</span></div>
+            <div class="story-data-item"><span class="num">8000+</span><span class="lbl">就业月薪（陈一佳）</span></div>
+        </div>
+        <div class="story-detail-body">
+            <p><strong>团队成员：</strong>赵佳明、陈一佳、郑燕、孟婷瑶——均为本校康复技术（中医美容方向）专业学生。</p>
+            <p><strong>真实训练场：</strong>悦舍·愈身堂——面向社区的校内康复服务中心，年均服务<strong>2000+真实客户</strong>。四位同学的世赛训练，不是在"模拟实训室"里做的，而是在真实客户的接待、评估、操作、回访全流程中磨练出来的。</p>
+            <p><strong>2024年世赛：</strong>她们以"真实案例+标准化操作+客户沟通"的综合展示，斩获康复技术赛项<strong>银奖</strong>——这是<strong>陕西省中职学校在康复技术赛项的首枚奖牌</strong>，也是<strong>陕南地区世赛奖牌零的突破</strong>。</p>
+            <p><strong>赛后三条通道：</strong></p>
+            <p>① <strong>赵佳明、郑燕、孟婷瑶</strong>——凭世赛银奖<strong>免试升入陕西工业职业技术大学</strong>（本科层次职业大学）。"世赛银奖，就是最好的大学录取通知书。"</p>
+            <p>② <strong>陈一佳</strong>——选择直接就业，现为<strong>汉中市某知名康养机构技术骨干，月薪8000+</strong>。</p>
+            <p>一个团队，四名学生，三条上升通道——这正是"四真三化五链三场"教育体系的完整成果：<strong>不只有升学率，更有"人人出彩"的多元可能</strong>。</p>
+            <div class="story-quote">
+                "在悦舍·愈身堂给真实客户做推拿，手抖得厉害。客户说'别紧张，你按得挺舒服的'——那一刻我知道，我真的在学有用的东西。后来比赛，我就想着：台下坐的都是我的客户，我只要像在工坊里一样做好就行。"
+                <span class="author">—— 赵某，康复技术专业，世赛银奖团队成员</span>
+            </div>
+        </div>
+        <div class="story-timeline">
+            <h3>📅 世赛之路时间线</h3>
+            <div class="tl"><div class="tl-time">2022年9月</div><div class="tl-text">四人同时入校康复技术专业，第一轮实训"模拟推拿"，全员不及格</div></div>
+            <div class="tl"><div class="tl-time">2022年11月</div><div class="tl-text">悦舍·愈身堂开业，四人首批轮岗；第一次给真实客户服务，"手抖+忘穴"</div></div>
+            <div class="tl"><div class="tl-time">2023年6月</div><div class="tl-text">四人全部通过"愈身堂"客户满意度考核（≥4.2/5.0）；开始接受世赛选拔训练</div></div>
+            <div class="tl"><div class="tl-time">2024年1月</div><div class="tl-text">陕西省选拔赛，四人团队以全省第2名晋级国赛</div></div>
+            <div class="tl"><div class="tl-time">2024年8月</div><div class="tl-text">世界职业院校技能大赛，康复技术赛项银奖（陕西省首枚）</div></div>
+            <div class="tl"><div class="tl-time">2024年9月</div><div class="tl-text">赵/郑/孟三人免试升学录取通知书送达；陈一佳与汉中某康养机构签约</div></div>
+        </div>
+    </div>
+
+    <!-- Story 3: Mianxian -->
+    <div class="story-detail">
+        <div class="story-detail-header" style="background:linear-gradient(135deg,#faf5ff,white);">
+            <span class="story-badge" style="background:#ede9fe; color:#5b21b;">🏆 复制典型</span>
+            <h2>勉县职教中心 · 零新增投入的改革复制</h2>
+            <div class="story-meta">2022年引入本成果 · 6所帮扶校之一 · 无新增财政投入</div>
+        </div>
+        <div class="story-data">
+            <div class="story-data-item"><span class="num">0元</span><span class="lbl">新增财政投入</span></div>
+            <div class="story-data-item"><span class="num">40%→85%</span><span class="lbl">课堂活力指数提升</span></div>
+            <div class="story-data-item"><span class="num">1个</span><span class="lbl">自建文旅工坊</span></div>
+            <div class="story-data-item"><span class="num">100%</span><span class="lbl">成效提升率</span></div>
+        </div>
+        <div class="story-detail-body">
+            <p><strong>背景（2022年）：</strong>勉县职业教育中心面临与宁强职中2014年完全相同的困境——<strong>招生难、留生难、课堂死、家长嫌</strong>。全校旅游管理专业仅47人在校，专业课教师"讲菜单背菜品"，学生"上课像听天书"。</p>
+            <p><strong>改革动作：</strong>2022年系统引入"四真三化五链三场"全套模式。<strong>未增加一分钱财政投入</strong>——依靠校内自建"文旅工坊"，把旅游管理专业的课堂直接搬进工坊。</p>
+            <p><strong>关键转变：</strong>以前上课"老师讲，学生睡"；现在"学生分组接真单、做真产品、服务真客户"。旅游管理专业<strong>课堂活力指数从40%提升至85%</strong>。</p>
+            <p><strong>那个"面点有点甜"的瞬间：</strong>一名曾想退学的学生，在校内"融创者市集"售出第一款面点产品后，<strong>含泪说："老师，我第一次觉得我做的面点是甜的。"</strong>该生现已升入高职深造。</p>
+            <p><strong>帮扶成效：</strong>2022-2026年，勉县职教中心全日制在校生从不足400人增至1100+人；旅游管理专业招生报名人数翻了<strong>3倍</strong>；家长满意度从52%升至89%。</p>
+            <div class="story-quote">
+                "我们一分钱新投入都没有，就是把宁强方案'搬'了过来。关键是——它真的能'搬'，能复制，不需要特殊条件。这才是真正有价值的改革。"
+                <span class="author">—— 勉县职业教育中心负责人，2025年12月</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin:48px 0; padding:48px 0; background:linear-gradient(135deg,var(--primary),#2a4a7f); border-radius:20px; color:white;">
+        <h2 style="font-size:1.5rem; margin-bottom:16px;">🌟 还有更多故事正在发生</h2>
+        <p style="opacity:0.8; max-width:600px; margin:0 auto; line-height:1.9;">每一位宁强学子，都有属于自己的成长档案。<br>这些故事不是"特例"，而是"四真三化五链三场"体系的自然结果。</p>
+        <a href="index.html#stories" style="display:inline-block; margin-top:24px; padding:12px 32px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none;">📖 查看更多成长故事 →</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="theory.html">理论框架</a> · <a href="cases.html">典型案例</a> · <a href="generator.html">工单生成器</a></p>
+</div>
+
+</body>
+</html>
