@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文化基础课十门 — 宁职创原</title>
+    <style>
+        :root { --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b; --bg: #f8f9fa; --text: #2d3748; --text-light: #718096; --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08); --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; }
+
+        .navbar { background:var(--primary); padding:0 32px; position:sticky; top:0; z-index:100; box-shadow:0 2px 16px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width:1400px; margin:0 auto; display:flex; align-items:center; height:64px; gap:28px; }
+        .navbar-brand { color:var(--gold); font-size:1.15rem; font-weight:800; text-decoration:none; white-space:nowrap; }
+        .navbar-links { display:flex; gap:4px; overflow-x:auto; flex:1; }
+        .navbar-links a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.8rem; padding:6px 11px; border-radius:50px; white-space:nowrap; transition:all 0.2s; }
+        .navbar-links a:hover, .navbar-links a.active { color:white; background:rgba(255,255,255,0.12); }
+
+        .hero { background:linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e1b4b 100%); color:white; padding:72px 32px 56px; text-align:center; }
+        .hero-badge { display:inline-block; background:rgba(245,158,11,0.15); color:var(--gold); border:1px solid rgba(245,158,11,0.3); padding:6px 18px; border-radius:50px; font-size:0.82rem; margin-bottom:20px; }
+        .hero h1 { font-size:2.2rem; font-weight:800; margin-bottom:16px; }
+        .hero p { font-size:1.05rem; color:rgba(255,255,255,0.7); max-width:780px; margin:0 auto; line-height:1.8; }
+
+        .container { max-width:1400px; margin:0 auto; padding:0 32px; }
+        .section { padding:64px 0; }
+        .section-header { text-align:center; margin-bottom:48px; }
+        .section-tag { display:inline-block; background:linear-gradient(135deg,var(--accent),var(--primary)); color:white; padding:5px 16px; border-radius:50px; font-size:0.78rem; font-weight:600; margin-bottom:12px; }
+        .section-title { font-size:1.7rem; font-weight:800; color:var(--primary); margin-bottom:10px; }
+        .section-desc { color:var(--text-light); font-size:0.95rem; max-width:720px; margin:0 auto; }
+
+        .stats-row { display:flex; justify-content:center; gap:48px; margin:48px 0; flex-wrap:wrap; }
+        .stat-item { text-align:center; }
+        .stat-num { font-size:2.2rem; font-weight:800; color:var(--primary); }
+        .stat-lbl { font-size:0.85rem; color:var(--text-light); margin-top:4px; }
+
+        /* Course Card Grid */
+        .course-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:24px; }
+        .course-card { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:all 0.3s; display:flex; flex-direction:column; }
+        .course-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+        .course-head { padding:20px 20px 12px; display:flex; align-items:center; gap:14px; }
+        .course-icon { font-size:2.2rem; flex-shrink:0; }
+        .course-head h3 { font-size:1.15rem; font-weight:800; color:white; margin:0; }
+        .course-head .sub { font-size:0.75rem; color:rgba(255,255,255,0.6); margin-top:2px; }
+        .course-body { padding:16px 20px 20px; flex:1; }
+        .course-body .tag-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+        .course-body .tag { display:inline-block; padding:3px 9px; border-radius:50px; font-size:0.72rem; font-weight:600; }
+        .tag-blue { background:#dbeafe; color:#1e40af; }
+        .tag-green { background:#d1fae5; color:#065f46; }
+        .tag-purple { background:#ede9fe; color:#5b21b6; }
+        .tag-orange { background:#ffedd5; color:#9a3412; }
+        .tag-red { background:#fee2e2; color:#991b1b; }
+        .tag-teal { background:#ccfbf1; color:#0f766e; }
+        .course-body p { font-size:0.85rem; color:var(--text-light); line-height:1.75; margin-bottom:6px; }
+        .course-body p strong { color:var(--primary); }
+        .fusion-box { background:var(--bg); padding:12px 14px; border-radius:10px; margin:12px 0; font-size:0.82rem; line-height:1.7; border-left:3px solid var(--gold); }
+        .fusion-box strong { color:var(--accent); }
+
+        .course-foot { padding:12px 20px 18px; border-top:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+        .course-foot .badge { display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; color:var(--text-light); }
+        .course-foot .badge-detail { color:var(--accent); font-weight:700; }
+
+        /* Detailed Section */
+        .detail-block { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:32px; margin-bottom:28px; }
+        .detail-block h3 { font-size:1.15rem; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+        .detail-block h4 { font-size:0.95rem; color:var(--accent); margin:16px 0 8px; }
+        .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        @media (max-width:768px) { .detail-grid { grid-template-columns:1fr; } }
+        .detail-item { background:var(--bg); padding:14px 16px; border-radius:10px; font-size:0.85rem; line-height:1.7; }
+        .detail-item strong { color:var(--primary); display:block; margin-bottom:4px; }
+        .lesson-table { width:100%; border-collapse:collapse; font-size:0.84rem; margin-top:10px; }
+        .lesson-table th { background:var(--primary); color:white; padding:8px 12px; text-align:left; font-size:0.78rem; }
+        .lesson-table td { padding:8px 12px; border-bottom:1px solid #e2e8f0; }
+        .lesson-table tr:hover td { background:#f8fafc; }
+
+        .highlight-box { background:white; border-radius:var(--radius); padding:32px; margin:40px 0; box-shadow:var(--shadow); border-left:6px solid var(--gold); }
+        .highlight-box h3 { color:var(--primary); margin-bottom:16px; }
+        .highlight-box .example { background:var(--bg); padding:16px 20px; border-radius:10px; font-size:0.88rem; color:var(--text); line-height:1.8; }
+
+        .footer { background:var(--primary); color:rgba(255,255,255,0.6); text-align:center; padding:32px; font-size:0.85rem; }
+        .footer a { color:var(--gold); text-decoration:none; margin:0 8px; }
+
+        @media (max-width:768px) {
+            .hero h1 { font-size:1.6rem; }
+            .course-grid { grid-template-columns:1fr; }
+            .stats-row { gap:20px; }
+            .stat-num { font-size:1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+            <a href="cultural-courses.html" class="active">文化基础课</a>
+            <a href="zhican.html">值餐</a>
+            <a href="yushe.html">悦舍</a>
+            <a href="platform.html">平台生态</a>
+            <a href="architecture.html">技术架构</a>
+            <a href="stories.html">成长故事</a>
+            <a href="videos.html">视频</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">📚 四真三化五链三场</div>
+    <h1>中职文化基础课 · 十门课程全面改造</h1>
+    <p>一块锅塌豆腐，串起十门文化课 —— 每一门课都是造产品的一双手。以烹饪工艺与营养专业为锚点，将语文写作、数学核算、历史溯源、信息技术推广等基础能力，全部融入真实产品开发运营，实现从"学科拼盘"到"产业战场"的根本转变。</p>
+</section>
+
+<div class="container">
+    <div class="stats-row">
+        <div class="stat-item"><div class="stat-num">10</div><div class="stat-lbl">文化基础课</div></div>
+        <div class="stat-item"><div class="stat-num">4</div><div class="stat-lbl">完整教学设计</div></div>
+        <div class="stat-item"><div class="stat-num">40+</div><div class="stat-lbl">课时方案</div></div>
+        <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">产品锚定</div></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="highlight-box">
+        <h3>🔑 为什么文化课也要"造产品"？</h3>
+        <div class="example">
+            <strong>传统模式：</strong>语文课写日记、数学课算方程、历史课背年代、信息技术课画表格 —— 学生问"学这有什么用？"<br><br>
+            <strong>四真三化改造后：</strong><br>
+            📝 <strong>语文</strong> → 撰写锅塌豆腐产品文案、SOP操作文本、推广文案、顾客接待口语<br>
+            🔢 <strong>数学</strong> → 核算原料成本、套餐总成本、毛利率定价、利润营收分析<br>
+            📜 <strong>历史</strong> → 溯源原料全球传播、标准化生产历史逻辑、饮食文化地域创新<br>
+            💻 <strong>信息技术</strong> → AI生图、美图修图、海报排版、成本表格、短视频剪辑推广<br>
+            🗣️ <strong>英语</strong> → 双语菜单翻译、国际餐饮服务口语、产品英文介绍<br>
+            🏃 <strong>体育</strong> → 烹饪职业体能训练、体力劳动健康管理、食品安全卫生习惯<br>
+            🎨 <strong>艺术</strong> → 菜品摆盘设计、产品色彩美学、餐厅空间布置<br>
+            ⚡ <strong>物理</strong> → 传热学与烹饪工艺优化、流体力学与调味渗透原理<br>
+            🧪 <strong>化学</strong> → 美拉德反应与食物色香、酸碱平衡调味、食品安全检测<br>
+            🏛️ <strong>思想政治</strong> → 劳动价值论与餐饮创业、职业道德与诚信经营、乡村振兴与本地就业<br><br>
+            <strong>→ 每一门文化课都在为同一块锅塌豆腐服务，学生在"做事"中学"知识"，在真实产品运营中验证学习效果。</strong>
+        </div>
+    </div>
+</div>
+
+<!-- ====== 十门课程卡片 ====== -->
+<div class="container">
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">📋 课程总览</span>
+            <h2 class="section-title">十门文化基础课 · 四真三化改造矩阵</h2>
+            <p class="section-desc">均以"锅塌豆腐产教融合项目"为产品锚定，实现从课程标准到真实运营的全链路转化</p>
+        </div>
+        <div class="course-grid">
+
+            <!-- 1. 语文 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#1a365d,#2a4a7f)">
+                    <div class="course-icon">📝</div>
+                    <div><h3>语文</h3><div class="sub">语言建构与运用 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-blue">产品文案</span><span class="tag tag-green">SOP撰写</span><span class="tag tag-purple">推广写作</span><span class="tag tag-orange">口语交际</span>
+                    </div>
+                    <p><strong>核心改造：</strong>将应用文写作、口语交际、信息归纳等知识点融入锅塌豆腐产品推广真实任务。</p>
+                    <div class="fusion-box">
+                        <strong>四融合：</strong>内容融合(文案/SOP/推广/接待)→场景融合(校园餐厅)→目标融合(会写会推广)→评价融合(师生投票+餐厅采用)
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">✅ <span class="badge-detail">完整教学设计</span></span>
+                    <span class="badge">⏱️ 4课时</span>
+                </div>
+            </div>
+
+            <!-- 2. 数学 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#065f46,#047857)">
+                    <div class="course-icon">🔢</div>
+                    <div><h3>数学</h3><div class="sub">数学运算与数据分析 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-green">成本核算</span><span class="tag tag-blue">毛利率定价</span><span class="tag tag-purple">利润分析</span><span class="tag tag-orange">营收预测</span>
+                    </div>
+                    <p><strong>核心改造：</strong>百分数运算、成本利润计算、数据分析融入锅塌豆腐成本核算与定价经营。</p>
+                    <div class="fusion-box">
+                        <strong>四融合：</strong>原料成本计算→套餐汇总→毛利率定价→利润营收分析，四课时逐级递进，最终产出完整定价分析报告
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">✅ <span class="badge-detail">完整教学设计</span></span>
+                    <span class="badge">⏱️ 4课时</span>
+                </div>
+            </div>
+
+            <!-- 3. 英语 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#6d28d1,#7c3aed)">
+                    <div class="course-icon">🗣️</div>
+                    <div><h3>英语</h3><div class="sub">语言能力与跨文化交际 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-purple">双语菜单</span><span class="tag tag-blue">国际接待</span><span class="tag tag-green">产品介绍</span><span class="tag tag-orange">文化传播</span>
+                    </div>
+                    <p><strong>核心改造：</strong>将英语词汇、句型、口语交际融入锅塌豆腐双语菜单设计与国际游客接待场景。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>锅塌豆腐双语菜单(Griddle-Fried Tofu, Ningqiang Spicy Style) → 国际餐饮服务场景口语 → 宁强饮食文化英文传播 → 对接秦巴山区文旅国际化需求
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+            <!-- 4. 信息技术 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#0c4a6e,#155e75)">
+                    <div class="course-icon">💻</div>
+                    <div><h3>信息技术</h3><div class="sub">信息素养与数字化创新 · 8课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-teal">AI生图</span><span class="tag tag-blue">海报设计</span><span class="tag tag-green">成本表格</span><span class="tag tag-purple">微视频剪辑</span>
+                    </div>
+                    <p><strong>核心改造：</strong>运用豆包AI、美图秀秀、WPS表格、剪映完成锅塌豆腐完整数字化推广链。</p>
+                    <div class="fusion-box">
+                        <strong>三模块8课时：</strong>模块一(4课时)海报设计·AI生图→修图→排版→定稿交付；模块二(2课时)成本核算表格·框架→公式自动核算；模块三(2课时)短视频·脚本→拍摄→剪辑→发布
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">✅ <span class="badge-detail">完整教学设计</span></span>
+                    <span class="badge">⏱️ 8课时</span>
+                </div>
+            </div>
+
+            <!-- 5. 历史 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#92400e,#b45309)">
+                    <div class="course-icon">📜</div>
+                    <div><h3>历史</h3><div class="sub">唯物史观与家国情怀 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-orange">物种大交换</span><span class="tag tag-red">工业革命</span><span class="tag tag-purple">文化适应</span><span class="tag tag-green">传承创新</span>
+                    </div>
+                    <p><strong>核心改造：</strong>以锅塌豆腐原料溯源为线索，串联新航路开辟、工业革命标准化、地域文化创新四大主题。</p>
+                    <div class="fusion-box">
+                        <strong>四课时递进：</strong>物种大交换(原料全球传播)→工业革命(SOP历史逻辑)→文化适应(宁强辣味改造依据)→传承创新(项目文化价值)
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">✅ <span class="badge-detail">完整教学设计</span></span>
+                    <span class="badge">⏱️ 4课时</span>
+                </div>
+            </div>
+
+            <!-- 6. 体育与健康 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#831843,#9d1744)">
+                    <div class="course-icon">🏃</div>
+                    <div><h3>体育与健康</h3><div class="sub">运动能力与健康行为 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-red">职业体能</span><span class="tag tag-green">营养配餐</span><span class="tag tag-blue">劳动健康</span><span class="tag tag-purple">安全习惯</span>
+                    </div>
+                    <p><strong>核心改造：</strong>将体能训练与烹饪职业劳动特点结合，用锅塌豆腐营养数据对接健康饮食教育。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>锅塌豆腐高中低三档营养数据(热量/蛋白/碳水/脂肪)→运动消耗对照→职业体能训练→厨师职业病预防(腰肌劳损/烫伤防护/长时间站立体能)
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+            <!-- 7. 艺术 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#4a1d6b,#6b21a8)">
+                    <div class="course-icon">🎨</div>
+                    <div><h3>艺术</h3><div class="sub">审美感知与艺术表现 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-purple">摆盘美学</span><span class="tag tag-orange">色彩搭配</span><span class="tag tag-blue">空间设计</span><span class="tag tag-green">包装视觉</span>
+                    </div>
+                    <p><strong>核心改造：</strong>将美术设计原理融入锅塌豆腐产品摆盘、餐厅空间布置与包装视觉设计。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>锅塌豆腐装盘构图(黄金分割·色彩对比·留白)→餐厅墙面海报视觉→产品外卖包装设计→融合宁强羌族文化元素提升产品附加值
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+            <!-- 8. 物理 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+                    <div class="course-icon">⚡</div>
+                    <div><h3>物理</h3><div class="sub">物理观念与科学思维 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-blue">热传导</span><span class="tag tag-green">流体力学</span><span class="tag tag-orange">工艺优化</span><span class="tag tag-purple">节能降耗</span>
+                    </div>
+                    <p><strong>核心改造：</strong>用锅塌豆腐烹饪过程阐释传热学、流体力学原理，用物理知识优化烹饪工艺。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>煎制过程(热传导·热对流·热辐射分析)→油温控制(比热容·热传递速率)→调味渗透(扩散原理·浓度梯度)→灶具热效率(节能降耗计算)→优化工时与能耗
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+            <!-- 9. 化学 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#14532d,#166534)">
+                    <div class="course-icon">🧪</div>
+                    <div><h3>化学</h3><div class="sub">宏观辨识与科学探究 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-green">美拉德反应</span><span class="tag tag-blue">酸碱平衡</span><span class="tag tag-orange">食品安全</span><span class="tag tag-purple">配方实验</span>
+                    </div>
+                    <p><strong>核心改造：</strong>用锅塌豆腐烹饪中的化学反应解释食材变化原理，用科学方法优化配方。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>豆腐煎制金黄(美拉德反应·蛋白质变性)→宁强红油风味(酯化反应·香辛料化学)→酸碱平衡调味(pH值对口感的影响)→食品安全检测(油脂氧化·微生物控制)→配方改良实验
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+            <!-- 10. 思想政治 -->
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#991b1b,#dc2626)">
+                    <div class="course-icon">🏛️</div>
+                    <div><h3>思想政治</h3><div class="sub">政治认同与职业精神 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <div class="tag-row">
+                        <span class="tag tag-red">劳动价值</span><span class="tag tag-orange">职业道德</span><span class="tag tag-green">乡村振兴</span><span class="tag tag-blue">工匠精神</span>
+                    </div>
+                    <p><strong>核心改造：</strong>以锅塌豆腐真实创业项目为载体，将劳动教育、职业道德、乡村振兴融为一体。</p>
+                    <div class="fusion-box">
+                        <strong>产品锚定：</strong>劳动价值论(从原料采购到成品销售全链路的劳动创造价值)→诚信经营(真实原料·准确标注营养信息)→职业道德(食品安全·规范操作·服务育人)→乡村振兴(宁强本地食材供应链·带动就业·服务地方)
+                    </div>
+                </div>
+                <div class="course-foot">
+                    <span class="badge">🔧 <span class="badge-detail">框架方案</span></span>
+                    <span class="badge">⏱️ 4课时预案</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<!-- ====== 完整教学设计详情（4门） ====== -->
+<div class="container">
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">📖 完整教学设计</span>
+            <h2 class="section-title">四门课程 · 详细教学设计方案</h2>
+            <p class="section-desc">以下四门已产出完整教案，含课标对标、融合点分析、逐课时教学详案、考核评价方案</p>
+        </div>
+
+        <!-- 语文 -->
+        <div class="detail-block">
+            <h3>📝 语文 · 从文案到接待——锅塌豆腐产品推广全链路语文训练</h3>
+            <p style="color:#718096;font-size:0.88rem;margin-bottom:16px;">对接《中等职业学校语文课程标准（2020年版）》语言建构与运用·思维发展与提升·审美发现与鉴赏·文化传承与参与四大核心素养</p>
+            <div class="detail-grid">
+                <div class="detail-item"><strong>第1课时 · 提炼核心卖点</strong>信息归纳与卖点撰写训练。以宁强辣版锅塌豆腐为对象，教学生运用"客群需求+差异化"双核心提炼法，分别针对高端接待、教师日常、学生引流三类客群撰写差异化卖点。</div>
+                <div class="detail-item"><strong>第2课时 · 撰写SOP操作文本</strong>规范说明文写作训练。对照餐饮HACCP体系，将锅塌豆腐煎制工序写成"步骤清晰、数据精准、控制点明确"的标准化SOP，成果直接粘贴实训工位用于生产。</div>
+                <div class="detail-item"><strong>第3课时 · 设计推广文案</strong>广告文案写作训练。针对班级群/公众号/展示板三个渠道分别撰写推广文案，核心卖点全部来自第1课提炼成果，实现课际衔接。</div>
+                <div class="detail-item"><strong>第4课时 · 顾客接待口语</strong>职业口语交际训练。模拟学生就餐、教师日常、公务接待三种场景，训练"礼貌开场→按需介绍→引导结尾"的表达技巧，在校园餐厅面向真实顾客演练。</div>
+            </div>
+            <h4>评价特色</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">过程性评价60% + 结果性评价30% + 专业融合度评价10%（由烹饪专业教师+餐厅运营负责人打分）。被餐厅采用的文案/SOP/卖点额外加分，学生作品直接产生市场价值。</p>
+        </div>
+
+        <!-- 数学 -->
+        <div class="detail-block">
+            <h3>🔢 数学 · 从成本到利润——锅塌豆腐全链路经营数学训练</h3>
+            <p style="color:#718096;font-size:0.88rem;margin-bottom:16px;">对接《中等职业学校数学课程标准（2020年版）》数学运算·直观想象·数据分析·数学应用四大核心素养</p>
+            <div class="detail-grid">
+                <div class="detail-item"><strong>第1课时 · 单份原料成本计算</strong>分类整理→统一单位→分别计算再汇总。以真实宁强采购价格计算单份锅塌豆腐16种原料的总成本，训练单位换算与乘法加法混合运算。</div>
+                <div class="detail-item"><strong>第2课时 · 套餐总成本核算</strong>将高端御膳套餐6道菜品(锅塌豆腐+鸡丁+油麦菜+排骨汤+杂粮饭+蘸碟)逐一汇总，计算成本占比，直观感受不同菜品对总成本的影响。</div>
+                <div class="detail-item"><strong>第3课时 · 毛利率与定价</strong>销售毛利率=利润÷售价×100%，售价=总成本÷(1-目标毛利率)。分摊固定成本(水电燃气人工)，结合师生价格敏感度定出合理售价，验证是否符合项目预设毛利率要求。</div>
+                <div class="detail-item"><strong>第4课时 · 利润营收分析</strong>计算单份利润→单日利润→月度营收，绘制利润占比柱状图，分析高中低三档产品的利润贡献差异，结合数据给出经营优化建议，直接提交校园餐厅运营组参考。</div>
+            </div>
+            <h4>评价特色</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">计算误差容忍度精确到±0.2元(第1课)、±0.5元(第2课)、±1元(第3课)、±20元(第4课)。经营建议被运营组采纳的小组额外加10分。</p>
+        </div>
+
+        <!-- 历史 -->
+        <div class="detail-block">
+            <h3>📜 历史 · 从原料到传承——锅塌豆腐背后的世界历史</h3>
+            <p style="color:#718096;font-size:0.88rem;margin-bottom:16px;">对接《中等职业学校历史课程标准（2020年版）》唯物史观·时空观念·史料实证·历史解释·家国情怀五大核心素养</p>
+            <div class="detail-grid">
+                <div class="detail-item"><strong>第1课时 · 物种大交换</strong>新航路开辟→全球物种交流。溯源豆腐(中国汉代起源)、辣椒(美洲→欧洲→中国)、鸡蛋(工业革命后规模化)的传播历程，制作《锅塌豆腐核心原料传播时间轴》。</div>
+                <div class="detail-item"><strong>第2课时 · 技艺标准化</strong>工业革命→生产标准化。对比清代鲁菜菜谱"煎至金黄"与现代SOP"160℃煎3-4分钟"的差异，理解标准化从制造业到餐饮业的历史逻辑，对照现有SOP找标准化设计点。</div>
+                <div class="detail-item"><strong>第3课时 · 文化的适应</strong>宁强偏辣口味的历史成因。从秦巴山区自然地理(潮湿驱寒)、明清人口迁徙(关中·湖广饮食融合)两条线索，为宁强辣版锅塌豆腐的地域改造提供历史文化依据。</div>
+                <div class="detail-item"><strong>第4课时 · 传承与创新</strong>传统技艺的当代新生。梳理锅塌豆腐从清代御膳→鲁菜经典→宁强校园新品的完整传承创新路径，总结"传承什么·改造什么·创新什么"三条核心经验。</div>
+            </div>
+            <h4>评价特色</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">产品文化注释被展示卡采用额外加5分，宣传语被用于推广加5分，顾客评价介绍有吸引力加5分。</p>
+        </div>
+
+        <!-- 信息技术 -->
+        <div class="detail-block">
+            <h3>💻 信息技术 · 从生图到发布——锅塌豆腐全流程数字化推广</h3>
+            <p style="color:#718096;font-size:0.88rem;margin-bottom:16px;">对接《中等职业学校信息技术课程标准（2020年版）》信息素养·计算思维·数字化创新与实践·信息社会责任四大核心素养</p>
+            <div class="detail-grid">
+                <div class="detail-item"><strong>模块一(4课时) · 海报设计</strong>课时1：豆包AI生图(提示词四要素：主体+风格+场景+细节)；课时2：美图秀秀修图(裁剪调色突出宁强红油特色)；课时3：海报排版(整合语文课提炼的卖点文案，红+米白配色)；课时4：定稿交付(打印300DPI+线上72DPI双规格输出)</div>
+                <div class="detail-item"><strong>模块二(2课时) · 成本核算表格</strong>课时5：搭建WPS表格成本框架(主料/辅料/调料/间接成本四类)；课时6：公式设置实现自动核算(SINGLE=用量×单价，SUM汇总总成本)，更换原料价格自动更新</div>
+                <div class="detail-item"><strong>模块三(2课时) · 短视频推广</strong>课时7：脚本撰写(1分钟结构：5s吸睛+30s特色+20s过程+5s引导)+实拍素材收集；课时8：剪映剪辑(排序→字幕→背景音乐→1080P导出)，发布到校园公众号和本地朋友圈</div>
+                <div class="detail-item"><strong>跨学科衔接亮点</strong>海报卖点文案直接引用语文课提炼成果，成本表格数据使用数学课计算结果，短视频素材在校园餐厅实景拍摄。三门文化课的学习成果最终汇聚到信息技术课完成数字化输出。</div>
+            </div>
+            <h4>评价特色</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">专业融合度评价占20%，作品被校园餐厅采用得满分，运营一周后顾客好评额外加分，直接带动销量额外加分。</p>
+        </div>
+    </section>
+</div>
+
+<!-- ====== 六门框架方案 ====== -->
+<div class="container">
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">🔧 框架方案</span>
+            <h2 class="section-title">六门课程 · 四真三化改造框架</h2>
+            <p class="section-desc">以下六门已明确产品锚定与融合路径，待进一步产出逐课时详细教案</p>
+        </div>
+
+        <div class="course-grid">
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#6d28d1,#7c3aed)">
+                    <div class="course-icon">🗣️</div><div><h3>英语</h3><div class="sub">餐饮服务英语 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>双语菜单翻译 —— Griddle-Fried Tofu (Ningqiang Spicy Style)，学习菜名结构：烹饪方法+主料+口味+地域</p>
+                    <p><strong>课时2：</strong>国际游客点餐接待口语 —— "Would you like to try our signature dish..." 含口味/辣度/价格三要素介绍</p>
+                    <p><strong>课时3：</strong>产品英文推广文案 —— 撰写社交媒体英文推广短文案，适配Instagram/小红书双语内容</p>
+                    <p><strong>课时4：</strong>宁强饮食文化英文展示 —— 用英语讲好锅塌豆腐的"传统技艺+地域创新"故事，对接国际文旅传播</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>语言能力→双语菜单写作 · 文化意识→中西方饮食文化对比 · 思维品质→英文推广逻辑 · 学习能力→自主学习餐饮英语</div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#831843,#9d1744)">
+                    <div class="course-icon">🏃</div><div><h3>体育与健康</h3><div class="sub">烹饪职业体能 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>锅塌豆腐营养数据解析 —— 高中低三档热量/蛋白/碳水/脂肪数据，学会用营养标签指导日常饮食选择</p>
+                    <p><strong>课时2：</strong>运动消耗与配餐计算 —— 将烹饪专业日常体力消耗(站立操作/搬运食材)换算为卡路里，对照锅塌豆腐配餐做能量平衡计算</p>
+                    <p><strong>课时3：</strong>烹饪职业体能训练 —— 针对长时间站立、上肢力量、核心稳定的专项体能训练，结合厨房工位动作特点</p>
+                    <p><strong>课时4：</strong>职业病预防与食品安全卫生 —— 腰肌劳损预防操·烫伤应急处理·HACCP食品安全卫生操作规范中的个人卫生要求</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>运动能力→职业体能 · 健康行为→营养配餐意识 · 体育品德→坚韧耐劳的职业精神</div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#4a1d6b,#6b21a8)">
+                    <div class="course-icon">🎨</div><div><h3>艺术</h3><div class="sub">餐饮产品美学 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>锅塌豆腐摆盘设计 —— 黄金分割构图·色彩对比(红油红vs豆腐黄vs葱花绿)·留白原则，拍摄before/after对比</p>
+                    <p><strong>课时2：</strong>产品色彩搭配学 —— 宁强辣版锅塌豆腐的配色分析(暖色系为主)，延伸到不同产品线(高端冷色沉稳·低端暖色活泼)</p>
+                    <p><strong>课时3：</strong>校园餐厅空间美学 —— 墙面海报设计·展板布置·桌面摆件选择，让就餐环境服务产品溢价</p>
+                    <p><strong>课时4：</strong>羌族文化元素融入 —— 将宁强羌族纹样/色彩融入产品外带包装设计，提升文化附加值</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>审美感知→菜品美学鉴赏 · 艺术表现→摆盘/包装创作 · 文化理解→羌族文化融入设计</div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#0f172a,#1e293b)">
+                    <div class="course-icon">⚡</div><div><h3>物理</h3><div class="sub">烹饪传热学 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>热传导与煎制工艺 —— 锅-油-豆腐三层热传导链条，160℃临界温度的物理依据(低于则吸油多，高于则外焦里生)</p>
+                    <p><strong>课时2：</strong>热对流与塌制工艺 —— 鸡汤加热过程中的对流换热，理解"大火收汁"的物理原理(加速水分蒸发增大浓度差)</p>
+                    <p><strong>课时3：</strong>热辐射与灶具效率 —— 不同灶具(电磁炉/燃气灶)的热效率对比，计算锅塌豆腐批量生产的最优能耗方案</p>
+                    <p><strong>课时4：</strong>扩散原理与调味渗透 —— 盐分/红油渗透豆腐的分子扩散模型，控制腌制时间与调味均匀度的数学关系</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>物理观念→热学原理理解 · 科学思维→工艺参数优化 · 科学探究→能耗实验设计</div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#14532d,#166534)">
+                    <div class="course-icon">🧪</div><div><h3>化学</h3><div class="sub">食品化学反应 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>美拉德反应与色泽风味 —— 豆腐蛋白质+还原糖在160℃下的褐变反应，科学解释"煎至金黄"的化学机理</p>
+                    <p><strong>课时2：</strong>蛋白质变性与口感 —— 煎制过程中的豆腐蛋白质三级结构变化，解释"外酥里嫩"的化学本质，控制温度时间优化口感</p>
+                    <p><strong>课时3：</strong>酯化反应与宁强红油风味 —— 辣椒素·花椒酰胺的化学结构，油脂加热后酯类物质的生成，解释宁强本地红油"香辣"的特殊风味来源</p>
+                    <p><strong>课时4：</strong>食品安全化学检测 —— 油脂氧化酸败的简易检测法(pH试纸/过氧化值)，HACCP体系中的化学危害控制，培养学生科学严谨的食品安全意识</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>宏观辨识→食物色香味观察 · 变化观念→化学反应理解 · 科学探究→配方改良实验</div>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-head" style="background:linear-gradient(135deg,#991b1b,#dc2626)">
+                    <div class="course-icon">🏛️</div><div><h3>思想政治</h3><div class="sub">劳动教育与职业道德 · 4课时</div></div>
+                </div>
+                <div class="course-body">
+                    <p><strong>课时1：</strong>劳动创造价值 —— 以锅塌豆腐为例追踪"原料采购(农民劳动)→加工制作(厨师劳动)→校园销售(服务劳动)"全链路，理解每一环节劳动创造的价值增量</p>
+                    <p><strong>课时2：</strong>诚实守信与职业道德 —— 真实标注原料来源、营养数据、不使用劣质替代原料，结合锅塌豆腐项目实际案例讨论"诚信经营为什么是餐饮的生命线"</p>
+                    <p><strong>课时3：</strong>工匠精神与精益求精 —— 宁强辣版锅塌豆腐从鲁菜经典到本地创新的迭代过程，展示7次口味调整、3轮定价测试、12版SOP修订的打磨历程</p>
+                    <p><strong>课时4：</strong>乡村振兴与青年担当 —— 宁强本地食材供应链(本地豆腐坊·辣椒种植户)如何通过校园餐厅带动就业增收，鼓励学生在本地创新创业、服务家乡发展</p>
+                    <div class="fusion-box"><strong>素养对标：</strong>政治认同→服务地方发展 · 职业精神→精益求精 · 法治意识→食品安全合规 · 公共参与→社区服务</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<!-- ====== 跨学科协同证据链 ====== -->
+<div class="container">
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">🔗 跨学科协同</span>
+            <h2 class="section-title">四门已实施课程 · 跨学科协同证据链</h2>
+            <p class="section-desc">语文提炼卖点 → 数学核算成本 → 信息技术制作海报(用语文的文案+数学的数据) → 历史赋予文化故事(为海报/短视频提供内容)</p>
+        </div>
+        <div class="highlight-box">
+            <h3>一块锅塌豆腐，串起四门文化课的协作链路</h3>
+            <div class="example">
+                <strong>📝 语文(第1课)：</strong> 提炼卖点文案 → "香辣够味 8元一份 3分钟取餐"<br>
+                <strong>🔢 数学(第1课)：</strong> 计算单份成本 → 总成本4.2元，合理定价8元(毛利率47.5%)<br>
+                <strong>💻 信息技术(第3课)：</strong> 制作推广海报 → 主图(AI生成+修图) + 标题(语文卖点) + 价格(数学定价)<br>
+                <strong>📜 历史(第3课)：</strong> 文化故事加持 → "宁强辣味来自明清饮食融合，每一口都是三百年历史"<br><br>
+                <strong>→ 最终产出：</strong> 一张海报包含四门课的学习成果，贴在校园餐厅真实推广，接受师生投票和消费验证。
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="footer" style="background:var(--primary);color:rgba(255,255,255,0.6);text-align:center;padding:32px;font-size:0.85rem;margin-top:40px;">
+    <p style="margin-bottom:16px;">宁职创原 · 2026年职业教育国家教学成果奖申报展示</p>
+    <p style="font-size:0.8rem;margin-bottom:12px;">
+        <a href="index.html" style="color:var(--gold);margin:0 8px;">首页</a>
+        <a href="theory.html" style="color:var(--gold);margin:0 8px;">理论框架</a>
+        <a href="cases.html" style="color:var(--gold);margin:0 8px;">典型案例</a>
+        <a href="curriculum.html" style="color:var(--gold);margin:0 8px;">课程设计</a>
+        <a href="cultural-courses.html" style="color:var(--gold);margin:0 8px;">文化基础课</a>
+        <a href="generator.html" style="color:var(--gold);margin:0 8px;">AI系统</a>
+        <a href="architecture.html" style="color:var(--gold);margin:0 8px;">技术架构</a>
+    </p>
+    <p>© 2026 宁强县职业高级中学 · 达叔 · 思想方舟</p>
+</div>
+
+</body>
+</html>
