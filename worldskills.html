@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世赛服务 — 宁职创原</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #2a4a7f;
+            --gold: #f59e0b;
+            --bg: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        /* Navigation */
+        .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 32px; }
+        .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+        .navbar-links { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+        .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; padding: 6px 12px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+        .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #1a365d 0%, #2a4a7f 50%, #1a365d 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+        .hero-badge { display: inline-block; background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 16px; }
+        .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 640px; margin: 0 auto; line-height: 1.8; }
+
+        /* Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+        /* Section */
+        .section { padding: 64px 0; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--primary)); color: white; padding: 5px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+        .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 600px; margin: 0 auto; }
+
+        /* Module Cards */
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
+        .module-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+        .module-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .module-header { padding: 28px 24px 20px; position: relative; }
+        .module-icon { font-size: 2rem; margin-bottom: 10px; }
+        .module-header h3 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+        .module-header p { font-size: 0.82rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+        .module-body { padding: 20px 24px 24px; }
+        .module-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 10px; }
+        .module-body p strong { color: var(--primary); }
+        .module-fields { margin-top: 14px; }
+        .field-tag { display: inline-block; background: var(--bg); color: var(--accent); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; margin: 3px; font-weight: 600; }
+        .module-btn { display: inline-block; margin-top: 16px; padding: 10px 20px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+        .module-btn:hover { background: var(--accent); }
+
+        /* Color schemes */
+        .ws1 { background: linear-gradient(135deg, #1a365d, #2a4a7f); }
+        .ws2 { background: linear-gradient(135deg, #553c9a, #6b46c1); }
+        .ws3 { background: linear-gradient(135deg, #065f46, #047857); }
+        .ws4 { background: linear-gradient(135deg, #92400e, #b45309); }
+        .ws5 { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+        .ws6 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
+
+        /* Footer */
+        .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 32px; font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.6rem; }
+            .module-grid { grid-template-columns: 1fr; }
+            .navbar-inner { gap: 12px; }
+            .navbar-links { gap: 2px; }
+            .navbar-links a { font-size: 0.75rem; padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html" class="active">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+            <a href="stories.html">学生故事</a>
+            <a href="videos.html">视频展示</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">🏅 WorldSkills Services</div>
+    <h1>世赛服务 AI 赋能系统</h1>
+    <p>6大子模块，覆盖世赛备赛全链路 —— 从金牌教练方案到评分标准转化，让每一次训练都有AI护航</p>
+</section>
+
+<!-- Modules -->
+<div class="container">
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">🏅 6大核心模块</span>
+        <h2 class="section-title">世赛服务全链路工具</h2>
+        <p class="section-desc">每一个模块都基于世界技能标准设计，覆盖训练、标准、融通、画像、评价、竞赛设计全流程</p>
+    </div>
+
+    <div class="module-grid">
+
+        <!-- Module 1: 金牌教练工作页 -->
+        <div class="module-card">
+            <div class="module-header ws1">
+                <div class="module-icon">🏅</div>
+                <h3>金牌教练工作页</h3>
+                <p>ws_training · 为技能竞赛教练生成训练方案</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于世界技能大赛标准，为教练生成科学、系统、个性化的训练方案，覆盖全训练周期。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">竞赛项目</span>
+                    <span class="field-tag">参赛选手基础</span>
+                    <span class="field-tag">训练周期</span>
+                    <span class="field-tag">目标名次</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>阶段训练计划、技能地图、心理调控方案、模拟赛安排、应急预案</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 2: 技能标准解码 -->
+        <div class="module-card">
+            <div class="module-header ws2">
+                <div class="module-icon">🔍</div>
+                <h3>技能标准解码</h3>
+                <p>ws_standard · 将世界技能标准转化为教学标准</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>自动解析 WorldSkills 标准文件，转化为可落地的专业教学标准和课程大纲。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">技能项目</span>
+                    <span class="field-tag">标准文件</span>
+                    <span class="field-tag">目标专业</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>技能标准对照表、教学标准文档、课程模块映射、评价维度说明</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 3: 赛证融通方案 -->
+        <div class="module-card">
+            <div class="module-header ws3">
+                <div class="module-icon">🔗</div>
+                <h3>赛证融通方案</h3>
+                <p>ws_cert · 竞赛成绩与职业证书融通方案</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>设计世赛成绩与职业技能等级证书互通互认方案，提升证书含金量和就业竞争力。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">竞赛项目</span>
+                    <span class="field-tag">证书类型</span>
+                    <span class="field-tag">融通方式</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>赛证融通对照表、学分置换方案、证书申领流程、就业推荐信模板</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 4: 金牌选手画像 -->
+        <div class="module-card">
+            <div class="module-header ws4">
+                <div class="module-icon">🏆</div>
+                <h3>金牌选手画像</h3>
+                <p>ws_golden · 分析金牌选手的能力画像与培养路径</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于历年世赛金牌选手数据，分析能力画像、成长路径和关键成功因素，生成个性化培养方案。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">竞赛项目</span>
+                    <span class="field-tag">选手特征</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>金牌选手能力画像、成长路径图、关键节点训练重点、心理特质分析报告</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 5: 评分标准转化 -->
+        <div class="module-card">
+            <div class="module-header ws5">
+                <div class="module-icon">📊</div>
+                <h3>评分标准转化</h3>
+                <p>ws_eval · 将世赛评分标准转化为校内评价标准</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>将 WorldSkills 评分标准转化为校内技能考核标准，实现"以赛促教、以赛促学"。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">竞赛项目</span>
+                    <span class="field-tag">评分维度</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>评分标准对照表、校内考核方案、评分员培训手册、模拟评分练习</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 6: 校内技能竞赛设计 -->
+        <div class="module-card">
+            <div class="module-header ws6">
+                <div class="module-icon">🏟️</div>
+                <h3>校内技能竞赛设计</h3>
+                <p>ws_competition · 设计校内技能竞赛的完整方案</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于世赛标准，设计校内技能竞赛的完整方案，让每个学生都有机会体验"世赛标准"的训练和考核。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">竞赛项目</span>
+                    <span class="field-tag">参赛规模</span>
+                    <span class="field-tag">赛制要求</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>竞赛规程、试题库、评分表、宣传方案、奖励办法、总结报告模板</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align:center;padding:48px 0 72px;">
+    <h2 style="font-size:1.4rem;color:var(--primary);margin-bottom:12px;">准备好用AI赋能世赛训练了吗？</h2>
+    <p style="color:var(--text-light);margin-bottom:28px;">金牌教练工作页 + 评分标准转化 + 赛证融通，一站式解决方案</p>
+    <a href="generator.html" style="display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--accent),var(--gold));color:white;border-radius:50px;font-weight:700;text-decoration:none;font-size:1.05rem;">🏅 进入AI系统 →</a>
+</section>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 宁职创原团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> ·
+        <a href="theory.html">理论框架</a> ·
+        <a href="worldskills.html">世赛服务</a> ·
+        <a href="generator.html">AI系统</a>
+    </p>
+</div>
+
+</body>
+</html>
