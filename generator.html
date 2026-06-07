@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线工单生成器 —— 宁强方案</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --primary: #1a365d; --accent: #c9a96e; --gold: #f6c343;
+            --bg: #f8f9fa; --white: #ffffff; --text: #2d3748; --border: #e2e8f0;
+        }
+        body { font-family: "PingFang SC","Microsoft YaHei",system-ui,sans-serif; background: var(--bg); color: var(--text); min-height:100vh; }
+        .navbar { background: var(--primary); padding: 0 24px; position: sticky; top:0; z-index:100; }
+        .navbar-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .nav-back { color:rgba(255,255,255,0.8); text-decoration:none; font-size:0.95rem; padding:8px 16px; border-radius:8px; transition:all 0.3s; }
+        .nav-back:hover { background:rgba(255,255,255,0.1); color:white; }
+
+        .main { max-width:1000px; margin:0 auto; padding:40px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; }
+        .page-header h1 { font-size:2rem; color:var(--primary); margin-bottom:12px; }
+        .page-header p { color:#718096; font-size:1.05rem; }
+
+        .generator-card { background:white; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.08); overflow:hidden; }
+        .card-header { background:linear-gradient(135deg,var(--primary),#2a4a7f); color:white; padding:28px 36px; }
+        .card-header h2 { font-size:1.3rem; font-weight:700; margin-bottom:6px; }
+        .card-header p { opacity:0.7; font-size:0.9rem; }
+        .card-body { padding:36px; }
+
+        .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+        .form-group { display:flex; flex-direction:column; gap:8px; }
+        .form-group.full { grid-column:1/-1; }
+        label { font-size:0.9rem; font-weight:600; color:var(--primary); }
+        input, select, textarea {
+            padding:12px 16px; border:2px solid var(--border); border-radius:10px;
+            font-size:0.95rem; color:var(--text); background:white;
+            font-family:inherit; transition:border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { outline:none; border-color:var(--accent); }
+
+        .generate-btn {
+            display:block; width:100%; padding:16px; border-radius:12px;
+            background:linear-gradient(135deg,var(--accent),var(--gold));
+            color:var(--primary); font-size:1.1rem; font-weight:700;
+            border:none; cursor:pointer; transition:all 0.3s; margin-top:8px;
+        }
+        .generate-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,169,110,0.4); }
+
+        .result-section { margin-top:40px; display:none; }
+        .result-section.show { display:block; animation:fadeIn 0.5s ease; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .result-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+        .result-header h3 { font-size:1.2rem; color:var(--primary); }
+        .download-btns { display:flex; gap:8px; }
+        .dl-btn {
+            padding:8px 18px; border-radius:8px; font-size:0.85rem; font-weight:600;
+            border:none; cursor:pointer; transition:all 0.3s;
+        }
+        .dl-btn.pdf { background:#fee2e2; color:#991b1b; }
+        .dl-btn.docx { background:#dbeafe; color:#1e40af; }
+        .dl-btn:hover { transform:scale(1.05); }
+
+        .result-content { background:#f8f9fa; border-radius:12px; padding:28px; line-height:1.9; font-size:0.95rem; }
+        .result-content h4 { color:var(--primary); margin:20px 0 10px; font-size:1.05rem; }
+        .result-content h4:first-child { margin-top:0; }
+        .result-content p { margin-bottom:10px; }
+        .result-content ul { padding-left:20px; margin-bottom:10px; }
+        .result-content li { margin-bottom:6px; }
+        .tag-inline { display:inline-block; background:linear-gradient(135deg,var(--accent-light),#fef3c7); color:var(--primary); padding:2px 10px; border-radius:50px; font-size:0.8rem; font-weight:600; margin-right:6px; }
+
+        .loading-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(26,54,93,0.6); z-index:999; align-items:center; justify-content:center; }
+        .loading-overlay.show { display:flex; }
+        .loading-box { background:white; border-radius:16px; padding:40px 48px; text-align:center; }
+        .spinner { width:48px; height:48px; border:4px solid #e2e8f0; border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 20px; }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .loading-box p { color:var(--primary); font-weight:600; }
+
+        @media(max-width:700px){
+            .form-grid{grid-template-columns:1fr;}
+            .main{padding:24px 16px;}
+            .card-body{padding:24px;}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>宁强方案 · 工单生成器</span>
+        </a>
+        <a href="index.html" class="nav-back">← 返回首页</a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <h1>🛠️ 在线工单生成器</h1>
+        <p>输入专业 + 课程 + 岗位，一键生成符合"四真三化五链三场"标准的完整教学工单</p>
+    </div>
+
+    <div class="generator-card">
+        <div class="card-header">
+            <h2>📋 教学设计参数输入</h2>
+            <p>请填写以下信息，系统将自动生成8大核心成果文件</p>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>专业名称</label>
+                    <select id="major">
+                        <option value="">-- 请选择专业 --</option>
+                        <option value="烹饪">烹饪工艺与营养</option>
+                        <option value="康复技术">康复技术（中医美容方向）</option>
+                        <option value="旅游管理">旅游管理</option>
+                        <option value="电子商务">电子商务</option>
+                        <option value="机电技术">机电技术应用</option>
+                        <option value="其他">其他专业（自定义）</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>课程名称</label>
+                    <input type="text" id="course" placeholder="例：中式烹调技术、推拿学基础">
+                </div>
+                <div class="form-group">
+                    <label>真实岗位</label>
+                    <input type="text" id="position" placeholder="例：厨师长、康复技师、导游">
+                </div>
+                <div class="form-group">
+                    <label>年级 / 学期</label>
+                    <select id="grade">
+                        <option value="一年级上学期">一年级上学期</option>
+                        <option value="一年级下学期">一年级下学期</option>
+                        <option value="二年级上学期">二年级上学期</option>
+                        <option value="二年级下学期" selected>二年级下学期</option>
+                        <option value="三年级上学期">三年级上学期</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label>真实产业项目（选填，留空则系统自动生成）</label>
+                    <textarea id="project" rows="3" placeholder="例：为校内教职工食堂设计一周营养午餐菜单，并独立完成采购、成本核算、制作与顾客满意度调研全流程"></textarea>
+                </div>
+            </div>
+            <button class="generate-btn" onclick="generate()">⚡ 一键生成教学工单（四真三化五链三场标准）</button>
+        </div>
+    </div>
+
+    <div class="result-section" id="resultSection">
+        <div class="result-header">
+            <h3>📦 生成结果</h3>
+            <div class="download-btns">
+                <button class="dl-btn pdf" onclick="alert('PDF下载功能部署后启用')">⬇ 导出PDF</button>
+                <button class="dl-btn docx" onclick="alert('DOCX下载功能部署后启用')">⬇ 导出DOCX</button>
+            </div>
+        </div>
+        <div class="result-content" id="resultContent"></div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loading">
+    <div class="loading-box">
+        <div class="spinner"></div>
+        <p>正在按"四真三化五链三场"标准生成教学工单...</p>
+    </div>
+</div>
+
+<script>
+    // ===== Knowledge base for generation =====
+    const knowledgeBase = {
+        '烹饪': {
+            projects: ['为校内教职工食堂设计一周营养午餐菜单', '承接校内接待餐厅"融创者市集"当日订单', '为本地餐厅研发"天麻红烧肉"新菜品', '完成锅塌豆腐标准化工艺文档'],
+            tasks: ['菜单设计', '成本测算', '食材采购', '标准烹饪', '客户反馈'],
+            skills: ['刀工技法', '火候掌控', '调味技术', '成本核算', '食品安全'],
+            tools: ['厨师刀', '炒锅', '温度计', '电子秤', '成本计算器']
+        },
+        '康复技术': {
+            projects: ['为社区居民提供推拿康复服务', '完成中医美容面部护理全流程', '为老年客户提供居家康复指导'],
+            tasks: ['接待评估', '方案设计', '操作实施', '效果评价', '回访跟进'],
+            skills: ['推拿手法', '经络辨识', '仪器操作', '客户沟通', '档案管理'],
+            tools: ['推拿床', '艾灸盒', '经络检测仪', '客户档案系统']
+        },
+        '旅游管理': {
+            projects: ['为校内游客中心设计一日游线路', '完成文旅工坊茶艺展示与服务', '为本地景区设计双语导览词'],
+            tasks: ['线路设计', '成本核算', '现场讲解', '客户评价', '复盘优化'],
+            skills: ['导游词创作', '茶艺技法', '客户沟通', '应急处理', '文化解说']
+        },
+        '电子商务': {
+            projects: ['为本地天麻产品开设校园直播间', '完成"融创者市集"线上推广方案', '为校本产品拍摄淘宝主图与详情页'],
+            tasks: ['选品分析', '脚本创作', '直播实施', '数据复盘', '客户维护'],
+            skills: ['直播话术', '短视频拍摄', '数据分析', '客服沟通', '美工设计']
+        },
+        '机电技术': {
+            projects: ['为校内实训设备完成定期维护保养', '完成小型自动化生产线故障排查', '为本地企业维修机电设备'],
+            tasks: ['设备检测', '故障诊断', '维修实施', '质量验收', '文档归档'],
+            skills: ['电路分析', 'PLC编程', '机械拆装', '安全规范', '技术文档']
+        }
+    };
+
+    function generate() {
+        const major = document.getElementById('major').value;
+        const course = document.getElementById('course').value.trim();
+        const position = document.getElementById('position').value.trim();
+        const grade = document.getElementById('grade').value;
+        const projectInput = document.getElementById('project').value.trim();
+
+        if (!major || !course || !position) {
+            alert('请填写专业、课程和岗位信息！');
+            return;
+        }
+
+        // Show loading
+        document.getElementById('loading').classList.add('show');
+
+        setTimeout(() => {
+            const kb = knowledgeBase[major] || knowledgeBase['烹饪'];
+            const project = projectInput || kb.projects[Math.floor(Math.random() * kb.projects.length)];
+            const result = buildResult(major, course, position, grade, project, kb);
+
+            document.getElementById('resultContent').innerHTML = result;
+            document.getElementById('resultSection').classList.add('show');
+            document.getElementById('loading').classList.remove('show');
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 1500);
+    }
+
+    function buildResult(major, course, position, grade, project, kb) {
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
+
+        return `
+        <h4>📋 成果1/8 · 赋能导学提纲</h4>
+        <p><span class="tag-inline">四真</span> 真实产业项目：${project}</p>
+        <p><span class="tag-inline">真实岗位</span> 目标岗位：${position}</p>
+        <p><span class="tag-inline">三化</span> 工作任务课程化路径：</p>
+        <ul>
+            <li><strong>导（10分钟）</strong>：发布真实工单《${project}》，学生分组认领角色</li>
+            <li><strong>学（25分钟）</strong>：围绕${course}核心知识点，在真实场景中探究解决方法</li>
+            <li><strong>展（30分钟）</strong>：各小组展示成果，邀请真实客户/企业导师现场评分</li>
+            <li><strong>评（10分钟）</strong>：多维度评价（自评+互评+客户评+教师评），数据记入成长档案</li>
+        </ul>
+
+        <h4>📋 成果2/8 · 真实工单（客户确认单）</h4>
+        <p><strong>工单编号：</strong>NQ-${major.substring(0,2).toUpperCase()}-${Date.now().toString().slice(-6)}</p>
+        <p><strong>客户：</strong>宁强县职业高级中学（校内真实客户）/ 合作企业</p>
+        <p><strong>项目要求：</strong>${project}</p>
+        <p><strong>交付标准：</strong>按${position}岗位标准执行，质量达到行业验收规范</p>
+        <p><strong>时间要求：</strong>${grade}教学周期内完成</p>
+        <p><strong>客户确认签字：</strong>________________ &nbsp;&nbsp; 日期：${dateStr}</p>
+
+        <h4>📋 成果3/8 · 五链设计矩阵</h4>
+        <ul>
+            <li><strong>🔗 岗位链：</strong>${position} → 对应${major}专业岗位能力标准（引用国家职业标准）</li>
+            <li><strong>🔗 任务链：</strong>${kb.tasks.join(' → ')}</li>
+            <li><strong>🔗 技能链：</strong>${kb.skills.join('、')}</li>
+            <li><strong>🔗 工具链：</strong>${kb.tools.join('、')}</li>
+            <li><strong>🔗 评价链：</strong>过程评价（40%）+ 成果评价（30%）+ 客户评价（20%）+ 同行评价（10%）</li>
+        </ul>
+
+        <h4>📋 成果4/8 · 三场实施记录表</h4>
+        <ul>
+            <li><strong>⏰ 时间场：</strong>课堂45分钟 + 工坊延时60分钟 + 周末社区实践，学习时间延长至105分钟/天</li>
+            <li><strong>📍 空间场：</strong>教室（理论导入）→ 工坊/实训室（真实操作）→ 社区/企业（真实服务），三位一体</li>
+            <li><strong>🎭 文化场：</strong>从"要我学"到"我要做"，建立"出错是学习机会"的安全文化</li>
+        </ul>
+
+        <h4>📋 成果5/8 · 学生成长观察记录</h4>
+        <p>观察维度（基于"有用性"量表2.0）：</p>
+        <ul>
+            <li>任务接受度：学生是否主动认领真实工单？（目标：≥85%）</li>
+            <li>过程参与度：在"展"环节是否主动发言？（目标：≥80%）</li>
+            <li>技能掌握度：真实客户满意度评分（目标：≥4.2/5.0）</li>
+            <li>迁移应用度：能否将本课所学迁移至新项目？（目标：≥70%）</li>
+        </ul>
+
+        <h4>📋 成果6/8 · 客户/企业评价表（模板）</h4>
+        <p>评价项目：${project}</p>
+        <p>评价人（客户）：__________ &nbsp;&nbsp; 身份：□真实客户 □企业导师 □同行专家</p>
+        <ul>
+            <li>成果质量（40分）：_____分</li>
+            <li>工作态度（20分）：_____分</li>
+            <li>沟通表达（20分）：_____分</li>
+            <li>团队协作（20分）：_____分</li>
+            <li><strong>总分：</strong>_____分 &nbsp;&nbsp; 评价人签字：__________</li>
+        </ul>
+
+        <h4>📋 成果7/8 · 教学反思与迭代记录</h4>
+        <p><strong>本次教学最成功的环节：</strong>________________________________</p>
+        <p><strong>学生普遍存在的困难：</strong>________________________________</p>
+        <p><strong>下次迭代方向（基于三化）：</strong>________________________________</p>
+        <p><strong>教师反思（基于三场）：</strong>________________________________</p>
+
+        <h4>📋 成果8/8 · 生成说明</h4>
+        <p>本教学工单由"宁强方案·在线工单生成器"自动生成，严格遵循"四真三化五链三场"标准体系。</p>
+        <p>生成时间：${dateStr} | 适用年级：${grade} | 专业：${major} | 课程：${course}</p>
+        <p style="color:#718096;font-size:0.85rem;">※ 本工具为宁强县职业高级中学2026年职业教育国家教学成果奖申报配套开源工具，遵循CC-BY-NC协议，欢迎自由使用与传播。</p>
+        `;
+    }
+</script>
+</body>
+</html>
