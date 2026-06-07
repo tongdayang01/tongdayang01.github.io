@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职称跃升 — 宁职创原</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #2a4a7f;
+            --gold: #f59e0b;
+            --bg: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        /* Navigation */
+        .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 32px; }
+        .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+        .navbar-links { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+        .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; padding: 6px 12px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+        .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #065f46 0%, #047857 50%, #065f46 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+        .hero-badge { display: inline-block; background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 16px; }
+        .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 640px; margin: 0 auto; line-height: 1.8; }
+
+        /* Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+        /* Section */
+        .section { padding: 64px 0; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--primary)); color: white; padding: 5px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+        .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 600px; margin: 0 auto; }
+
+        /* Module Cards */
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
+        .module-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+        .module-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .module-header { padding: 28px 24px 20px; position: relative; }
+        .module-icon { font-size: 2rem; margin-bottom: 10px; }
+        .module-header h3 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 6px; }
+        .module-header p { font-size: 0.82rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+        .module-body { padding: 20px 24px 24px; }
+        .module-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 10px; }
+        .module-body p strong { color: var(--primary); }
+        .module-fields { margin-top: 14px; }
+        .field-tag { display: inline-block; background: var(--bg); color: var(--accent); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; margin: 3px; font-weight: 600; }
+        .module-btn { display: inline-block; margin-top: 16px; padding: 10px 20px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s; }
+        .module-btn:hover { background: var(--accent); }
+
+        /* Color schemes */
+        .tp1 { background: linear-gradient(135deg, #1a365d, #2a4a7f); }
+        .tp2 { background: linear-gradient(135deg, #065f46, #047857); }
+        .tp3 { background: linear-gradient(135deg, #6d28d1, #7c3aed); }
+        .tp4 { background: linear-gradient(135deg, #b45309, #d97706); }
+        .tp5 { background: linear-gradient(135deg, #be185d, #db2777); }
+        .tp6 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
+
+        /* Process */
+        .process-bar { display: flex; justify-content: center; gap: 0; margin: 40px 0; flex-wrap: wrap; }
+        .process-step { display: flex; align-items: center; }
+        .process-circle { width: 48px; height: 48px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .process-arrow { font-size: 1.2rem; color: var(--text-light); margin: 0 8px; }
+        .process-label { text-align: center; font-size: 0.72rem; color: var(--text-light); margin-top: 6px; }
+
+        /* Footer */
+        .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 32px; font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.6rem; }
+            .module-grid { grid-template-columns: 1fr; }
+            .navbar-inner { gap: 12px; }
+            .navbar-links { gap: 2px; }
+            .navbar-links a { font-size: 0.75rem; padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html" class="active">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+            <a href="stories.html">学生故事</a>
+            <a href="videos.html">视频展示</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">🏅 职称跃升 AI 系统</div>
+    <h1>职称晋升 · AI 全链路赋能</h1>
+    <p>6大子模块，覆盖职称评审全流程 —— 从材料包到教学改革，让每一次申报都更有底气</p>
+</section>
+
+<!-- Modules -->
+<div class="container">
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">🏅 6大核心模块</span>
+        <h2 class="section-title">职称跃升全链路工具</h2>
+        <p class="section-desc">每一个模块都基于职称评审实战经验设计，覆盖材料、成果、论文、教学、思政、改革六大维度</p>
+    </div>
+
+    <div class="module-grid">
+
+        <!-- Module 1: 职称评审材料包 -->
+        <div class="module-card">
+            <div class="module-header tp1">
+                <div class="module-icon">📦</div>
+                <h3>职称评审材料包</h3>
+                <p>tp_path · 生成职称评审所需的全部材料模板</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>根据申报职称级别和专业方向，一键生成职称评审所需全部材料的结构化模板，告别材料乱、格式错的痛点。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">申报职称</span>
+                    <span class="field-tag">专业方向</span>
+                    <span class="field-tag">现有条件</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>评审材料清单、个人述职报告模板、教育教学成果汇总表、继续教育证明模板、推荐意见模板</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 2: 教学成果奖策划 -->
+        <div class="module-card">
+            <div class="module-header tp2">
+                <div class="module-icon">🏆</div>
+                <h3>教学成果奖策划</h3>
+                <p>tp_achievement · 教学成果奖申报方案策划</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于"四真三化五链三场"体系，生成教学成果奖申报的完整策划方案，提升获奖概率。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">成果类型</span>
+                    <span class="field-tag">核心创新点</span>
+                    <span class="field-tag">应用范围</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>成果总结报告、创新点提炼、应用效果证明、推荐信模板、汇报PPT大纲</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 3: 论文课题加速 -->
+        <div class="module-card">
+            <div class="module-header tp3">
+                <div class="module-icon">📝</div>
+                <h3>论文课题加速</h3>
+                <p>tp_paper · 论文选题、框架、写作加速</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于产教融合实践，生成论文选题建议、写作框架、文献综述大纲，加速教研成果输出。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">研究方向</span>
+                    <span class="field-tag">关键词</span>
+                    <span class="field-tag">目标期刊</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>选题建议（5个）、论文框架、摘要模板、文献综述大纲、投稿建议</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 4: 教学质量提升 -->
+        <div class="module-card">
+            <div class="module-header tp4">
+                <div class="module-icon">📈</div>
+                <h3>教学质量提升</h3>
+                <p>tp_teaching · 教学质量诊断与提升方案</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于学生反馈和教学观察，生成教学质量诊断报告和可落地的提升方案，让课堂更有吸引力。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">教学问题</span>
+                    <span class="field-tag">学生反馈</span>
+                    <span class="field-tag">提升目标</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>教学质量诊断报告、提升方案（含时间表）、课堂观察记录表、学生反馈问卷模板</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 5: 课程思政设计 -->
+        <div class="module-card">
+            <div class="module-header tp5">
+                <div class="module-icon">🧭</div>
+                <h3>课程思政设计</h3>
+                <p>tp_curriculum · 课程思政元素挖掘与设计方案</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>自动挖掘专业课程中的思政元素，生成"专业知识+思政育人"双链融合的教学设计方案。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">课程名称</span>
+                    <span class="field-tag">思政元素方向</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>思政元素映射表、教学设计方案、典型案例、育人效果评价表</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+        <!-- Module 6: 教学改革方案 -->
+        <div class="module-card">
+            <div class="module-header tp6">
+                <div class="module-icon">🔄</div>
+                <h3>教学改革方案</h3>
+                <p>tp_reform · 教学改革整体方案生成</p>
+            </div>
+            <div class="module-body">
+                <p><strong>功能：</strong>基于"四真三化五链三场"体系，生成系统性的教学改革方案，可直接作为申报材料或行动方案。</p>
+                <p><strong>输入字段：</strong></p>
+                <div class="module-fields">
+                    <span class="field-tag">改革方向</span>
+                    <span class="field-tag">现有痛点</span>
+                    <span class="field-tag">改革目标</span>
+                </div>
+                <p style="margin-top:14px;"><strong>生成内容：</strong>改革方案全文、实施路线图、预期成果清单、经费预算模板、风险评估与应对</p>
+                <a href="generator.html" class="module-btn">🚀 立即体验</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Process -->
+<section style="background:var(--bg);padding:48px 0;margin:40px 0;">
+    <div class="container">
+        <h3 style="text-align:center;color:var(--primary);font-size:1.15rem;margin-bottom:8px;">📊 职称跃升完整路径</h3>
+        <p style="text-align:center;color:var(--text-light);font-size:0.88rem;margin-bottom:32px;">6大模块协同推进，让职称晋升水到渠成</p>
+        <div style="display:flex;justify-content:center;gap:0;flex-wrap:wrap;">
+            <div style="text-align:center;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1a365d,#2a4a7f);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">1</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">诊断现状</div>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:16px;color:var(--text-light);">→</div>
+            <div style="text-align:center;margin:0 12px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#065f46,#047857);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">2</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">材料准备</div>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:16px;color:var(--text-light);">→</div>
+            <div style="text-align:center;margin:0 12px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6d28d1,#7c3aed);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">3</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">论文加速</div>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:16px;color:var(--text-light);">→</div>
+            <div style="text-align:center;margin:0 12px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#b45309,#d97706);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">4</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">教学提升</div>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:16px;color:var(--text-light);">→</div>
+            <div style="text-align:center;margin:0 12px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#be185d,#db2777);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">5</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">成果申报</div>
+            </div>
+            <div style="display:flex;align-items:center;padding-top:16px;color:var(--text-light);">→</div>
+            <div style="text-align:center;margin:0 12px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1e3a5f,#1e40af);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto 8px;">6</div>
+                <div style="font-size:0.78rem;color:var(--text-light);">改革深化</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align:center;padding:48px 0 72px;">
+    <h2 style="font-size:1.4rem;color:var(--primary);margin-bottom:12px;">准备好用AI加速职称晋升了吗？</h2>
+    <p style="color:var(--text-light);margin-bottom:28px;">材料包 + 成果策划 + 论文加速 + 教学提升 + 思政设计 + 改革方案</p>
+    <a href="generator.html" style="display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--accent),var(--gold));color:white;border-radius:50px;font-weight:700;text-decoration:none;font-size:1.05rem;">🏅 进入AI系统 →</a>
+</section>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 宁职创原团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> ·
+        <a href="theory.html">理论框架</a> ·
+        <a href="promotion.html">职称跃升</a> ·
+        <a href="generator.html">AI系统</a>
+    </p>
+</div>
+
+</body>
+</html>
