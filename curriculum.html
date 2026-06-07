@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产教融合课程设计 — 宁职创原</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #2a4a7f;
+            --gold: #f59e0b;
+            --bg: #f8f9fa;
+            --text: #2d3748;
+            --text-light: #718096;
+            --white: #ffffff;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        /* Navigation */
+        .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 32px; }
+        .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+        .navbar-links { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+        .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.82rem; padding: 6px 12px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+        .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #271d5a 0%, #3730a3 50%, #271d5a 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+        .hero-badge { display: inline-block; background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 16px; }
+        .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 700px; margin: 0 auto; line-height: 1.8; }
+
+        /* Container */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+        /* Section */
+        .section { padding: 64px 0; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--primary)); color: white; padding: 5px 16px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+        .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+        .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 720px; margin: 0 auto; }
+
+        /* Module Cards */
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
+        .module-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+        .module-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .module-header { padding: 24px 20px 16px; }
+        .module-icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .module-header h3 { font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px; }
+        .module-header .code { font-size: 0.72rem; color: rgba(255,255,255,0.65); font-family: 'SF Mono', monospace; }
+        .module-body { padding: 18px 20px 22px; }
+        .module-body p { font-size: 0.85rem; color: var(--text-light); line-height: 1.75; margin-bottom: 8px; }
+        .module-body p strong { color: var(--primary); }
+        .module-body .highlight { background: #fef3c7; padding: 8px 12px; border-radius: 8px; font-size: 0.82rem; color: #92400e; margin: 12px 0; line-height: 1.7; }
+        .module-fields { margin-top: 10px; }
+        .field-tag { display: inline-block; background: var(--bg); color: var(--accent); padding: 3px 9px; border-radius: 50px; font-size: 0.73rem; margin: 2px; font-weight: 600; }
+        .module-btn { display: inline-block; margin-top: 14px; padding: 9px 18px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: all 0.2s; }
+        .module-btn:hover { background: var(--accent); }
+
+        /* Color schemes for 13 modules */
+        .c1 { background: linear-gradient(135deg, #1a365d, #2a4a7f); }
+        .c2 { background: linear-gradient(135deg, #065f46, #047857); }
+        .c3 { background: linear-gradient(135deg, #6d28d1, #7c3aed); }
+        .c4 { background: linear-gradient(135deg, #92400e, #b45309); }
+        .c5 { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+        .c6 { background: linear-gradient(135deg, #312e81, #3730a3); }
+        .c7 { background: linear-gradient(135deg, #0c4a6e, #155e75); }
+        .c8 { background: linear-gradient(135deg, #831843, #9d1744); }
+        .c9 { background: linear-gradient(135deg, #14532d, #166534); }
+        .c10 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
+        .c11 { background: linear-gradient(135deg, #4a1d6b, #6b21a8); }
+        .c12 { background: linear-gradient(135deg, #472e0f, #78350f); }
+        .c13 { background: linear-gradient(135deg, #0f172a, #1e293b); }
+
+        /* Feature highlight box */
+        .highlight-box { background: white; border-radius: var(--radius); padding: 32px; margin: 40px 0; box-shadow: var(--shadow); border-left: 6px solid var(--gold); }
+        .highlight-box h3 { color: var(--primary); margin-bottom: 16px; font-size: 1.15rem; }
+        .highlight-box .example { background: var(--bg); padding: 16px 20px; border-radius: 10px; font-size: 0.88rem; color: var(--text); line-height: 1.8; }
+        .highlight-box .example strong { color: var(--accent); }
+
+        /* Footer */
+        .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 32px; font-size: 0.85rem; }
+        .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+        /* Stats */
+        .stats-row { display: flex; justify-content: center; gap: 40px; margin: 48px 0; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
+        .stat-lbl { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.6rem; }
+            .module-grid { grid-template-columns: 1fr; }
+            .navbar-inner { gap: 12px; }
+            .navbar-links { gap: 2px; }
+            .navbar-links a { font-size: 0.75rem; padding: 5px 8px; }
+            .stats-row { gap: 20px; }
+            .stat-num { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html" class="active">课程设计</a>
+            <a href="generator.html">AI系统</a>
+            <a href="stories.html">学生故事</a>
+            <a href="videos.html">视频展示</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">📐 课程设计 AI 引擎</div>
+    <h1>产教融合课程设计 · 13大子模块</h1>
+    <p>从岗位能力矩阵到职业成长路径，一条产品锚定全链条 —— 解决"教什么、谁来教、用什么教、教到什么标准"四大核心问题</p>
+</section>
+
+<!-- Stats -->
+<div class="container">
+    <div class="stats-row">
+        <div class="stat-item"><div class="stat-num">13</div><div class="stat-lbl">子模块</div></div>
+        <div class="stat-item"><div class="stat-num">9</div><div class="stat-lbl">专业大类</div></div>
+        <div class="stat-item"><div class="stat-num">5</div><div class="stat-lbl">能力层级</div></div>
+        <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">产品锚定</div></div>
+    </div>
+</div>
+
+<!-- Product-anchor highlight -->
+<div class="container">
+    <div class="highlight-box">
+        <h3>🔑 核心设计理念：一块产品，串起所有课程</h3>
+        <div class="example">
+            <strong>输入：</strong>"锅塌豆腐"（一个产品）<br>
+            <strong>自动生成：</strong><br>
+            📝 语文课 → 产品文案与品牌故事<br>
+            🔢 数学课 → 成本核算与定价策略<br>
+            📜 历史课 → 原料溯源与烹饪文化史<br>
+            🗣️ 英语课 → 双语菜单与国际服务<br>
+            💻 信息技术课 → 产品海报与短视频推广<br><br>
+            <strong>→ 这就是"每一门课都是造产品的一双手"的AI实现。</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Module Grids -->
+<div class="container">
+
+    <!-- ROW 1: 岗位能力 + 产品化改造 + 四真锚定 + 四真三化五链三场 -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">📋 第一部分：从产业到课堂（1-4）</span>
+            <h2 class="section-title">产业需求 → 课程设计</h2>
+            <p class="section-desc">输入一个产品，自动生成岗位群→能力链→课程模块→毕业要求→评价标准</p>
+        </div>
+        <div class="module-grid">
+
+            <!-- 1: 岗位-能力矩阵 -->
+            <div class="module-card">
+                <div class="module-header c1">
+                    <div class="module-icon">🏗️</div>
+                    <h3>岗位-能力矩阵设计</h3>
+                    <div class="code">cd_matrix · talent_matrix</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>输入一个核心产品，自动生成岗位群→能力链→课程模块→毕业要求→评价标准，完成从产业需求到毕业要求的完整链路。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">核心产品/服务</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">对接产业</span>
+                        <span class="field-tag">核心企业/岗位群</span>
+                        <span class="field-tag">学历层次</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 2: 课程产品化改造 -->
+            <div class="module-card">
+                <div class="module-header c2">
+                    <div class="module-icon">🔄</div>
+                    <h3>课程产品化改造</h3>
+                    <div class="code">cd_product_course · four_true_course</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>将传统学科课程改造为产品导向课程，让每一门课都有一个可交付的"产品"作为学习成果。</p>
+                    <div class="highlight">核心理念：每一门课都是造产品的一双手</div>
+                    <div class="module-fields">
+                        <span class="field-tag">原课程名称</span>
+                        <span class="field-tag">对应产品/岗位任务</span>
+                        <span class="field-tag">典型产出</span>
+                        <span class="field-tag">企业验收标准</span>
+                        <span class="field-tag">适用专业</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 3: 四真课程锚定 -->
+            <div class="module-card">
+                <div class="module-header c3">
+                    <div class="module-icon">⚓</div>
+                    <h3>四真课程锚定</h3>
+                    <div class="code">cd_four_true · four_true_course_v2</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>将"四真"理念（真项目、真环境、真任务、真成果）精确锚定到每一门课程中，确保课程设计有据可依。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">核心产品/项目</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">真实环境</span>
+                        <span class="field-tag">岗位任务描述</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 4: 四真三化五链三场教学设计 -->
+            <div class="module-card">
+                <div class="module-header c4">
+                    <div class="module-icon">🌟</div>
+                    <h3>四真三化五链三场教学设计</h3>
+                    <div class="code">cd_four_three_five · four_three_five_generator</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>基于完整理论体系，一键生成符合"四真三化五链三场"框架的教学设计方案，覆盖9大专业大类。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">专业大类（9类可选）</span>
+                        <span class="field-tag">典型岗位</span>
+                        <span class="field-tag">核心技能</span>
+                        <span class="field-tag">本地主导产业</span>
+                    </div>
+                    <p style="font-size:0.8rem;color:var(--text-light);margin-top:8px;"><strong>覆盖：</strong>管理类 | 计算机类 | 教育类 | 电子信息类 | 汽车类 | 体育类 | 护理养老类 | 生物环境类 | 应用化学类</p>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ROW 2: 五链 + 三场 + 公共课 -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">🔗 第二部分：能力拆解与空间规划（5-7）</span>
+            <h2 class="section-title">五链三场 · 从抽象到具体</h2>
+            <p class="section-desc">把专业能力拆解到任务、技能、工具、场景、评价五个维度，再规划三个学习空间</p>
+        </div>
+        <div class="module-grid">
+
+            <!-- 5: 五链融合 -->
+            <div class="module-card">
+                <div class="module-header c5">
+                    <div class="module-icon">⛓️</div>
+                    <h3>五链融合·能力拆解器</h3>
+                    <div class="code">cd_five_chain · five_chain</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>将核心技能能力拆解为任务链、技能链、工具链、场景链、评价链，让能力培养有路径可循。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">核心技能/产品能力</span>
+                        <span class="field-tag">对标标准</span>
+                        <span class="field-tag">技能层级（初级~高级技师）</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 6: 三场空间规划 -->
+            <div class="module-card">
+                <div class="module-header c6">
+                    <div class="module-icon">🗺️</div>
+                    <h3>三场空间规划器</h3>
+                    <div class="code">cd_three_field · three_field</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>规划课堂场→产业场→县域场的递进路径，让产品从校内到产业沿线落地。</p>
+                    <div class="highlight">认知场（课堂学习）→ 转化场（实训基地）→ 实战场（产业运营）</div>
+                    <div class="module-fields">
+                        <span class="field-tag">核心产品</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">三个场的设计方案</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 7: 公共课产品化 -->
+            <div class="module-card">
+                <div class="module-header c7">
+                    <div class="module-icon">📚</div>
+                    <h3>公共课产品化改造</h3>
+                    <div class="code">cd_public_course · public_course_product</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>让公共课不再"陪跑"，围绕同一个产品为公共课赋新角色。</p>
+                    <div class="highlight">语文→产品文案师 | 数学→数据分析师 | 英语→涉外服务员</div>
+                    <div class="module-fields">
+                        <span class="field-tag">公共课（9科可选）</span>
+                        <span class="field-tag">对应产品/岗位</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">典型产出</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ROW 3: 跨学科 + 项目化 + 测评 -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">🎯 第三部分：深度设计（8-10）</span>
+            <h2 class="section-title">跨学科融合 · 项目化落地</h2>
+            <p class="section-desc">用一个产品锚定多学科，生成可执行的项目化课程</p>
+        </div>
+        <div class="module-grid">
+
+            <!-- 8: 科目深度设计 -->
+            <div class="module-card">
+                <div class="module-header c8">
+                    <div class="module-icon">🧩</div>
+                    <h3>科目深度设计·跨学科融合</h3>
+                    <div class="code">cd_subject_detail · subject_deep_design</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>以一个产品为锚点串起多学科，自动生成各学科的融合课程方案。</p>
+                    <div class="highlight">示例：输入"麻婆豆腐"→语文文案课+数学成本课+历史溯源课+英语菜单课+信息技术剪辑课</div>
+                    <div class="module-fields">
+                        <span class="field-tag">核心产品</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">产品工作流程</span>
+                        <span class="field-tag">融合科目</span>
+                        <span class="field-tag">学生基础</span>
+                        <span class="field-tag">总课时</span>
+                        <span class="field-tag">特色要求</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 9: 项目化课程开发 -->
+            <div class="module-card">
+                <div class="module-header c9">
+                    <div class="module-icon">🎬</div>
+                    <h3>项目化课程开发</h3>
+                    <div class="code">cd_project_project · project_course</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>将产品生产过程设计为项目化学习旅程，用真实产品交付驱动教学节奏。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">核心产品/项目</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">合作企业</span>
+                        <span class="field-tag">交付产品</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 10: 技能达标测评 -->
+            <div class="module-card">
+                <div class="module-header c10">
+                    <div class="module-icon">✅</div>
+                    <h3>技能达标测评</h3>
+                    <div class="code">cd_skill · skill_assessment</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>产品交付标准即测评标准。用企业的验收标准检验学生的学习成果，让评价不再打"水分分"。</p>
+                    <div class="highlight">核心理念：企业要什么，就测什么；产品做得好不好，市场说了算</div>
+                    <div class="module-fields">
+                        <span class="field-tag">核心技能/产品能力</span>
+                        <span class="field-tag">可交付产品</span>
+                        <span class="field-tag">企业验收标准</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ROW 4: 课程矩阵 + 企业标准 + 职业路径 -->
+    <section class="section">
+        <div class="section-header">
+            <span class="section-tag">🏁 第四部分：矩阵与路径（11-13）</span>
+            <h2 class="section-title">质量保障 · 职业规划</h2>
+            <p class="section-desc">课程矩阵验证完整性，企业标准转化确保质量，职业路径规划保障成长</p>
+        </div>
+        <div class="module-grid">
+
+            <!-- 11: 课程矩阵设计 -->
+            <div class="module-card">
+                <div class="module-header c11">
+                    <div class="module-icon">📊</div>
+                    <h3>课程矩阵设计</h3>
+                    <div class="code">cd_curriculum_matrix · curriculum_matrix</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>生成产品能力×课程支撑×毕业要求的映射矩阵图，确保每个能力点都有课程支撑，没有遗漏。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">核心产品</span>
+                        <span class="field-tag">目标岗位群</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 12: 企业标准转化 -->
+            <div class="module-card">
+                <div class="module-header c12">
+                    <div class="module-icon">🏭</div>
+                    <h3>企业标准转化</h3>
+                    <div class="code">cd_enterprise_standards · enterprise_standards</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>把企业的产品标准、服务标准转化为课堂教学标准，让"怎么干活就怎么上课"可操作化。</p>
+                    <div class="module-fields">
+                        <span class="field-tag">企业名称</span>
+                        <span class="field-tag">企业产品/服务标准</span>
+                        <span class="field-tag">适用专业</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+            <!-- 13: 职业成长路径 -->
+            <div class="module-card">
+                <div class="module-header c13">
+                    <div class="module-icon">🚀</div>
+                    <h3>职业成长路径设计</h3>
+                    <div class="code">cd_career_path · career_path</div>
+                </div>
+                <div class="module-body">
+                    <p><strong>功能：</strong>规划从学徒到大师的产品能力进阶路径图，让学生看到"学好今天能到哪"。包含每个阶段的学习目标、关键技能和推荐课程。</p>
+                    <div class="highlight">学徒（会做）→ 熟手（做好）→ 技师（能创新）→ 大师（能带徒）→ 宗师（定标准）</div>
+                    <div class="module-fields">
+                        <span class="field-tag">目标岗位</span>
+                        <span class="field-tag">专业名称</span>
+                        <span class="field-tag">能力层级</span>
+                    </div>
+                    <a href="generator.html" class="module-btn">🚀 立即体验</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<!-- CTA -->
+<section style="text-align:center;padding:48px 0 72px;">
+    <h2 style="font-size:1.4rem;color:var(--primary);margin-bottom:12px;">从产业端到课堂端，一门产品全打通</h2>
+    <p style="color:var(--text-light);margin-bottom:28px;">13大模块 · 9大专业大类 · 1个产品锚定 · 完整教学闭环</p>
+    <a href="generator.html" style="display:inline-block;padding:14px 40px;background:linear-gradient(135deg,#3730a3,#7c3aed);color:white;border-radius:50px;font-weight:700;text-decoration:none;font-size:1.05rem;">📐 进入AI系统 →</a>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 宁职创原团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> ·
+        <a href="theory.html">理论框架</a> ·
+        <a href="curriculum.html">课程设计</a> ·
+        <a href="generator.html">AI系统</a>
+    </p>
+</div>
+
+</body>
+</html>
