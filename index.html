@@ -995,6 +995,32 @@
             .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; }
             .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
         }
+        /* ===== Video Showcase ===== */
+        #hall-video { background: linear-gradient(180deg, var(--dark) 0%, #0D1117 50%, var(--dark) 100%); }
+        .video-showcase { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+        .video-main { width: 100%; }
+        .video-main iframe,
+        .video-secondary iframe {
+            width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
+            aspect-ratio: 16/9; background: #000; display: block;
+        }
+        .video-main iframe { height: 480px; }
+        .video-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .video-secondary iframe { height: 320px; }
+        .video-caption {
+            text-align: center; margin-top: 0.8rem; color: var(--text-dim);
+            font-size: 0.85rem; line-height: 1.6;
+        }
+        .video-caption strong { color: var(--gold-light); font-size: 1rem; }
+        .video-note {
+            text-align: center; margin-top: 1.5rem; color: var(--text-dim);
+            font-size: 0.78rem; opacity: 0.6;
+        }
+        @media (max-width: 768px) {
+            .video-main iframe { height: 240px; }
+            .video-secondary { grid-template-columns: 1fr; }
+            .video-secondary iframe { height: 240px; }
+        }
     </style>
 </head>
 <body>
@@ -1033,6 +1059,7 @@
         <div class="nav-dot" data-label="实战工坊" data-target="hall-workshop"></div>
         <div class="nav-dot" data-label="生命剧场" data-target="hall-life"></div>
         <div class="nav-dot" data-label="数据之巅" data-target="hall-data"></div>
+        <div class="nav-dot" data-label="视频展示" data-target="hall-video"></div>
         <div class="nav-dot" data-label="未来之门" data-target="hall-future"></div>
     </div>
     
@@ -1857,6 +1884,50 @@
             </div>
         </section>
         
+                <!-- ===== 视频展示 ===== -->
+        <section id="hall-video" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(255,0,80,0.1);color:#FF0050;">🎬 视频展示</div>
+                    <h2 class="section-title">让改革<span style="color:var(--gold-light)">看得见</span></h2>
+                    <p class="section-desc">镜头里的真实课堂，比文字更有力量</p>
+                </div>
+
+                <div class="video-showcase fade-in-up">
+                    <!-- 主视频：申报视频《梯子》-->
+                    <div class="video-main">
+                        <iframe src="https://player.bilibili.com/player.html?bvid=PLACEHOLDER_BV_LADDER&autoplay=0" allowfullscreen="true" scrolling="no" frameborder="no" title="申报视频《梯子》9分30秒"></iframe>
+                        <div class="video-caption">
+                            <strong>🎬 申报视频《梯子》</strong><br>
+                            9分30秒 · 完整版教学成果申报视频
+                        </div>
+                    </div>
+                    <!-- 次视频：课堂教学实录 -->
+                    <div class="video-secondary">
+                        <div>
+                            <iframe src="https://player.bilibili.com/player.html?bvid=PLACEHOLDER_BV_CLASSROOM&autoplay=0" allowfullscreen="true" scrolling="no" frameborder="no" title="课堂教学实录"></iframe>
+                            <div class="video-caption">
+                                <strong>📹 课堂教学实录</strong><br>
+                                真实课堂 · 产业课堂改革现场
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 预留第三个视频位置 -->
+                            <div style="display:flex;align-items:center;justify-content:center;
+                                        height:320px;border:1px dashed rgba(255,255,255,0.12);
+                                        border-radius:12px;color:var(--text-dim);font-size:0.85rem;">
+                                📹 更多课堂实录即将上传…
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-note">
+                    ⚠️ 视频均上传至哔哩哔哩，正式申报前请替换为正式链接
+                </div>
+            </div>
+            <div class="section-fog"></div>
+        </section>
+
         <!-- ===== HALL 6: Future Gate ===== -->
         <section id="hall-future" class="section">
             <div class="section-inner">
@@ -2106,6 +2177,7 @@
                     <li><a href="#hall-workshop">实战工坊（四真三化）</a></li>
                     <li><a href="#hall-life">生命剧场（逆袭故事）</a></li>
                     <li><a href="#hall-data">数据之巅（2018 vs 2026）</a></li>
+                    <li><a href="#hall-video">🎬 视频展示</a></li>
                     <li><a href="#hall-future">未来之门（开源共享）</a></li>
                 </ul>
             </div>
@@ -2564,7 +2636,7 @@
         function updateActiveHall() {
             const halls = [
                 'hero-section','hall-darkness','hall-theory',
-                'hall-workshop','hall-life','hall-data','hall-future'
+                'hall-workshop','hall-life',('hall-data','hall-video','hall-future')
             ];
             let detected = 0;
             for (let i = halls.length-1; i >= 0; i--) {
@@ -2710,7 +2782,7 @@
 
             const SECTION_IDS = [
                 'hero-section','hall-darkness','hall-theory',
-                'hall-workshop','hall-life','hall-data','hall-future'
+                'hall-workshop','hall-life',('hall-data','hall-video','hall-future')
             ];
             SECTION_IDS.forEach((id, idx) => {
                 const el = document.getElementById(id);
