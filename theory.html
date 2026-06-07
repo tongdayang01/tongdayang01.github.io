@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理论框架详解 —— 宁强方案</title>
+    <meta name="description" content="四真三化五链三场理论体系详解">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary:#1a365d; --accent:#c9a96e; --gold:#f6c343; --bg:#f8f9fa; --text:#2d3748; --border:#e2e8f0; }
+        body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
+        a { color:var(--primary); text-decoration:none; }
+        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; }
+        .navbar-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .nav-links { display:flex; gap:8px; list-style:none; }
+        .nav-links a { color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:0.95rem; transition:all 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(201,169,110,0.3); }
+        .main { max-width:1100px; margin:0 auto; padding:40px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; padding:48px 0; }
+        .page-header .tag { display:inline-block; background:linear-gradient(135deg,var(--accent-light),#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
+        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:16px; }
+        .page-header p { color:#718096; font-size:1.05rem; max-width:640px; margin:0 auto; }
+
+        .framework-section { background:white; border-radius:16px; padding:48px; margin-bottom:32px; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .framework-section h2 { font-size:1.5rem; color:var(--primary); margin-bottom:24px; padding-bottom:16px; border-bottom:3px solid var(--accent); display:inline-block; }
+        .framework-section h3 { font-size:1.15rem; color:var(--primary); margin:24px 0 12px; }
+        .framework-section p { margin-bottom:12px; line-height:1.9; }
+        .framework-section ul { padding-left:24px; margin-bottom:16px; }
+        .framework-section li { margin-bottom:8px; line-height:1.8; }
+
+        .helix-diagram { background:linear-gradient(135deg,var(--primary),#0f2444); border-radius:16px; padding:40px; margin:32px 0; color:white; }
+        .helix-diagram svg { width:100%; height:auto; }
+
+        .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin:24px 0; }
+        .info-card { background:var(--bg); border-radius:12px; padding:24px; border-left:4px solid var(--accent); }
+        .info-card h4 { color:var(--primary); font-size:1.05rem; margin-bottom:8px; }
+        .info-card p { font-size:0.95rem; color:#718096; }
+
+        .timeline { position:relative; padding-left:40px; margin:32px 0; }
+        .timeline::before { content:''; position:absolute; left:15px; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--accent),var(--gold)); border-radius:2px; }
+        .timeline-item { position:relative; margin-bottom:32px; }
+        .timeline-item::before { content:''; position:absolute; left:-33px; top:4px; width:14px; height:14px; background:var(--accent); border-radius:50%; border:3px solid white; box-shadow:0 0 0 2px var(--accent); }
+        .timeline-item h4 { color:var(--primary); font-size:1rem; margin-bottom:6px; }
+        .timeline-item p { font-size:0.9rem; color:#718096; }
+        .timeline-item .year { display:inline-block; background:var(--primary); color:white; padding:2px 12px; border-radius:50px; font-size:0.8rem; margin-bottom:8px; }
+
+        .quote-box { background:linear-gradient(135deg,#fffbeb,#fef3c7); border-left:4px solid var(--gold); padding:24px 28px; border-radius:0 12px 12px 0; margin:24px 0; font-style:italic; color:var(--primary); line-height:1.9; }
+        .quote-box .author { font-style:normal; font-weight:600; font-size:0.9rem; margin-top:8px; display:block; }
+
+        .footer { background:#0f172a; color:rgba(255,255,255,0.6); padding:40px 0; text-align:center; font-size:0.9rem; }
+        .footer a { color:var(--accent-light); }
+
+        @media(max-width:768px){
+            .nav-links{display:none;}
+            .main{padding:24px 16px;}
+            .framework-section{padding:28px 20px;}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>宁强方案</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="theory.html" class="active">理论框架</a></li>
+            <li><a href="cases.html">典型案例</a></li>
+            <li><a href="stories.html">成长故事</a></li>
+            <li><a href="videos.html">视频展示</a></li>
+            <li><a href="generator.html">工单生成</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <span class="tag">🧬 理论框架</span>
+        <h1>四真三化五链三场<br>——县域中职教学体系重构理论</h1>
+        <p>12年实践（2014-2026）淬炼出的本土化职业教育改革理论体系</p>
+    </div>
+
+    <!-- 产业·课堂双螺旋 -->
+    <div class="framework-section">
+        <h2>🔗 核心：产业·课堂双螺旋模型</h2>
+        <p>这是整个理论体系的"DNA双螺旋"。两条螺旋链相互缠绕、相互支撑，共同构成职业教育教学改革的基础架构。</p>
+
+        <div class="helix-diagram">
+            <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="max-height:360px;">
+                <!-- Left Helix: Industry -->
+                <path d="M 80 40 Q 250 80, 350 160 Q 450 240, 550 320 Q 650 380, 820 360"
+                      fill="none" stroke="#c9a96e" stroke-width="4" opacity="0.9"/>
+                <!-- Right Helix: Classroom -->
+                <path d="M 80 360 Q 180 320, 280 240 Q 380 160, 480 80 Q 580 40, 820 40"
+                      fill="none" stroke="#f6c343" stroke-width="4" opacity="0.9"/>
+                <!-- Base pairs -->
+                <line x1="150" y1="65" x2="150" y2="335" stroke="#e8d5a8" stroke-width="2" opacity="0.5"/>
+                <line x1="250" y1="110" x2="250" y2="270" stroke="#e8d5a8" stroke-width="2" opacity="0.5"/>
+                <line x1="350" y1="160" x2="350" y2="220" stroke="#e8d5a8" stroke-width="2" opacity="0.5"/>
+                <line x1="480" y1="100" x2="480" y2="300" stroke="#e8d5a8" stroke-width="2" opacity="0.5"/>
+                <line x1="650" y1="360" x2="650" y2="120" stroke="#e8d5a8" stroke-width="2" opacity="0.5"/>
+                <!-- Left nodes -->
+                <circle cx="80" cy="40" r="10" fill="#c9a96e"/><text x="30" y="45" fill="#c9a96e" font-size="13" text-anchor="end" font-weight="bold">产业标准</text>
+                <circle cx="350" cy="160" r="10" fill="#c9a96e"/><text x="310" y="155" fill="#c9a96e" font-size="13" text-anchor="end" font-weight="bold">真实项目</text>
+                <circle cx="550" cy="320" r="10" fill="#c9a96e"/><text x="510" y="315" fill="#c9a96e" font-size="13" text-anchor="end" font-weight="bold">技能链</text>
+                <circle cx="820" cy="360" r="10" fill="#c9a96e"/><text x="840" y="365" fill="#c9a96e" font-size="13" text-anchor="start" font-weight="bold">产业现场</text>
+                <!-- Right nodes -->
+                <circle cx="80" cy="360" r="10" fill="#f6c343"/><text x="30" y="365" fill="#f6c343" font-size="13" text-anchor="end" font-weight="bold">学生主体</text>
+                <circle cx="350" cy="220" r="10" fill="#f6c343"/><text x="390" y="225" fill="#f6c343" font-size="13" text-anchor="start" font-weight="bold">任务驱动</text>
+                <circle cx="480" cy="80" r="10" fill="#f6c343"/><text x="520" y="75" fill="#f6c343" font-size="13" text-anchor="start" font-weight="bold">场域重构</text>
+                <circle cx="820" cy="40" r="10" fill="#f6c343"/><text x="840" y="35" fill="#f6c343" font-size="13" text-anchor="start" font-weight="bold">人人出彩</text>
+                <!-- Center label -->
+                <rect x="380" y="170" width="140" height="44" rx="22" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                <text x="450" y="195" fill="white" font-size="14" text-anchor="middle" font-weight="bold">双螺旋耦合</text>
+                <text x="450" y="212" fill="rgba(255,255,255,0.6)" font-size="11" text-anchor="middle">产业标准 × 学生成长</text>
+            </svg>
+        </div>
+
+        <div class="card-grid">
+            <div class="info-card">
+                <h4>🔵 螺旋链一：产业标准牵引</h4>
+                <p>以产业现场的真实标准重塑课堂目标、内容、方法和评价，让"产业"成为教学的隐性导师。</p>
+            </div>
+            <div class="info-card">
+                <h4>🟡 螺旋链二：学生主体成长</h4>
+                <p>以学生的主体性唤醒为核心，让每个学生在真实任务中找到自己的"高峰体验"。</p>
+            </div>
+            <div class="info-card">
+                <h4>🔗 耦合机制：五链融合</h4>
+                <p>岗位链、任务链、技能链、工具链、评价链——五链在双螺旋中完成能量交换。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 四真 -->
+    <div class="framework-section" id="sizhen">
+        <h2>🎯 四真：真实性的四个维度</h2>
+        <p>"四真"解决了职业教育教学内容"假、大、空"的根本问题。四个真实性缺一不可，共同构成真实学习的完整生态。</p>
+
+        <div class="card-grid">
+            <div class="info-card" style="border-left-color:#3b82f6;">
+                <h4>① 真实产业（Real Industry）</h4>
+                <p>教学内容来自真实产业链，而非教科书上的"标准化案例"。宁强天麻、香菇、生态旅游——本土产业资源即教材。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#10b981;">
+                <h4>② 真实岗位（Real Position）</h4>
+                <p>学习目标锚定真实岗位能力标准（国家职业标准），学生知道"学了这个能干什么"。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#f59e0b;">
+                <h4>③ 真实项目（Real Project）</h4>
+                <p>学习任务即真实工作项目，有客户、有交付、有评价。让"做题"变成"做事"。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#ef4444;">
+                <h4>④ 真实评价（Real Evaluation）</h4>
+                <p>评价标准由企业客户共同制定，评价人是真实客户而不只是教师。"客户说好"才是真的好。</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            "没有真实性的职业教育，就是在沙滩上建房子。学生学到的东西，走出校门的一瞬间就开始风化。"
+            <span class="author">—— 宁强方案核心团队</span>
+        </div>
+    </div>
+
+    <!-- 三化 -->
+    <div class="framework-section" id="sanhua">
+        <h2>🔄 三化：教学转化的三个路径</h2>
+        <p>"三化"解决了"产业内容如何变成课堂内容"的方法论问题。这是从理念到实操的关键桥梁。</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="year">路径一</span>
+                <h4>工作任务课程化</h4>
+                <p>把真实工作岗位的任务，转化为可教学的课程单元。核心是"解构工作任务 → 重构学习任务"。宁强实践：锅塌豆腐（文化课融合）、天麻红烧肉（专业课改革）。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="year">路径二</span>
+                <h4>教学任务工作化</h4>
+                <p>让课堂上的学习任务，具备真实工作任务的全部属性：客户、交付物、时间压力、质量标准。学生在课堂就在"上班"。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="year">路径三</span>
+                <h4>工作过程系统化</h4>
+                <p>按照真实工作过程的系统逻辑（而非学科知识逻辑）来组织教学。六步法：资讯→计划→决策→实施→检查→评价，与工作过程同构。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 五链 -->
+    <div class="framework-section" id="wulian">
+        <h2>🔗 五链：能力培养的五个链条</h2>
+        <p>"五链"是双螺旋模型的"能量交换节点"。五链融合，形成完整的能力培养闭环。</p>
+
+        <div class="card-grid">
+            <div class="info-card" style="border-left-color:#8b5cf6;">
+                <h4>⛓️ 岗位链（Position Chain）</h4>
+                <p>从入学到就业的全链条岗位能力图谱。入学即见"全景地图"，学生知道每一步在走向哪个岗位。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#06b6d4;">
+                <h4>⛓️ 任务链（Task Chain）</h4>
+                <p>岗位能力分解为可教学、可评价、可展示的具体任务链。任务之间有序递进，形成能力阶梯。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#f97316;">
+                <h4>⛓️ 技能链（Skill Chain）</h4>
+                <p>完成每个任务所需的具体技能点清单。技能可观测、可训练、可认证。"一张清单管到底"。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#84cc16;">
+                <h4>⛓️ 工具链（Tool Chain）</h4>
+                <p>完成技能训练所需的工具、设备、软件清单。工欲善其事，必先利其器。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#ec4899;">
+                <h4>⛓️ 评价链（Evaluation Chain）</h4>
+                <p>过程评价+成果评价+客户评价+同行评价，四环相扣。不只看分数，更看"有用性"。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 三场 -->
+    <div class="framework-section" id="chang">
+        <h2>🏟️ 三场：学习场域的三个维度</h2>
+        <p>"三场"解决了职业教育教学时空受限的问题。打破45分钟、打破教室围墙、打破学校边界。</p>
+
+        <div class="card-grid">
+            <div class="info-card" style="border-left-color:#0ea5e9;">
+                <h4>⏰ 时间场（Time Field）</h4>
+                <p>打破课堂45分钟限制，学习延伸到课前（导学）、课后（工坊延时服务）、周末（社区服务）。宁强实践：日均有效学习时间从45分钟→105分钟。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#a855f7;">
+                <h4>📍 空间场（Space Field）</h4>
+                <p>打破教室单一空间，教室（理论导入）→工坊（真实操作）→企业/社区（真实服务），三位一体。让"产业第一现场"无处不在。</p>
+            </div>
+            <div class="info-card" style="border-left-color:#14b8a6;">
+                <h4>🎭 文化场（Culture Field）</h4>
+                <p>重塑职业教育的文化生态——从"嫌弃中职"到"人人出彩"，从"要我学"到"我要做"。健康的教学文化是最深沉的改革力量。</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            "李希贵在《36天，我的美国教育之旅》中说：'探寻健康的教学文化'——这正是'三场'理论的核心关切。时间场保障'有空学'，空间场保障'有地练'，文化场保障'有心学'。"
+            <span class="author">—— 宁强方案理论组（引用李希贵）</span>
+        </div>
+    </div>
+
+    <!-- 12年实践历程 -->
+    <div class="framework-section">
+        <h2>📅 12年实践历程（2014-2026）</h2>
+        <p>理论不是凭空产生的，是在宁强县职业高级中学的教室里、工坊中、学生身上，一点一点"长"出来的。</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="year">2014-2020</span>
+                <h4>第一阶段：解决"不愿学"——良好关系心理学+行动学习赋能</h4>
+                <p>核心突破：师生关系改善→学习动力唤醒。课堂活力指数从35%→65%。"让每个学生被看见"成为教学信念。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="year">2020-2025</span>
+                <h4>第二阶段：解决"不会学"——"1+8+N"高效课堂模式</h4>
+                <p>核心突破：导·思·展·评·用·记·练·悟·拓，九环节可复制课堂范式。课堂活力指数从65%→85%。</p>
+            </div>
+            <div class="timeline-item">
+                <span class="year">2025-2026</span>
+                <h4>第三阶段：解决"学无所用"——"四真三化五链三场"体系升华</h4>
+                <p>核心突破：理论升华+全国推广。课堂活力指数从85%→92%。世赛银奖、免试升本、厌学者逆袭——理论在实践中被验证。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 理论来源 -->
+    <div class="framework-section">
+        <h2>📚 理论来源与学术对话</h2>
+        <div class="card-grid">
+            <div class="info-card">
+                <h4>🇩🇪 德国"双元制"</h4>
+                <p>吸收了"企业深度参与"的核心理念，但解决了"中国企业参与动力不足"的中国本土问题——用"校内工坊"替代"企业岗位"，在无企业合作条件下实现等效效果。</p>
+            </div>
+            <div class="info-card">
+                <h4>🇨🇳 姜大源：工作过程系统化</h4>
+                <p>吸收了工作过程系统化的课程开发方法论，但推进到"教学实施全链条"——不只是课程开发，更是课堂革命。</p>
+            </div>
+            <div class="info-card">
+                <h4>🇺🇸 杜威："教育即生活"</h4>
+                <p>吸收了"教育要与真实生活相连"的核心理念。李希贵在哥大访学期间与杜威教育思想深度对话，启发了"真实项目"设计逻辑。</p>
+            </div>
+            <div class="info-card">
+                <h4>🇫🇮 芬兰：现象式学习</h4>
+                <p>吸收了"跨学科真实问题解决"的设计思路。宁强"锅塌豆腐"（语文×数学×英语×思政）正是本土化的现象式学习。</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin-top:48px;">
+        <a href="index.html#cases" class="btn-primary" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none;">📖 查看典型案例 →</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="theory.html">理论框架</a> · <a href="generator.html">工单生成器</a></p>
+</div>
+
+</body>
+</html>
