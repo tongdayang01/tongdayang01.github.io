@@ -1,1526 +1,1975 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>让每个孩子都值钱——县域中职"产业·课堂双螺旋"育人实践 | 国家教学成果奖</title>
-<meta name="description" content="宁强县职业高级中学国家级教学成果特等奖申报——15年深耕，从赋能型行动学习法到产业课堂双螺旋育人模型，让每一个孩子都能说：我很值钱。">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
-<!-- CDN Libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
-<style>
-/* ============================================
-   ROOT DESIGN SYSTEM
-============================================ */
-:root {
-    --space-black: #020815;
-    --deep-navy: #0A1628;
-    --dark-slate: #111D35;
-    --mid-slate: #1A2D4A;
-    --gold: #C9A96E;
-    --gold-light: #E8D5B7;
-    --gold-dim: #8B7345;
-    --blue-accent: #3B7DD8;
-    --blue-glow: #5B9CF5;
-    --cyan: #00D4AA;
-    --text-primary: #E8E6E3;
-    --text-secondary: #8B95A5;
-    --text-dim: #5A6577;
-    --danger: #E53E3E;
-    --success: #38A169;
-    --radius: 12px;
-    --radius-lg: 20px;
-    --shadow-gold: 0 0 40px rgba(201,169,110,0.15);
-    --shadow-blue: 0 0 40px rgba(59,125,216,0.12);
-    --font-display: "PingFang SC","Microsoft YaHei","Noto Serif SC",serif;
-    --font-body: "PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
-    --transition: cubic-bezier(0.16,1,0.3,1);
-}
-
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;font-size:16px;background:var(--space-black)}
-body{
-    font-family:var(--font-body);
-    color:var(--text-primary);
-    background:var(--space-black);
-    line-height:1.8;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--space-black)}
-::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--gold)}
-
-/* ============================================
-   LOADING SCREEN
-============================================ */
-#loading{
-    position:fixed;inset:0;z-index:99999;
-    background:var(--space-black);
-    display:flex;align-items:center;justify-content:center;
-    flex-direction:column;transition:opacity 0.8s var(--transition);
-}
-#loading.hidden{opacity:0;pointer-events:none}
-#loading-canvas{position:absolute;inset:0;width:100%;height:100%}
-#loading-text{
-    position:relative;z-index:1;
-    font-family:var(--font-display);
-    font-size:clamp(1.5rem,4vw,2.5rem);
-    color:var(--gold);
-    letter-spacing:0.3em;
-    animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-
-/* ============================================
-   HERO CANVAS 3D SCENE
-============================================ */
-#hero-canvas{
-    position:fixed;top:0;left:0;width:100%;height:100vh;
-    z-index:0;pointer-events:none;
-}
-
-/* ============================================
-   FLOATING NAVIGATION
-============================================ */
-.floating-nav{
-    position:fixed;right:24px;top:50%;transform:translateY(-50%);
-    z-index:1000;display:flex;flex-direction:column;gap:12px;
-}
-.floating-nav .nav-dot{
-    width:12px;height:12px;border-radius:50%;
-    background:rgba(201,169,110,0.3);
-    border:1px solid rgba(201,169,110,0.5);
-    cursor:pointer;transition:all 0.4s var(--transition);
-    position:relative;
-}
-.floating-nav .nav-dot:hover,
-.floating-nav .nav-dot.active{
-    background:var(--gold);
-    box-shadow:0 0 16px rgba(201,169,110,0.6);
-    transform:scale(1.5);
-}
-.floating-nav .nav-dot .nav-label{
-    position:absolute;right:24px;top:50%;transform:translateY(-50%);
-    white-space:nowrap;font-size:12px;color:var(--text-secondary);
-    opacity:0;transition:opacity 0.3s;
-    font-family:var(--font-body);
-    letter-spacing:0.1em;
-}
-.floating-nav .nav-dot:hover .nav-label{opacity:1}
-
-/* ============================================
-   SECTION BASE
-============================================ */
-section{
-    position:relative;z-index:1;
-    min-height:100vh;
-    display:flex;align-items:center;
-    padding:120px 0;
-}
-.section-inner{
-    max-width:1200px;margin:0 auto;padding:0 32px;width:100%;
-}
-.section-label{
-    display:inline-block;
-    font-size:11px;letter-spacing:0.3em;
-    color:var(--gold);
-    text-transform:uppercase;
-    margin-bottom:16px;
-    padding:6px 16px;
-    border:1px solid rgba(201,169,110,0.25);
-    border-radius:100px;
-    font-family:var(--font-body);
-}
-.section-title{
-    font-family:var(--font-display);
-    font-size:clamp(2rem,5vw,3.5rem);
-    color:var(--text-primary);
-    line-height:1.2;
-    margin-bottom:24px;
-    font-weight:700;
-}
-.section-title .gold{color:var(--gold)}
-.section-subtitle{
-    font-size:clamp(1rem,1.5vw,1.2rem);
-    color:var(--text-secondary);
-    max-width:700px;
-    line-height:1.8;
-}
-
-/* ============================================
-   EXHIBITION HALL SECTIONS
-============================================ */
-
-/* Hall 0 - Entrance */
-#hall-entrance{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
-    flex-direction:column;text-align:center;position:relative;
-    padding-top:80px;
-}
-.entrance-emblem{
-    width:clamp(200px,40vw,400px);
-    height:clamp(200px,40vw,400px);
-    border-radius:50%;
-    background:radial-gradient(circle,rgba(201,169,110,0.08) 0%,transparent 70%);
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:48px;
-    position:relative;
-    animation:emblemFloat 6s ease-in-out infinite;
-}
-@keyframes emblemFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.entrance-emblem .emblem-text{
-    font-family:var(--font-display);
-    font-size:clamp(3rem,8vw,6rem);
-    color:var(--gold);
-    font-weight:900;
-    letter-spacing:0.1em;
-    text-shadow:0 0 80px rgba(201,169,110,0.3);
-}
-.entrance-title{
-    font-family:var(--font-display);
-    font-size:clamp(1.6rem,3.5vw,2.8rem);
-    color:var(--text-primary);
-    font-weight:700;
-    line-height:1.5;
-    max-width:900px;
-    margin-bottom:16px;
-}
-.entrance-title .highlight{
-    color:var(--gold);
-    position:relative;
-}
-.entrance-subtitle{
-    font-size:clamp(0.9rem,1.2vw,1.1rem);
-    color:var(--text-secondary);
-    letter-spacing:0.15em;
-    margin-bottom:48px;
-}
-.entrance-scroll-hint{
-    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    color:var(--text-dim);font-size:12px;letter-spacing:0.2em;
-    animation:scrollHint 2s ease-in-out infinite;
-}
-@keyframes scrollHint{0%,100%{opacity:1;transform:translateX(-50%) translateY(0)}50%{opacity:0.4;transform:translateX(-50%) translateY(8px)}}
-.entrance-scroll-hint .scroll-line{
-    width:1px;height:40px;
-    background:linear-gradient(to bottom,var(--gold),transparent);
-}
-
-/* Hall 1 - Dark Valley */
-#hall-dark-valley{
-    background:linear-gradient(180deg,var(--space-black) 0%,#080E1A 50%,var(--space-black) 100%);
-}
-.dark-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin:48px 0}
-.dark-stat{
-    background:rgba(229,62,62,0.05);
-    border:1px solid rgba(229,62,62,0.15);
-    border-radius:var(--radius-lg);
-    padding:32px 24px;text-align:center;
-    transition:all 0.4s var(--transition);
-}
-.dark-stat:hover{
-    border-color:rgba(229,62,62,0.3);
-    box-shadow:0 0 30px rgba(229,62,62,0.08);
-    transform:translateY(-4px);
-}
-.dark-stat .stat-value{
-    font-family:var(--font-display);
-    font-size:clamp(2.5rem,6vw,4rem);
-    color:var(--danger);
-    font-weight:900;
-    line-height:1;
-    margin-bottom:8px;
-}
-.dark-stat .stat-label{color:var(--text-secondary);font-size:0.95rem}
-.dark-quote{
-    position:relative;
-    padding:40px 48px;
-    margin:48px 0;
-    border-left:3px solid var(--gold);
-    background:rgba(201,169,110,0.03);
-    border-radius:0 var(--radius-lg) var(--radius-lg) 0;
-}
-.dark-quote p{
-    font-family:var(--font-display);
-    font-size:clamp(1.1rem,2vw,1.4rem);
-    color:var(--text-primary);
-    font-style:italic;
-    line-height:1.8;
-}
-.dark-quote .quote-author{
-    margin-top:16px;
-    color:var(--gold);
-    font-style:normal;
-    font-size:0.9rem;
-}
-
-/* Hall 2 - Theory Light */
-#hall-theory{
-    background:linear-gradient(180deg,var(--space-black) 0%,var(--deep-navy) 50%,var(--space-black) 100%);
-}
-.theory-timeline{
-    display:flex;gap:0;margin:48px 0;overflow-x:auto;padding-bottom:16px;
-}
-.timeline-phase{
-    flex:1;min-width:180px;
-    padding:24px 20px;
-    border-top:2px solid var(--gold-dim);
-    position:relative;
-}
-.timeline-phase::before{
-    content:'';position:absolute;top:-6px;left:0;
-    width:12px;height:12px;border-radius:50%;
-    background:var(--gold);
-}
-.timeline-phase .phase-year{
-    font-family:var(--font-display);
-    font-size:1.4rem;color:var(--gold);font-weight:700;
-    margin-bottom:8px;
-}
-.timeline-phase .phase-title{color:var(--text-secondary);font-size:0.9rem}
-.timeline-phase .phase-desc{color:var(--text-dim);font-size:0.8rem;margin-top:8px;line-height:1.6}
-
-/* Hall 3 - Workshop */
-#hall-workshop{
-    background:linear-gradient(180deg,var(--space-black) 0%,#0D1A14 50%,var(--space-black) 100%);
-}
-.workshop-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;margin:48px 0;
-}
-.workshop-card{
-    background:rgba(0,212,170,0.04);
-    border:1px solid rgba(0,212,170,0.12);
-    border-radius:var(--radius-lg);
-    padding:28px;
-    transition:all 0.4s var(--transition);
-    cursor:pointer;
-}
-.workshop-card:hover{
-    border-color:rgba(0,212,170,0.3);
-    box-shadow:0 0 32px rgba(0,212,170,0.06);
-    transform:translateY(-2px);
-}
-.workshop-card .card-icon{
-    font-size:2rem;margin-bottom:16px;
-}
-.workshop-card h3{
-    font-family:var(--font-display);
-    font-size:1.2rem;color:var(--text-primary);
-    margin-bottom:8px;
-}
-.workshop-card p{color:var(--text-secondary);font-size:0.9rem;line-height:1.7}
-
-/* Hall 4 - Life Theater */
-#hall-life{
-    background:linear-gradient(180deg,var(--space-black) 0%,#1A0F1A 50%,var(--space-black) 100%);
-}
-.student-cards{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:24px;margin:48px 0;
-}
-.student-card{
-    background:rgba(201,169,110,0.03);
-    border:1px solid rgba(201,169,110,0.1);
-    border-radius:var(--radius-lg);
-    overflow:hidden;
-    transition:all 0.4s var(--transition);
-}
-.student-card:hover{
-    border-color:rgba(201,169,110,0.3);
-    box-shadow:0 0 40px rgba(201,169,110,0.08);
-    transform:translateY(-4px);
-}
-.student-card .card-img{
-    height:160px;background:linear-gradient(135deg,var(--mid-slate),var(--deep-navy));
-    display:flex;align-items:center;justify-content:center;
-    font-size:3rem;
-}
-.student-card .card-body{padding:24px}
-.student-card .card-body h3{
-    font-family:var(--font-display);
-    font-size:1.2rem;color:var(--gold);
-    margin-bottom:8px;
-}
-.student-card .card-body .before-after{
-    display:flex;gap:12px;margin:12px 0;
-    font-size:0.85rem;
-}
-.student-card .card-body .before{color:var(--danger)}
-.student-card .card-body .after{color:var(--success)}
-.student-card .card-body p{color:var(--text-secondary);font-size:0.9rem;line-height:1.7}
-
-/* Hall 5 - Data Summit */
-#hall-data{
-    background:linear-gradient(180deg,var(--space-black) 0%,var(--deep-navy) 50%,var(--space-black) 100%);
-}
-.chart-container{
-    background:rgba(26,45,74,0.4);
-    border:1px solid rgba(59,125,216,0.15);
-    border-radius:var(--radius-lg);
-    padding:24px;margin:24px 0;
-    height:400px;
-}
-
-/* Hall 6 - Future Gate */
-#hall-future{
-    background:linear-gradient(180deg,var(--space-black) 0%,#0A1A10 50%,var(--space-black) 100%);
-    text-align:center;
-}
-.future-cta{
-    display:inline-block;
-    padding:16px 48px;
-    background:linear-gradient(135deg,var(--gold),var(--gold-light));
-    color:var(--space-black);
-    border-radius:100px;
-    font-family:var(--font-display);
-    font-size:1.1rem;
-    font-weight:700;
-    text-decoration:none;
-    letter-spacing:0.1em;
-    transition:all 0.4s var(--transition);
-    margin-top:32px;
-}
-.future-cta:hover{
-    box-shadow:0 0 48px rgba(201,169,110,0.4);
-    transform:translateY(-2px);
-}
-
-/* ============================================
-   DATA CARD & STAT GRID
-============================================ */
-.stat-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;margin:48px 0;
-}
-.stat-card{
-    background:rgba(26,45,74,0.3);
-    border:1px solid rgba(59,125,216,0.1);
-    border-radius:var(--radius-lg);
-    padding:28px 24px;
-    transition:all 0.4s var(--transition);
-}
-.stat-card:hover{
-    border-color:rgba(59,125,216,0.3);
-    box-shadow:0 0 32px rgba(59,125,216,0.08);
-}
-.stat-card .stat-number{
-    font-family:var(--font-display);
-    font-size:clamp(2rem,4vw,3rem);
-    color:var(--blue-accent);
-    font-weight:900;
-    line-height:1;
-    margin-bottom:8px;
-}
-.stat-card .stat-number.gold{color:var(--gold)}
-.stat-card .stat-desc{color:var(--text-secondary);font-size:0.9rem}
-
-/* ============================================
-   CONTENT MODULE GRID
-============================================ */
-.module-section{padding:80px 0}
-.module-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:24px;margin:40px 0;
-}
-.module-card{
-    background:rgba(26,45,74,0.2);
-    border:1px solid rgba(255,255,255,0.05);
-    border-radius:var(--radius-lg);
-    padding:32px;
-    transition:all 0.4s var(--transition);
-}
-.module-card:hover{
-    border-color:rgba(201,169,110,0.2);
-    box-shadow:var(--shadow-gold);
-    transform:translateY(-2px);
-}
-.module-card h3{
-    font-family:var(--font-display);
-    font-size:1.3rem;
-    color:var(--text-primary);
-    margin-bottom:12px;
-}
-.module-card h3 .gold{color:var(--gold)}
-.module-card p{color:var(--text-secondary);font-size:0.95rem;line-height:1.8}
-
-/* ============================================
-   TABLE STYLES
-============================================ */
-.data-table{
-    width:100%;border-collapse:collapse;
-    margin:24px 0;
-    font-size:0.9rem;
-}
-.data-table th{
-    background:rgba(201,169,110,0.08);
-    color:var(--gold);
-    padding:14px 16px;
-    text-align:left;
-    font-weight:600;
-    border-bottom:1px solid rgba(201,169,110,0.2);
-    font-size:0.85rem;
-    letter-spacing:0.05em;
-}
-.data-table td{
-    padding:14px 16px;
-    border-bottom:1px solid rgba(255,255,255,0.04);
-    color:var(--text-secondary);
-}
-.data-table tr:hover td{background:rgba(201,169,110,0.03)}
-
-/* ============================================
-   DEEP DIVE SECTIONS
-============================================ */
-.deep-dive{
-    padding:60px 0;
-    border-top:1px solid rgba(255,255,255,0.04);
-}
-.deep-dive h2{
-    font-family:var(--font-display);
-    font-size:2rem;
-    color:var(--text-primary);
-    margin-bottom:32px;
-}
-.deep-dive h3{
-    font-family:var(--font-display);
-    font-size:1.3rem;
-    color:var(--gold);
-    margin:32px 0 16px;
-}
-.deep-dive p,.deep-dive li{
-    color:var(--text-secondary);
-    line-height:2;
-    margin-bottom:12px;
-}
-.deep-dive ul{padding-left:24px;margin:16px 0}
-.deep-dive li{margin-bottom:8px}
-.deep-dive strong{color:var(--text-primary)}
-
-/* ============================================
-   FOOTER
-============================================ */
-.footer{
-    padding:80px 0 40px;
-    border-top:1px solid rgba(255,255,255,0.05);
-    background:var(--space-black);
-}
-.footer-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:40px;margin-bottom:48px;
-}
-.footer-col h4{
-    font-family:var(--font-display);
-    color:var(--gold);
-    margin-bottom:16px;
-    font-size:0.95rem;
-    letter-spacing:0.1em;
-}
-.footer-col a{
-    display:block;color:var(--text-dim);
-    text-decoration:none;padding:4px 0;font-size:0.9rem;
-    transition:color 0.3s;
-}
-.footer-col a:hover{color:var(--gold)}
-.footer-bottom{
-    text-align:center;
-    color:var(--text-dim);
-    font-size:0.8rem;
-    padding-top:32px;
-    border-top:1px solid rgba(255,255,255,0.04);
-}
-
-/* ============================================
-   ANIMATIONS
-============================================ */
-.fade-up{opacity:0;transform:translateY(40px)}
-.fade-up.visible{animation:fadeUpIn 0.8s var(--transition) forwards}
-@keyframes fadeUpIn{to{opacity:1;transform:translateY(0)}}
-
-.parallax-bg{
-    position:absolute;inset:0;z-index:-1;
-    opacity:0.03;pointer-events:none;
-}
-
-/* ============================================
-   RESPONSIVE
-============================================ */
-@media(max-width:768px){
-    .floating-nav{right:12px;gap:8px}
-    .floating-nav .nav-dot{width:8px;height:8px}
-    .floating-nav .nav-dot .nav-label{display:none}
-    section{padding:80px 0}
-    .section-inner{padding:0 20px}
-    .entrance-emblem{width:200px;height:200px}
-    .dark-stats,.workshop-grid,.student-cards,.module-grid{grid-template-columns:1fr}
-    .timeline-phase{min-width:140px}
-    .chart-container{height:300px}
-    .data-table{font-size:0.75rem}
-    .data-table th,.data-table td{padding:8px}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>让每个孩子都值钱：县域中职"产业·课堂双螺旋"育人的实践与探索</title>
+    <meta name="description" content="国家级职业教育教学成果特等奖申报网站 - 宁强县职业高级中学">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js & GSAP CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    
+    <style>
+        /* ===== CSS Reset & Base ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --gold: #C9A96E;
+            --gold-light: #E8D5A3;
+            --gold-dark: #8B7340;
+            --blue: #3B7DD8;
+            --blue-light: #6BA5E7;
+            --cyan: #00D4AA;
+            --red: #E74C3C;
+            --dark: #020815;
+            --dark2: #0A1628;
+            --dark3: #111F3A;
+            --text: #E8E8E8;
+            --text-dim: #8A8A9A;
+            --glass: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.08);
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+        
+        /* ===== Loading Screen ===== */
+        #loading-screen {
+            position: fixed; inset: 0; z-index: 10000;
+            background: var(--dark);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        .loading-particle-canvas {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        
+        .loading-text {
+            position: relative; z-index: 1;
+            text-align: center;
+        }
+        .loading-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .loading-subtitle {
+            font-size: 1rem; color: var(--text-dim);
+            letter-spacing: 0.3em;
+        }
+        .loading-bar-wrap {
+            width: 240px; height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px; margin: 2rem auto 0;
+            overflow: hidden;
+        }
+        .loading-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--gold), var(--cyan));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        
+        /* ===== Opening Animation Canvas ===== */
+        #opening-canvas {
+            position: fixed; inset: 0; z-index: 9000;
+            background: var(--dark);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #opening-canvas.hidden { display: none; }
+        #opening-text {
+            position: absolute; bottom: 15%;
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--gold-light);
+            opacity: 0; letter-spacing: 0.15em;
+        }
+        
+        /* ===== Three.js Canvas (persistent background) ===== */
+        #three-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none;
+            opacity: 0.6;
+        }
+        
+        /* ===== Scroll Container ===== */
+        .scroll-container {
+            position: relative; z-index: 1;
+        }
+        
+        /* ===== Section Base ===== */
+        .section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .section-inner {
+            max-width: 1200px; width: 100%;
+            position: relative; z-index: 2;
+        }
+        
+        /* ===== Navigation Dots ===== */
+        #nav-dots {
+            position: fixed; right: 2rem; top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000; display: flex; flex-direction: column;
+            gap: 1.2rem; align-items: center;
+        }
+        .nav-dot {
+            width: 14px; height: 14px; border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.2);
+            cursor: pointer; transition: all 0.4s ease;
+            position: relative;
+        }
+        .nav-dot.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(201,169,110,0.5);
+            transform: scale(1.3);
+        }
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute; right: 2rem; top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10,22,40,0.95);
+            color: var(--gold-light); font-size: 0.75rem;
+            padding: 0.3rem 0.8rem; border-radius: 4px;
+            white-space: nowrap; opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            border: 1px solid var(--glass-border);
+        }
+        .nav-dot:hover::after { opacity: 1; }
+        
+        /* ===== Hero Section (Hall 0) ===== */
+        #hero-section {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            background: radial-gradient(ellipse at center, var(--dark2) 0%, var(--dark) 100%);
+        }
+        .hero-content {
+            text-align: center; position: relative; z-index: 2;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem; border-radius: 2rem;
+            background: rgba(201,169,110,0.1);
+            border: 1px solid rgba(201,169,110,0.3);
+            color: var(--gold-light); font-size: 0.85rem;
+            letter-spacing: 0.2em; margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 900; line-height: 1.3;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--text-dim); max-width: 700px;
+            margin: 0 auto 2.5rem; line-height: 1.8;
+            animation: fadeInUp 1s ease 1.1s both;
+        }
+        .hero-stats {
+            display: flex; gap: 3rem; justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 1.4s both;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-stat-label {
+            font-size: 0.85rem; color: var(--text-dim);
+            margin-top: 0.3rem;
+        }
+        .scroll-hint {
+            position: absolute; bottom: 3rem; left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease-in-out infinite, fadeInUp 1s ease 2s both;
+            color: var(--text-dim); font-size: 0.85rem;
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+        }
+        .scroll-hint-arrow {
+            width: 24px; height: 24px;
+            border-right: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            transform: rotate(45deg);
+            animation: arrow-bounce 2s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        @keyframes arrow-bounce {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* ===== General Section Styles ===== */
+        .section-header {
+            text-align: center; margin-bottom: 4rem;
+        }
+        .section-tag {
+            display: inline-block;
+            padding: 0.4rem 1.2rem; border-radius: 2rem;
+            font-size: 0.8rem; letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700; line-height: 1.3;
+        }
+        .section-desc {
+            font-size: 1rem; color: var(--text-dim);
+            max-width: 600px; margin: 1rem auto 0;
+        }
+        
+        /* ===== Hall 1: Darkness Valley ===== */
+        #hall-darkness {
+            background: linear-gradient(180deg, var(--dark) 0%, #0D0D12 50%, var(--dark) 100%);
+        }
+        .darkness-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        .darkness-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; padding: 2rem;
+            position: relative; overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .darkness-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: var(--red);
+        }
+        .darkness-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(231,76,60,0.3);
+            box-shadow: 0 8px 32px rgba(231,76,60,0.1);
+        }
+        .darkness-number {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem; font-weight: 900;
+            color: rgba(231,76,60,0.3);
+            line-height: 1;
+        }
+        .darkness-label {
+            font-size: 0.85rem; color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+        .darkness-quote {
+            margin-top: 2rem; padding: 1.5rem;
+            background: rgba(231,76,60,0.05);
+            border-left: 3px solid var(--red);
+            border-radius: 0 8px 8px 0;
+            font-style: italic; color: var(--text-dim);
+            font-size: 0.95rem; line-height: 1.8;
+        }
+        
+        /* ===== Hall 2: Theory Light ===== */
+        #hall-theory {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark2) 50%, var(--dark) 100%);
+        }
+        .timeline {
+            position: relative; padding: 2rem 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute;
+            left: 50%; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--gold), var(--blue), var(--cyan));
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            display: flex; align-items: center;
+            margin-bottom: 3rem; position: relative;
+        }
+        .timeline-item:nth-child(odd) { flex-direction: row; }
+        .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+        .timeline-dot {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--gold); border: 4px solid var(--dark);
+            z-index: 2; box-shadow: 0 0 20px rgba(201,169,110,0.5);
+        }
+        .timeline-content {
+            width: 45%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 1.5rem;
+        }
+        .timeline-year {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--gold-light); margin-bottom: 0.5rem;
+        }
+        .timeline-title {
+            font-size: 1rem; font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-desc {
+            font-size: 0.9rem; color: var(--text-dim); line-height: 1.7;
+        }
+        
+        .helix-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        .helix-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .helix-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 4px;
+        }
+        .helix-card.gold::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+        .helix-card.blue::after { background: linear-gradient(90deg, var(--blue), var(--blue-light)); }
+        .helix-card.cyan::after { background: linear-gradient(90deg, var(--cyan), #00FFD1); }
+        .helix-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        .helix-card-icon {
+            font-size: 2.5rem; margin-bottom: 1rem;
+        }
+        .helix-card-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.3rem; font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+        .helix-card.gold .helix-card-title { color: var(--gold-light); }
+        .helix-card.blue .helix-card-title { color: var(--blue-light); }
+        .helix-card.cyan .helix-card-title { color: var(--cyan); }
+        .helix-card-desc {
+            font-size: 0.9rem; color: var(--text-dim); line-height: 1.8;
+        }
+        
+        /* ===== Four-Step Method ===== */
+        .method-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+        .method-step {
+            text-align: center; padding: 2rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            position: relative;
+        }
+        .method-step-num {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Noto Serif SC', serif; font-size: 1.3rem; font-weight: 700;
+            color: var(--dark); margin: 0 auto 1rem;
+        }
+        .method-step-title {
+            font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .method-step-desc {
+            font-size: 0.85rem; color: var(--text-dim); line-height: 1.7;
+        }
+        
+        /* ===== 8-Link Loop ===== */
+        .loop-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1rem; margin-top: 2rem;
+        }
+        .loop-item {
+            padding: 1.2rem; text-align: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px; font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .loop-item:hover {
+            border-color: rgba(201,169,110,0.3);
+            background: rgba(201,169,110,0.05);
+        }
+        .loop-item-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem; font-weight: 900;
+            color: var(--gold); display: block; margin-bottom: 0.3rem;
+        }
+        
+        /* ===== Hall 3: Workshop ===== */
+        #hall-workshop {
+            background: linear-gradient(180deg, var(--dark) 0%, #0D1A12 50%, var(--dark) 100%);
+        }
+        .workshop-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        .workshop-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 2rem;
+            transition: all 0.4s ease;
+        }
+        .workshop-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,212,170,0.08);
+            border-color: rgba(0,212,170,0.2);
+        }
+        .workshop-card-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .workshop-card-icon {
+            width: 56px; height: 56px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+        }
+        .workshop-card.green .workshop-card-icon { background: rgba(0,212,170,0.1); }
+        .workshop-card.orange .workshop-card-icon { background: rgba(255,165,0,0.1); }
+        .workshop-card.purple .workshop-card-icon { background: rgba(147,112,219,0.1); }
+        .workshop-card.blue .workshop-card-icon { background: rgba(59,125,216,0.1); }
+        .workshop-card-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem; font-weight: 700;
+        }
+        .workshop-card-desc {
+            font-size: 0.9rem; color: var(--text-dim); line-height: 1.8;
+        }
+        .workshop-card-tags {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .workshop-tag {
+            padding: 0.3rem 0.8rem; border-radius: 2rem;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dim);
+        }
+        
+        /* ===== Hall 4: Life Theater ===== */
+        #hall-life {
+            background: linear-gradient(180deg, var(--dark) 0%, #1A0D12 50%, var(--dark) 100%);
+        }
+        .student-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem; margin-top: 3rem;
+        }
+        .student-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .student-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--red), var(--cyan));
+        }
+        .student-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(201,169,110,0.08);
+        }
+        .student-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin: 0 auto 1rem;
+        }
+        .student-name {
+            text-align: center; font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem;
+        }
+        .student-major {
+            text-align: center; font-size: 0.85rem;
+            color: var(--gold-light); margin-bottom: 1rem;
+        }
+        .student-compare {
+            display: flex; gap: 1rem; margin-top: 1rem;
+        }
+        .student-compare-col {
+            flex: 1; text-align: center;
+        }
+        .student-compare-year {
+            font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.3rem;
+        }
+        .student-compare-val {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem; font-weight: 700;
+        }
+        .student-compare-val.before { color: var(--red); }
+        .student-compare-val.after { color: var(--cyan); }
+        .student-story {
+            margin-top: 1rem; padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px; font-size: 0.85rem;
+            color: var(--text-dim); line-height: 1.7;
+        }
+        
+        /* ===== Hall 5: Data Peak ===== */
+        #hall-data {
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark2) 50%, var(--dark) 100%);
+        }
+        .chart-container {
+            width: 100%; height: 450px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .data-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+        .data-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 1.5rem;
+            text-align: center; transition: all 0.3s ease;
+        }
+        .data-card:hover {
+            border-color: rgba(201,169,110,0.3);
+            transform: translateY(-3px);
+        }
+        .data-card-num {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2rem; font-weight: 900;
+        }
+        .data-card-num.gold { color: var(--gold); }
+        .data-card-num.cyan { color: var(--cyan); }
+        .data-card-num.blue { color: var(--blue-light); }
+        .data-card-num.red { color: var(--red); }
+        .data-card-label {
+            font-size: 0.85rem; color: var(--text-dim); margin-top: 0.3rem;
+        }
+        .data-card-change {
+            font-size: 0.8rem; margin-top: 0.3rem; font-weight: 600;
+        }
+        .data-card-change.up { color: var(--cyan); }
+        .data-card-change.down { color: var(--red); }
+        
+        /* ===== Hall 6: Future Gate ===== */
+        #hall-future {
+            background: linear-gradient(180deg, var(--dark) 0%, #0A1A2A 50%, var(--dark) 100%);
+        }
+        .future-content {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 3rem; align-items: center;
+        }
+        .future-text h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem; font-weight: 700;
+            color: var(--gold-light); margin-bottom: 1rem;
+        }
+        .future-text p {
+            font-size: 1rem; color: var(--text-dim); line-height: 1.9;
+        }
+        .future-badges {
+            display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem;
+        }
+        .future-badge {
+            padding: 0.6rem 1.2rem; border-radius: 2rem;
+            background: rgba(201,169,110,0.08);
+            border: 1px solid rgba(201,169,110,0.2);
+            color: var(--gold-light); font-size: 0.85rem;
+        }
+        .future-quote {
+            margin-top: 2rem; padding: 1.5rem;
+            background: rgba(201,169,110,0.05);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            font-style: italic; color: var(--text-dim);
+            font-size: 0.95rem; line-height: 1.8;
+        }
+        .future-image {
+            width: 100%; aspect-ratio: 4/3;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem;
+        }
+        
+        /* ===== Deep Content Sections ===== */
+        .deep-section {
+            padding: 5rem 2rem;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .module-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem; margin-top: 2rem;
+        }
+        .module-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 2rem;
+            transition: all 0.4s ease;
+        }
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .module-card-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .module-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+        .module-icon.ai { background: rgba(59,125,216,0.15); }
+        .module-icon.data { background: rgba(0,212,170,0.15); }
+        .module-icon.food { background: rgba(201,169,110,0.15); }
+        .module-icon.health { background: rgba(255,105,180,0.15); }
+        .module-icon.edu { background: rgba(255,165,0,0.15); }
+        .module-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem; font-weight: 700;
+        }
+        .module-desc {
+            font-size: 0.9rem; color: var(--text-dim); line-height: 1.8;
+        }
+        .module-list {
+            margin-top: 1rem; padding-left: 1.2rem;
+            font-size: 0.85rem; color: var(--text-dim); line-height: 2;
+        }
+        
+        /* ===== Footer ===== */
+        footer {
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem 2rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem; margin-bottom: 3rem;
+        }
+        .footer-col h4 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem; font-weight: 700;
+            color: var(--gold-light); margin-bottom: 1.2rem;
+        }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 0.6rem; }
+        .footer-col a {
+            color: var(--text-dim); text-decoration: none;
+            font-size: 0.9rem; transition: color 0.3s;
+        }
+        .footer-col a:hover { color: var(--gold-light); }
+        .footer-bottom {
+            text-align: center; padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.85rem; color: var(--text-dim);
+        }
+        
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-in-up.visible {
+            opacity: 1; transform: translateY(0);
+        }
+        
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .future-content { grid-template-columns: 1fr; }
+            .loop-grid { grid-template-columns: repeat(2, 1fr); }
+            #nav-dots { display: none; }
+            .timeline::before { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; }
+            .timeline-dot { left: 20px; }
+            .timeline-content { width: calc(100% - 50px); margin-left: 50px; }
+        }
+        
+        /* ===== Achievement Toast ===== */
+        .achievement-toast {
+            position: fixed; top: 2rem; right: 2rem;
+            background: rgba(10,22,40,0.95);
+            border: 1px solid var(--gold);
+            border-radius: 12px; padding: 1.2rem 1.8rem;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .achievement-toast.show { transform: translateX(0); }
+        .achievement-icon { font-size: 2rem; }
+        .achievement-text h4 { font-size: 0.9rem; color: var(--gold-light); }
+        .achievement-text p { font-size: 0.8rem; color: var(--text-dim); }
+    </style>
 </head>
 <body>
-
-<!-- ============================================
-     LOADING SCREEN
-============================================ -->
-<div id="loading">
-    <canvas id="loading-canvas"></canvas>
-    <div id="loading-text">产 业 · 课 堂 双 螺 旋</div>
-</div>
-
-<!-- ============================================
-     HERO CANVAS
-============================================ -->
-<canvas id="hero-canvas"></canvas>
-
-<!-- ============================================
-     FLOATING NAVIGATION
-============================================ -->
-<nav class="floating-nav" id="floating-nav">
-    <div class="nav-dot active" data-target="hall-entrance"><span class="nav-label">入口·投名状</span></div>
-    <div class="nav-dot" data-target="hall-dark-valley"><span class="nav-label">黑暗之谷</span></div>
-    <div class="nav-dot" data-target="hall-theory"><span class="nav-label">理论之光</span></div>
-    <div class="nav-dot" data-target="hall-workshop"><span class="nav-label">实战工坊</span></div>
-    <div class="nav-dot" data-target="hall-life"><span class="nav-label">生命剧场</span></div>
-    <div class="nav-dot" data-target="hall-data"><span class="nav-label">数据之巅</span></div>
-    <div class="nav-dot" data-target="hall-future"><span class="nav-label">未来之门</span></div>
-</nav>
-
-<!-- ============================================
-     EXHIBITION HALL 0: ENTRANCE — 投名状
-============================================ -->
-<section id="hall-entrance">
-    <div class="entrance-emblem">
-        <span class="emblem-text">值钱</span>
-    </div>
-    <h1 class="entrance-title">
-        让每个孩子都<span class="highlight">值钱</span><br>
-        县域中职"产业·课堂双螺旋"育人的实践与探索
-    </h1>
-    <p class="entrance-subtitle">2010 — 2026 · 十五年深耕 · 从大山深处到国家赛场</p>
-    <div class="entrance-scroll-hint">
-        <span>向下滚动 · 开启展馆</span>
-        <div class="scroll-line"></div>
-    </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 1: 黑暗之谷 — 2018·困境
-============================================ -->
-<section id="hall-dark-valley">
-    <div class="section-inner">
-        <span class="section-label">展览厅 01 · 黑暗之谷</span>
-        <h2 class="section-title">2018年，<span class="gold">黎明前的至暗时刻</span></h2>
-        <p class="section-subtitle">一所被遗忘的县域职中，一群被贴上"失败者"标签的孩子。这不是故事的开头，而是我们必须直面的现实。</p>
-
-        <div class="dark-stats">
-            <div class="dark-stat fade-up">
-                <div class="stat-value">89<small style="font-size:0.4em">分</small></div>
-                <div class="stat-label">学生厌学指数（满分100）</div>
-            </div>
-            <div class="dark-stat fade-up">
-                <div class="stat-value">35<small style="font-size:0.4em">%</small></div>
-                <div class="stat-label">课堂有效参与率</div>
-            </div>
-            <div class="dark-stat fade-up">
-                <div class="stat-value">6.2<small style="font-size:0.4em">个月</small></div>
-                <div class="stat-label">新生平均辍学间隔</div>
-            </div>
-            <div class="dark-stat fade-up">
-                <div class="stat-value">&lt;400</div>
-                <div class="stat-label">在校生总人数</div>
-            </div>
-        </div>
-
-        <div class="dark-quote fade-up">
-            <p>"我常被一句话刺穿——'宁愿送孩子当学徒，也不上职中'。这句话像钉子一样，钉在我的心上，也钉在这所学校的门上。"</p>
-            <div class="quote-author">—— 杨通达，2018年校务笔记</div>
-        </div>
-
-        <div class="dark-quote fade-up">
-            <p>"学生进来了，怎么提升培养质量？如果还像以前放羊式管理，学生学不懂就算了，反正基础差，老师也没太大压力——那么中职三年后，将面临灭顶之灾。"</p>
-            <div class="quote-author">—— 赋能型行动学习法成果报告，2019</div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <canvas class="loading-particle-canvas" id="loading-canvas"></canvas>
+        <div class="loading-text">
+            <div class="loading-title">让每个孩子都值钱</div>
+            <div class="loading-subtitle">县域中职"产业·课堂双螺旋"育人实践</div>
+            <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
         </div>
     </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 2: 理论之光 — 双螺旋诞生
-============================================ -->
-<section id="hall-theory">
-    <div class="section-inner">
-        <span class="section-label">展览厅 02 · 理论之光</span>
-        <h2 class="section-title"><span class="gold">双螺旋模型</span>：课堂基因的重新编码</h2>
-        <p class="section-subtitle">两条生命线相互缠绕、协同演进——产业标准牵引螺旋 × 学生主体性成长螺旋——中间以技术赋能链连接。这是15年实践淬炼出的核心理论。</p>
-
-        <!-- Evolution Timeline -->
-        <div class="theory-timeline fade-up">
-            <div class="timeline-phase">
-                <div class="phase-year">2010-2012</div>
-                <div class="phase-title">酝酿构建</div>
-                <div class="phase-desc">提出"赋能教学法"，研制语数英专业课质量目标指南</div>
-            </div>
-            <div class="timeline-phase">
-                <div class="phase-year">2013-2015</div>
-                <div class="phase-title">实践探索</div>
-                <div class="phase-desc">提炼"赋能行动学习法"，近百名厌学学生实现转变</div>
-            </div>
-            <div class="timeline-phase">
-                <div class="phase-year">2016-2019</div>
-                <div class="phase-title">系统完善</div>
-                <div class="phase-desc">构建1+8+N高效课堂体系，形成天才学习状态干预技术</div>
-            </div>
-            <div class="timeline-phase">
-                <div class="phase-year">2020-2023</div>
-                <div class="phase-title">验证推广</div>
-                <div class="phase-desc">6所职校系统引进，四真三化五链三场框架确立</div>
-            </div>
-            <div class="timeline-phase">
-                <div class="phase-year">2024-2026</div>
-                <div class="phase-title">融创飞跃</div>
-                <div class="phase-desc">世赛银奖，AI系统上线，宁职创原平台全面运营</div>
-            </div>
-        </div>
-
-        <!-- Two Spirals -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:48px 0">
-            <div class="module-card fade-up" style="border-color:rgba(59,125,216,0.2)">
-                <h3>🔵 产业标准<span class="gold">牵引</span>螺旋</h3>
-                <p><strong>四真要素：</strong>真实产业 → 真实岗位 → 真实项目 → 真实评价<br>
-                <strong>五链融合：</strong>产业链·岗位链·能力链·课程链·评价链<br>
-                <strong>三场空间：</strong>学习场·实训场·产业场<br>
-                <em>核心逻辑：产业需要什么，课堂就教什么，评价就考什么。</em></p>
-            </div>
-            <div class="module-card fade-up" style="border-color:rgba(201,169,110,0.2)">
-                <h3>🟡 学生主体性<span class="gold">成长</span>螺旋</h3>
-                <p><strong>赋能四步法：</strong>测评诊断 → 潜意识赋能 → 行动学习 → 反思完善<br>
-                <strong>1+8+N体系：</strong>1个教师发展体系 + 8环节闭环 + N项智能技术<br>
-                <strong>三类知识：</strong>陈述性 → 程序性 → 策略性<br>
-                <em>核心逻辑：先唤醒学习状态，再建构学科能力，最终达到天才生境界。</em></p>
-            </div>
-        </div>
-
-        <!-- Core Theory Details -->
-        <div class="deep-dive fade-up">
-            <h3>赋能型行动学习法 —— 四步操作体系</h3>
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-number gold">01</div>
-                    <div class="stat-desc"><strong>诊断</strong>：测评厌学根因，区分学习行为问题 vs 学科能力问题。教育如行医，先查漏补缺，再对症下药。</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gold">02</div>
-                    <div class="stat-desc"><strong>赋能</strong>：元认知潜意识干预，建立"学习=愉快"条件反射。运用"三脑唤醒"理论（认知脑+行为脑+情绪脑），让学生重新相信"我能行"。</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gold">03</div>
-                    <div class="stat-desc"><strong>行动学习</strong>：三类知识分类指导（陈述性→程序性→策略性），同化学习策略，题型中心图式诊断，引导学生自建构知识。</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gold">04</div>
-                    <div class="stat-desc"><strong>反思完善</strong>：顿悟→多巴胺→胜任感→如醉如痴天才生状态→终身成长。良性循环，让学习上瘾。</div>
-                </div>
-            </div>
-
-            <h3>"1+8+N"高效课堂 —— 八大环节闭环</h3>
-            <table class="data-table">
-                <thead>
-                    <tr><th>环节</th><th>名称</th><th>核心功能</th><th>学生行为</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>导（引导）</td><td>创设赋能环境，激发学习动机</td><td>进入学习状态，产生学习期待</td></tr>
-                    <tr><td>2</td><td>思（思考）</td><td>问题驱动，自主探究</td><td>独立思考，形成初步认知</td></tr>
-                    <tr><td>3</td><td>议（讨论）</td><td>小组协作，碰撞思维</td><td>表达观点，倾听他人，修正认知</td></tr>
-                    <tr><td>4</td><td>展（展示）</td><td>成果输出，建立自信</td><td>公开展示学习成果，获得认可</td></tr>
-                    <tr><td>5</td><td>评（评价）</td><td>多元反馈，精准诊断</td><td>接受评价，明确改进方向</td></tr>
-                    <tr><td>6</td><td>检（检测）</td><td>达标测评，数据说话</td><td>完成检测，验证学习效果</td></tr>
-                    <tr><td>7</td><td>用（应用）</td><td>真实任务，学以致用</td><td>在产业场景中运用所学</td></tr>
-                    <tr><td>8</td><td>结（总结）</td><td>反思升华，知识结构化</td><td>归纳提炼，形成认知图式</td></tr>
-                </tbody>
-            </table>
-        </div>
+    
+    <!-- Opening Animation Canvas -->
+    <div id="opening-canvas">
+        <canvas id="opening-three-canvas" style="width:100%;height:100%"></canvas>
+        <div id="opening-text"></div>
     </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 3: 实战工坊
-============================================ -->
-<section id="hall-workshop">
-    <div class="section-inner">
-        <span class="section-label">展览厅 03 · 实战工坊</span>
-        <h2 class="section-title">四真三化·<span class="gold">五链三场</span></h2>
-        <p class="section-subtitle">不让一门课"纸上谈兵"。每一门文化课、每一个专业，都在真实的产业战场上淬炼。</p>
-
-        <div class="workshop-grid">
-            <div class="workshop-card fade-up">
-                <div class="card-icon">🍲</div>
-                <h3>值餐系统</h3>
-                <p>职业教育特色餐饮系统，三大餐类12道菜品，口味画像五维雷达图，信任体系四维评分。让学生在后厨驾驶舱中真刀真枪地运营一家餐厅。</p>
-            </div>
-            <div class="workshop-card fade-up">
-                <div class="card-icon">💆</div>
-                <h3>悦舍健康养生</h3>
-                <p>中医美容+康复理疗专业学生提供服务。三大服务分类17项，6位服务人员。12.5k+服务人次，99.2%满意度，真实产业场景中的技能淬炼。</p>
-            </div>
-            <div class="workshop-card fade-up">
-                <div class="card-icon">🏗️</div>
-                <h3>产教融合AI系统</h3>
-                <p>9大AI模块：快速方案、职考通（6子模块）、毕业要求矩阵、商业锻造、AI突破、一人公司、经验萃取、产教融合总经理、心理测评。30+种生成类型，12+级优先级注入。</p>
-            </div>
-            <div class="workshop-card fade-up">
-                <div class="card-icon">🏅</div>
-                <h3>世赛服务体系</h3>
-                <p>6大模块：金牌教练工作页、技能标准解码、赛证融通方案、金牌选手画像、评分标准转化、校内技能竞赛设计。2024世界职业院校技能大赛银奖。</p>
-            </div>
-            <div class="workshop-card fade-up">
-                <div class="card-icon">📋</div>
-                <h3>职称跃升系统</h3>
-                <p>6大模块：职称评审材料包、教学成果奖策划、论文课题加速、教学质量提升、课程思政设计、教学改革方案。教师发展全周期支持。</p>
-            </div>
-            <div class="workshop-card fade-up">
-                <div class="card-icon">📐</div>
-                <h3>产教融合课程设计</h3>
-                <p>13个子模块：岗位-能力矩阵、课程产品化改造、四真课程锚定、五链融合能力拆解、三场空间规划、跨学科融合、项目化课程、技能达标测评等。</p>
-            </div>
-        </div>
-
-        <!-- Cultural Courses -->
-        <div class="deep-dive fade-up">
-            <h3>十门文化基础课的四真三化改造</h3>
-            <p>以"一块锅塌豆腐"为产品锚点，串起十门文化课——语文写故事、数学算成本、英语译菜单、历史溯渊源、化学析成分、美术摆盘设计……每门课都有其产业使命。</p>
-            <table class="data-table">
-                <thead>
-                    <tr><th>课程</th><th>产品锚定</th><th>核心改造</th><th>课时</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>语文</td><td>锅塌豆腐的故事营销文案</td><td>情境写作·口语交际·文化解读</td><td>4课时 ✅完整设计</td></tr>
-                    <tr><td>数学</td><td>菜品成本核算与利润分析</td><td>函数建模·统计图表·最优方案</td><td>4课时 ✅完整设计</td></tr>
-                    <tr><td>历史</td><td>豆腐的文化传播与饮食史</td><td>史料实证·时空观念·文化自信</td><td>4课时 ✅完整设计</td></tr>
-                    <tr><td>信息技术</td><td>菜品数字化展示与数据分析</td><td>数据处理·多媒体制作·信息素养</td><td>8课时 ✅完整设计</td></tr>
-                    <tr><td>英语</td><td>国际菜单翻译与服务对话</td><td>专业词汇·情景对话·跨文化交际</td><td>4课时 🔧框架方案</td></tr>
-                    <tr><td>体育与健康</td><td>后厨体能训练与职业防护</td><td>核心力量·耐力训练·职业健康</td><td>4课时 🔧框架方案</td></tr>
-                    <tr><td>艺术</td><td>菜品摆盘美学设计</td><td>色彩搭配·造型设计·审美鉴赏</td><td>4课时 🔧框架方案</td></tr>
-                    <tr><td>物理</td><td>厨房热力学与传热原理</td><td>热传导·沸腾原理·设备原理</td><td>4课时 🔧框架方案</td></tr>
-                    <tr><td>化学</td><td>食材成分与烹饪反应</td><td>美拉德反应·蛋白质变性·食品化学</td><td>4课时 🔧框架方案</td></tr>
-                    <tr><td>思想政治</td><td>工匠精神与职业伦理</td><td>劳模精神·食品安全·社会责任</td><td>4课时 🔧框架方案</td></tr>
-                </tbody>
-            </table>
-        </div>
+    
+    <!-- Three.js Persistent Background -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Navigation Dots -->
+    <div id="nav-dots">
+        <div class="nav-dot active" data-label="入口·投名状" data-target="hero-section"></div>
+        <div class="nav-dot" data-label="黑暗之谷" data-target="hall-darkness"></div>
+        <div class="nav-dot" data-label="理论之光" data-target="hall-theory"></div>
+        <div class="nav-dot" data-label="实战工坊" data-target="hall-workshop"></div>
+        <div class="nav-dot" data-label="生命剧场" data-target="hall-life"></div>
+        <div class="nav-dot" data-label="数据之巅" data-target="hall-data"></div>
+        <div class="nav-dot" data-label="未来之门" data-target="hall-future"></div>
     </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 4: 生命剧场
-============================================ -->
-<section id="hall-life">
-    <div class="section-inner">
-        <span class="section-label">展览厅 04 · 生命剧场</span>
-        <h2 class="section-title">从"厌学"到<span class="gold">"会学"</span>：四个孩子的逆袭</h2>
-        <p class="section-subtitle">每一个数据背后，都是一个鲜活的生命。他们曾是被放弃的孩子，如今是闪光的存在。</p>
-
-        <div class="student-cards">
-            <div class="student-card fade-up">
-                <div class="card-img">👨‍🍳</div>
-                <div class="card-body">
-                    <h3>李兴军</h3>
-                    <div class="before-after">
-                        <span class="before">← 2018：厌学指数87</span>
-                        <span class="after">2026：世赛银奖获得者 →</span>
+    
+    <!-- ===== Scroll Container ===== -->
+    <div class="scroll-container">
+        
+        <!-- ===== HERO / Hall 0 ===== -->
+        <section id="hero-section" class="section">
+            <div class="hero-content">
+                <div class="hero-badge">国家职业教育教学成果奖 · 特等奖申报</div>
+                <h1 class="hero-title">
+                    让每个孩子都<span class="highlight">值钱</span><br>
+                    <span style="font-size:0.55em;font-weight:400;color:var(--text-dim)">县域中职"产业·课堂双螺旋"育人的实践与探索</span>
+                </h1>
+                <p class="hero-subtitle">
+                    从"厌学"到"会学"，从"学科拼盘"到"产业战场"<br>
+                    一所秦巴山区中职学校的十二年改革长征
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" data-count="12">0</div>
+                        <div class="hero-stat-label">改革年限（年）</div>
                     </div>
-                    <p>"我以前觉得读书没用，反正也学不会。杨校长找我聊了三次，不是批评我，就是问我'你知道你最大的优点是什么吗？'——从来没有人问过我这句话。"</p>
-                </div>
-            </div>
-            <div class="student-card fade-up">
-                <div class="card-img">👩‍🔬</div>
-                <div class="card-body">
-                    <h3>赵佳明</h3>
-                    <div class="before-after">
-                        <span class="before">← 2019：课堂参与率28%</span>
-                        <span class="after">2026：本科录取 →</span>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" data-count="2200">0</div>
+                        <div class="hero-stat-label">在校生规模（人）</div>
                     </div>
-                    <p>"赋能课上，老师让我们闭上眼睛想象'十年后的自己'。我第一次真正去想这个问题。后来每次遇到困难，我就回想那个画面。那个画面，救了我。"</p>
-                </div>
-            </div>
-            <div class="student-card fade-up">
-                <div class="card-img">👩‍💼</div>
-                <div class="card-body">
-                    <h3>郑燕</h3>
-                    <div class="before-after">
-                        <span class="before">← 2018：差点辍学</span>
-                        <span class="after">2026：创业店主 →</span>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" data-count="150">0</div>
+                        <div class="hero-stat-label">年均本科上线（人）</div>
                     </div>
-                    <p>"值餐工坊让我第一次觉得'上课有意思'。我和同学一起研发了新菜品，顾客说好吃的时候，那种感觉——比任何考试分数都让人兴奋。"</p>
-                </div>
-            </div>
-            <div class="student-card fade-up">
-                <div class="card-img">👨‍💻</div>
-                <div class="card-body">
-                    <h3>陈一佳</h3>
-                    <div class="before-after">
-                        <span class="before">← 2020：数学22分</span>
-                        <span class="after">2026：职教高考数学145分 →</span>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" data-count="6">0</div>
+                        <div class="hero-stat-label">帮扶学校（所）</div>
                     </div>
-                    <p>"以前数学课就是煎熬。后来老师用'锅塌豆腐成本核算'教函数，我第一次觉得数学有用。从22分到145分，不是奇迹，是方法对了。"</p>
+                </div>
+            </div>
+            <div class="scroll-hint">
+                <span>向下探索改革之旅</span>
+                <div class="scroll-hint-arrow"></div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 1: Darkness Valley ===== -->
+        <section id="hall-darkness" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(231,76,60,0.1);color:#E74C3C;">展厅1 · 黑暗之谷</div>
+                    <h2 class="section-title">2018 · 困境<span style="color:var(--red)">：三无」死局</span></h2>
+                    <p class="section-desc">改革前，宁强县职业高级中学面临前所未有的生存危机</p>
+                </div>
+                
+                <div class="darkness-grid">
+                    <div class="darkness-card fade-in-up">
+                        <div class="darkness-number">89</div>
+                        <div class="darkness-label">平均分（厌学程度 / 100分）</div>
+                        <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);line-height:1.8;">
+                            学生普遍厌学，"宁愿送孩子当学徒，也不上职中"成为家长共识。
+                            教师叹息："我可能被一句话刺穿——这孩子真的没用吧。"
+                        </p>
+                    </div>
+                    <div class="darkness-card fade-in-up">
+                        <div class="darkness-number" style="color:rgba(231,76,60,0.3);">35%</div>
+                        <div class="darkness-label">课堂参与度</div>
+                        <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);line-height:1.8;">
+                            传统"灌输式"课堂，学生低头无响应。教师唱独角戏，
+                            课后"心在梦游"，知识无法内化。
+                        </p>
+                    </div>
+                    <div class="darkness-card fade-in-up">
+                        <div class="darkness-number" style="color:rgba(231,76,60,0.3);">&lt;400</div>
+                        <div class="darkness-label">在校生规模（人）</div>
+                        <p style="margin-top:0.8rem;font-size:0.9rem;color:var(--text-dim);line-height:1.8;">
+                            学校面临生死存亡。招生困难，社会认可度极低，
+                            "职业教育的吸引力在哪里？"成为核心拷问。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="darkness-quote fade-in-up" style="margin-top:3rem;">
+                    "我常被一句话刺穿——'宁愿送孩子当学徒，也不上职中'。这所秦巴山区的职业学校，到了最危险的时刻。"
+                    <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 杨通达 · 宁强县职业高级中学副校长</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 2: Theory Light ===== -->
+        <section id="hall-theory" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(59,125,216,0.1);color:var(--blue-light);">展厅2 · 理论之光</div>
+                    <h2 class="section-title">双螺旋诞生<span style="color:var(--gold-light)">：育人模型进化史</span></h2>
+                    <p class="section-desc">从赋能型行动学习法到"四真三化五链三场"，一条清晰的创新脉络</p>
+                </div>
+                
+                <!-- Timeline -->
+                <div class="timeline fade-in-up">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year" style="color:var(--gold-light);">2010–2019</div>
+                            <div class="timeline-title">赋能型行动学习法</div>
+                            <div class="timeline-desc">
+                                首创"诊断→赋能→行动学习→反思完善"四步法。<br>
+                                解决"学生怎么学"——从厌学到会学的心理重建路径。<br>
+                                <span style="color:var(--cyan);font-size:0.85rem;">✅ 陕西省第二届教学成果奖一等奖</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year" style="color:var(--gold-light);">2016–2025</div>
+                            <div class="timeline-title">"1+8+N"高效课堂</div>
+                            <div class="timeline-desc">
+                                解决"课堂怎么教"——1个教师发展体系 + 8环节闭环流程 + N项智能技术融合。<br>
+                                课堂参与度从35%提升至92%，文化课平均分提升35分。<br>
+                                <span style="color:var(--cyan);font-size:0.85rem;">✅ 陕西省第五届教学成果奖特等奖申报</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year" style="color:var(--gold-light);">2020–2025</div>
+                            <div class="timeline-title">"四真三化五链三场"</div>
+                            <div class="timeline-desc">
+                                解决"课程怎么建"——从"学科拼盘"到"产业战场"的完整框架。<br>
+                                四真：真实产业/真实岗位/真实项目/真实评价<br>
+                                三化：产品化/场景化/标准化<br>
+                                五链：人才链/产业链/教育链/创新链/评价链<br>
+                                三场：工场/市场/职场
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year" style="color:var(--gold-light);">2025–2026</div>
+                            <div class="timeline-title">宁职创原AI平台</div>
+                            <div class="timeline-desc">
+                                解决"规模怎么扩"——16大AI模块赋能县域职教数字化转型。<br>
+                                支持微信/抖音/H5三端，GenerateService 5900行代码，<br>
+                                12+级优先级注入，30+生成类型。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Double Helix Cards -->
+                <div class="helix-cards fade-in-up">
+                    <div class="helix-card gold">
+                        <div class="helix-card-icon">🔗</div>
+                        <div class="helix-card-title">产业标准牵引螺旋</div>
+                        <div class="helix-card-desc">
+                            四真要素驱动：<br>
+                            • 真实产业：对接区域支柱产业<br>
+                            • 真实岗位：企业标准转化为教学标准<br>
+                            • 真实项目：产品化改造，产出可售卖成果<br>
+                            • 真实评价：市场反馈决定教学成效
+                        </div>
+                    </div>
+                    <div class="helix-card blue">
+                        <div class="helix-card-icon">🧠</div>
+                        <div class="helix-card-title">学生主体性成长螺旋</div>
+                        <div class="helix-card-desc">
+                            "1+8+N"八环节：<br>
+                            • 诊断：三脑唤醒，精准识别学习障碍<br>
+                            • 赋能：元认知干预，重建"学习=愉快"反射<br>
+                            • 行动学习：三类知识螺旋上升<br>
+                            • 反思完善：顿悟→多巴胺→胜任感→终身成长
+                        </div>
+                    </div>
+                    <div class="helix-card cyan">
+                        <div class="helix-card-icon">⚡</div>
+                        <div class="helix-card-title">技术赋能链</div>
+                        <div class="helix-card-desc">
+                            AI驱动个性化：<br>
+                            • 自适应学习路径规划<br>
+                            • 实时学习诊断与干预<br>
+                            • 产教融合AI内容生成<br>
+                            • 心理测评与预警系统<br>
+                            • 成长数据可视化分析
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Four-Step Method -->
+                <div style="margin-top:4rem;" class="fade-in-up">
+                    <h3 style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;color:var(--gold-light);text-align:center;margin-bottom:2rem;">
+                        赋能型行动学习法 · 四步法
+                    </h3>
+                    <div class="method-grid">
+                        <div class="method-step">
+                            <div class="method-step-num">1</div>
+                            <div class="method-step-title">诊断</div>
+                            <div class="method-step-desc">测评学生厌学根因，区分学习行为问题 vs 学科能力问题，三脑唤醒理论精准识别</div>
+                        </div>
+                        <div class="method-step">
+                            <div class="method-step-num">2</div>
+                            <div class="method-step-title">赋能</div>
+                            <div class="method-step-desc">元认知潜意识干预，建立"学习=愉快"条件反射，唤醒内在学习状态</div>
+                        </div>
+                        <div class="method-step">
+                            <div class="method-step-num">3</div>
+                            <div class="method-step-title">行动学习</div>
+                            <div class="method-step-desc">三类知识融合：陈述性→程序性→策略性，同化学习+题型中心图式</div>
+                        </div>
+                        <div class="method-step">
+                            <div class="method-step-num">4</div>
+                            <div class="method-step-title">反思完善</div>
+                            <div class="method-step-desc">顿悟→多巴胺→胜任感→如醉如痴天才生状态→终身成长</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 8-Link Loop -->
+                <div style="margin-top:4rem;" class="fade-in-up">
+                    <h3 style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;color:var(--blue-light);text-align:center;margin-bottom:2rem;">
+                        "1+8+N"高效课堂 · 八环节闭环
+                    </h3>
+                    <div class="loop-grid">
+                        <div class="loop-item"><span class="loop-item-num">1</span>诊断唤醒</div>
+                        <div class="loop-item"><span class="loop-item-num">2</span>目标锚定</div>
+                        <div class="loop-item"><span class="loop-item-num">3</span>任务驱动</div>
+                        <div class="loop-item"><span class="loop-item-num">4</span>协作探究</div>
+                        <div class="loop-item"><span class="loop-item-num">5</span>展示反馈</div>
+                        <div class="loop-item"><span class="loop-item-num">6</span>反思完善</div>
+                        <div class="loop-item"><span class="loop-item-num">7</span>拓展迁移</div>
+                        <div class="loop-item"><span class="loop-item-num">8</span>评价激励</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 3: Workshop ===== -->
+        <section id="hall-workshop" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(0,212,170,0.1);color:var(--cyan);">展厅3 · 实战工坊</div>
+                    <h2 class="section-title">四真三化五链三场<span style="color:var(--cyan)">：从课堂到战场</span></h2>
+                    <p class="section-desc">一块锅塌豆腐，串起十门文化课——真实产业项目驱动跨学科协同教学</p>
+                </div>
+                
+                <div class="workshop-grid">
+                    <div class="workshop-card green fade-in-up">
+                        <div class="workshop-card-header">
+                            <div class="workshop-card-icon">🍳</div>
+                            <div>
+                                <div class="workshop-card-title">值餐工坊</div>
+                                <div style="font-size:0.85rem;color:var(--text-dim);">职业教育特色餐饮系统</div>
+                            </div>
+                        </div>
+                        <div class="workshop-card-desc">
+                            三大餐类（悦颜/康膳/轻膳）12道菜品，学生全程参与研发—制作—服务—评价闭环。
+                            口味画像五维雷达图、信任体系四维评分、共创机制、厨房驾驶舱实时数据。
+                        </div>
+                        <div class="workshop-card-tags">
+                            <span class="workshop-tag">产品化</span>
+                            <span class="workshop-tag">真实评价</span>
+                            <span class="workshop-tag">数据驱动</span>
+                        </div>
+                    </div>
+                    <div class="workshop-card orange fade-in-up">
+                        <div class="workshop-card-header">
+                            <div class="workshop-card-icon">💆</div>
+                            <div>
+                                <div class="workshop-card-title">悦舍工坊</div>
+                                <div style="font-size:0.85rem;color:var(--text-dim);">健康养生服务预约平台</div>
+                            </div>
+                        </div>
+                        <div class="workshop-card-desc">
+                            中医美容+康复理疗专业学生提供服务。悦颜坊7项+悦身堂6项+精选套餐4项，
+                            6位服务人员，实时预订倒计时，12.5k+服务人次，99.2%满意度。
+                        </div>
+                        <div class="workshop-card-tags">
+                            <span class="workshop-tag">服务化</span>
+                            <span class="workshop-tag">真实市场</span>
+                            <span class="workshop-tag">高满意度</span>
+                        </div>
+                    </div>
+                    <div class="workshop-card purple fade-in-up">
+                        <div class="workshop-card-header">
+                            <div class="workshop-card-icon">🎓</div>
+                            <div>
+                                <div class="workshop-card-title">跨学科协同</div>
+                                <div style="font-size:0.85rem;color:var(--text-dim);">十门文化课融合</div>
+                            </div>
+                        </div>
+                        <div class="workshop-card-desc">
+                            语文（文化故事）→数学（成本核算）→英语（外宾菜单）→历史（药食溯源）
+                            →信息技术（预约系统）→体育（营养健康）→艺术（摆盘美学）→物理/化学/思政全面融入。
+                        </div>
+                        <div class="workshop-card-tags">
+                            <span class="workshop-tag">跨学科</span>
+                            <span class="workshop-tag">产品锚定</span>
+                            <span class="workshop-tag">四真融合</span>
+                        </div>
+                    </div>
+                    <div class="workshop-card blue fade-in-up">
+                        <div class="workshop-card-header">
+                            <div class="workshop-card-icon">🏆</div>
+                            <div>
+                                <div class="workshop-card-title">世赛服务系统</div>
+                                <div style="font-size:0.85rem;color:var(--text-dim);">世赛全链路赋能</div>
+                            </div>
+                        </div>
+                        <div class="workshop-card-desc">
+                            金牌教练工作页、技能标准解码、赛证融通方案、金牌选手画像、
+                            评分标准转化、校内技能竞赛设计——6大模块全链路世赛赋能。
+                        </div>
+                        <div class="workshop-card-tags">
+                            <span class="workshop-tag">赛证融通</span>
+                            <span class="workshop-tag">标准解码</span>
+                            <span class="workshop-tag">金牌路径</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 10 Cultural Courses Table -->
+                <div style="margin-top:4rem;" class="fade-in-up">
+                    <h3 style="font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;color:var(--gold-light);text-align:center;margin-bottom:2rem;">
+                        中职文化基础课 · 十门课产品化改造
+                    </h3>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+                            <thead>
+                                <tr style="background:rgba(201,169,110,0.1);">
+                                    <th style="padding:1rem;text-align:left;color:var(--gold-light);border-bottom:2px solid var(--glass-border);">课程</th>
+                                    <th style="padding:1rem;text-align:left;color:var(--gold-light);border-bottom:2px solid var(--glass-border);">产品锚定</th>
+                                    <th style="padding:1rem;text-align:left;color:var(--gold-light);border-bottom:2px solid var(--glass-border);">四真融合点</th>
+                                    <th style="padding:1rem;text-align:left;color:var(--gold-light);border-bottom:2px solid var(--glass-border);">设计状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;color:var(--cyan);">语文</td>
+                                    <td style="padding:0.8rem;">天麻红烧肉品牌故事文案</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实产业·文化赋能</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--cyan);">✅ 完整设计</span>（4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;color:var(--cyan);">数学</td>
+                                    <td style="padding:0.8rem;">菜品成本核算与定价策略</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实岗位·数据决策</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--cyan);">✅ 完整设计</span>（4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;color:var(--cyan);">历史</td>
+                                    <td style="padding:0.8rem;">药食同源文化溯源与传承</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实项目·文化传承</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--cyan);">✅ 完整设计</span>（4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;color:var(--cyan);">信息技术</td>
+                                    <td style="padding:0.8rem;">值餐预约系统与经营看板</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实评价·数据驱动</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--cyan);">✅ 完整设计</span>（8课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">英语</td>
+                                    <td style="padding:0.8rem;">外宾接待菜单双语设计</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实产业·跨文化沟通</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">体育与健康</td>
+                                    <td style="padding:0.8rem;">营养师配餐与体质管理</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实岗位·健康管理</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">艺术</td>
+                                    <td style="padding:0.8rem;">菜品摆盘与工坊空间美学</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实项目·审美创造</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">物理</td>
+                                    <td style="padding:0.8rem;">厨房设备热学与力学优化</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实产业·原理应用</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">化学</td>
+                                    <td style="padding:0.8rem;">食材成分分析与保鲜科学</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实项目·科学探究</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid var(--glass-border);">
+                                    <td style="padding:0.8rem;">思想政治</td>
+                                    <td style="padding:0.8rem;">工匠精神与职业道德培育</td>
+                                    <td style="padding:0.8rem;color:var(--text-dim);">真实评价·价值引领</td>
+                                    <td style="padding:0.8rem;"><span style="color:var(--gold);">待实施</span>（预案4课时）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 4: Life Theater ===== -->
+        <section id="hall-life" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(255,105,180,0.1);color:#FF69B4;">展厅4 · 生命剧场</div>
+                    <h2 class="section-title">四个孩子的逆袭<span style="color:var(--gold-light)">：从厌学到融创</span></h2>
+                    <p class="section-desc">真实的蜕变故事，是改革成效最有力的证明</p>
+                </div>
+                
+                <div class="student-cards">
+                    <div class="student-card fade-in-up">
+                        <div class="student-avatar">👨🍳</div>
+                        <div class="student-name">李兴军</div>
+                        <div class="student-major" style="color:var(--cyan);">烹饪工艺与营养 · 2019级</div>
+                        <div class="student-compare">
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2018</div>
+                                <div class="student-compare-val before">厌学·逃课</div>
+                            </div>
+                            <div style="display:flex;align-items:center;color:var(--gold);font-size:1.5rem;">→</div>
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2026</div>
+                                <div class="student-compare-val after">上岸·开店</div>
+                            </div>
+                        </div>
+                        <div class="student-story">
+                            "以前觉得读书没用，想辍学去打工。杨校长的赋能课让我第一次感受到'学会一件事'的快感。现在我有自己的餐饮店，月入过万。"
+                        </div>
+                    </div>
+                    <div class="student-card fade-in-up">
+                        <div class="student-avatar">💻</div>
+                        <div class="student-name">赵佳明</div>
+                        <div class="student-major" style="color:var(--blue-light);">信息技术 · 2020级</div>
+                        <div class="student-compare">
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2019</div>
+                                <div class="student-compare-val before">沉迷游戏</div>
+                            </div>
+                            <div style="display:flex;align-items:center;color:var(--gold);font-size:1.5rem;">→</div>
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2026</div>
+                                <div class="student-compare-val after">本科上线·设计师</div>
+                            </div>
+                        </div>
+                        <div class="student-story">
+                            "从全班倒数第一到本科上线，从游戏沉迷到获得世赛奖项。'1+8+N'课堂让我找到自己的节奏，信息技术成了我表达自己的语言。"
+                        </div>
+                    </div>
+                    <div class="student-card fade-in-up">
+                        <div class="student-avatar">🌿</div>
+                        <div class="student-name">郑燕</div>
+                        <div class="student-major" style="color:#98FB98;">营养与配餐 · 2021级</div>
+                        <div class="student-compare">
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2020</div>
+                                <div class="student-compare-val before">自卑·沉默</div>
+                            </div>
+                            <div style="display:flex;align-items:center;color:var(--gold);font-size:1.5rem;">→</div>
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2026</div>
+                                <div class="student-compare-val after">技术能手·保送</div>
+                            </div>
+                        </div>
+                        <div class="student-story">
+                            "药食同源手册的编写让我找到自信。从不敢说话到站在全省技能大赛领奖台，这座学校给了我人生的舞台。"
+                        </div>
+                    </div>
+                    <div class="student-card fade-in-up">
+                        <div class="student-avatar">🎨</div>
+                        <div class="student-name">陈一佳</div>
+                        <div class="student-major" style="color:var(--gold-light);">工艺美术 · 2022级</div>
+                        <div class="student-compare">
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2021</div>
+                                <div class="student-compare-val before">中考失利</div>
+                            </div>
+                            <div style="display:flex;align-items:center;color:var(--gold);font-size:1.5rem;">→</div>
+                            <div class="student-compare-col">
+                                <div class="student-compare-year">2026</div>
+                                <div class="student-compare-val after">全省金奖·升学</div>
+                            </div>
+                        </div>
+                        <div class="student-story">
+                            "中考失败来到职中，以为人生就这样了。没想到这里的老师让我重新认识自己。现在我的设计作品已经产生实际营收。"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 5: Data Peak ===== -->
+        <section id="hall-data" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(0,212,170,0.1);color:var(--cyan);">展厅5 · 数据之巅</div>
+                    <h2 class="section-title">2018 <span style="color:var(--text-dim);">vs</span> 2026<span style="color:var(--cyan)">：数字见证变革</span></h2>
+                    <p class="section-desc">每一个数字背后，都是一个个鲜活生命的蜕变</p>
+                </div>
+                
+                <!-- ECharts Container -->
+                <div class="chart-container fade-in-up" id="main-chart"></div>
+                
+                <!-- Data Cards -->
+                <div class="data-cards fade-in-up">
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="400">0</div>
+                        <div class="data-card-label">2018在校生（人）</div>
+                        <div class="data-card-num cyan" data-count="2200" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">2026在校生（人）</div>
+                        <div class="data-card-change up">↑ 450%</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="89">0</div>
+                        <div class="data-card-label">2018厌学平均分</div>
+                        <div class="data-card-num cyan" data-count="35" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">2026厌学平均分</div>
+                        <div class="data-card-change up">↓ 降低54分</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="35">0</div>
+                        <div class="data-card-label">2018课堂参与度%</div>
+                        <div class="data-card-num cyan" data-count="92" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">2026课堂参与度%</div>
+                        <div class="data-card-change up">↑ +57%</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="0">0</div>
+                        <div class="data-card-label">2018本科上线（人/年）</div>
+                        <div class="data-card-num cyan" data-count="150" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">2026本科上线（人/年）</div>
+                        <div class="data-card-change up">↑ 持续增长</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="0">0</div>
+                        <div class="data-card-label">世赛奖牌（2018前）</div>
+                        <div class="data-card-num cyan" data-count="46" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">市级以上奖项（项）</div>
+                        <div class="data-card-change up">↑ 重大突破</div>
+                    </div>
+                    <div class="data-card">
+                        <div class="data-card-num gold" data-count="1">0</div>
+                        <div class="data-card-label">2018帮扶学校（所）</div>
+                        <div class="data-card-num cyan" data-count="6" style="font-size:1.5rem;">0</div>
+                        <div class="data-card-label">2026帮扶/辐射学校（所）</div>
+                        <div class="data-card-change up">↑ +5所</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== HALL 6: Future Gate ===== -->
+        <section id="hall-future" class="section">
+            <div class="section-inner">
+                <div class="section-header fade-in-up">
+                    <div class="section-tag" style="background:rgba(201,169,110,0.1);color:var(--gold-light);">展厅6 · 未来之门</div>
+                    <h2 class="section-title">开源共享<span style="color:var(--gold-light)">：让更多孩子值钱</span></h2>
+                    <p class="section-desc">成果属于过去，未来属于每一个愿意改变的教育者</p>
+                </div>
+                
+                <div class="future-content fade-in-up">
+                    <div class="future-text">
+                        <h3>开放邀约：一起让职业教育"值钱"</h3>
+                        <p>
+                            这项改革不申请专利、不垄断成果。我们坚信：职业教育的尊严，
+                            在于每一所学校都能培养出"值钱"的学生。以下资源完全开放共享：
+                        </p>
+                        <div class="future-badges">
+                            <span class="future-badge">📘 230页操作手册</span>
+                            <span class="future-badge">📋 工单模板库</span>
+                            <span class="future-badge">📊 评价标准体系</span>
+                            <span class="future-badge">📝 完整教案集</span>
+                            <span class="future-badge">🤖 宁职创原AI系统</span>
+                            <span class="future-badge">🎓 教师培训课程</span>
+                        </div>
+                        <div class="future-quote">
+                            "端出去的菜，就是职教的投名状。这里，是造值钱工匠的地方。"
+                            <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 改革宣言</div>
+                        </div>
+                    </div>
+                    <div class="future-image" id="future-3d-box">
+                        🏫
+                    </div>
+                </div>
+                
+                <!-- Completion Info -->
+                <div style="margin-top:4rem;padding:2rem;background:rgba(201,169,110,0.05);border:1px solid rgba(201,169,110,0.15);border-radius:16px;" class="fade-in-up">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+                        <div>
+                            <div style="font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);margin-bottom:1rem;">完成人</div>
+                            <div style="font-size:0.9rem;color:var(--text-dim);line-height:2;">
+                                杨通达（宁强县职业高级中学副校长）<br>
+                                刘琼、刘兴兰、何涛、赵海利<br>
+                                王双明、张伟、袁杰、李建忠
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);margin-bottom:1rem;">完成单位</div>
+                            <div style="font-size:0.9rem;color:var(--text-dim);line-height:2;">
+                                宁强县职业高级中学<br>
+                                南郑区职业教育中心<br>
+                                汉中第一职业中等职业学校<br>
+                                勉县职业教育中心<br>
+                                陕西财经职业技术学院
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--glass-border);font-size:0.85rem;color:var(--text-dim);line-height:1.8;">
+                        <strong style="color:var(--gold-light);">实践检验期：</strong>2010年3月至2026年，共16年深耕，满足国家级特等奖"实践6年以上"要求。<br>
+                        <strong style="color:var(--gold-light);">推荐单位：</strong>汉中市教育局 &nbsp;|&nbsp; <strong style="color:var(--gold-light);">申报等级：</strong>特等奖
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===== Deep Content: AI System ===== -->
+        <div class="deep-section">
+            <div class="section-header fade-in-up">
+                <div class="section-tag" style="background:rgba(59,125,216,0.1);color:var(--blue-light);">宁职创原 · AI系统</div>
+                <h2 class="section-title" style="font-family:'Noto Serif SC',serif;font-size:2rem;">16大功能模块<span style="color:var(--blue-light)">完整解析</span></h2>
+            </div>
+            <div class="module-grid fade-in-up">
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon ai">🤖</div>
+                        <div class="module-title">产教融合AI系统（9大模块）</div>
+                    </div>
+                    <div class="module-desc">快速方案生成、职考通（6子模块）、毕业要求矩阵、商业锻造、AI突破、一人公司、经验萃取、产教融合总经理、心理测评+极简助农AI赚钱系统+Word导出</div>
+                    <ul class="module-list">
+                        <li>GenerateService (~5900行) · 12+级优先级注入</li>
+                        <li>支持30+种generateType</li>
+                        <li>异步生成+轮询机制</li>
+                        <li>教育层次差异化（中职/高职/职教本科）</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon food">🍳</div>
+                        <div class="module-title">值餐系统（10子页面）</div>
+                    </div>
+                    <div class="module-desc">今日精选三大餐类、我的价值（口味画像）、信任体系（四维评分+触动标签）、共创（投票+创意）、厨房驾驶舱、经营参谋、AI对话、运营中心、药食同源、用餐习惯设置</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon health">💆</div>
+                        <div class="module-title">悦舍服务（17项服务）</div>
+                    </div>
+                    <div class="module-desc">悦颜坊7项+悦身堂6项+精选套餐4项，6位服务人员详情，快捷功能4项，实时预订倒计时（每日17:00截止）</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon edu">📋</div>
+                        <div class="module-title">平台生态（6大系统）</div>
+                    </div>
+                    <div class="module-desc">7类调研问卷、管理后台（预约+心理测评7级风险）、知录5大功能、行动教练3种对话模式、达叔对话系统、七维用户画像标签体系</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon data">⚙️</div>
+                        <div class="module-title">技术架构</div>
+                    </div>
+                    <div class="module-desc">GenerateService + PaymentService + 30+ API路由。跨端兼容（微信/抖音/H5）、数据持久化（localStorage+Supabase双写）、60+ shadcn组件库、7大分包策略</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon ai">🎓</div>
+                        <div class="module-title">世赛服务（6模块）</div>
+                    </div>
+                    <div class="module-desc">金牌教练工作页、技能标准解码、赛证融通方案、金牌选手画像、评分标准转化、校内技能竞赛设计</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon ai">📈</div>
+                        <div class="module-title">职称跃升（6模块）</div>
+                    </div>
+                    <div class="module-desc">职称评审材料包、教学成果奖策划、论文课题加速、教学质量提升、课程思政设计、教学改革方案</div>
+                </div>
+                <div class="module-card">
+                    <div class="module-card-header">
+                        <div class="module-icon ai">📚</div>
+                        <div class="module-title">课程设计（13子模块）</div>
+                    </div>
+                    <div class="module-desc">岗位-能力矩阵、课程产品化改造、四真课程锚定、四真三化五链三场、五链融合能力拆解、三场空间规划、公共课产品化、跨学科融合、项目化课程、技能达标测评、课程矩阵、企业标准转化、职业成长路径</div>
                 </div>
             </div>
         </div>
-
-        <div class="dark-quote fade-up" style="border-left-color:var(--success);background:rgba(56,161,105,0.03)">
-            <p>"赋能型行动学习，照耀一生。运用该方法后，学生的精神面貌发生巨大变化——厌学因素从根本上被切断，随之而来的是良好学习习惯的养成。"</p>
-            <div class="quote-author">—— 陕西省第二届教学成果奖推荐书·成果报告</div>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 5: 数据之巅
-============================================ -->
-<section id="hall-data">
-    <div class="section-inner">
-        <span class="section-label">展览厅 05 · 数据之巅</span>
-        <h2 class="section-title">2018 <span class="gold">vs</span> 2026：一场静悄悄的革命</h2>
-        <p class="section-subtitle">数据不会说谎。以下每一组对比，都是用15年时间换来的。</p>
-
-        <!-- Key Metrics -->
-        <div class="stat-grid fade-up">
-            <div class="stat-card">
-                <div class="stat-number gold">2200+</div>
-                <div class="stat-desc">在校生规模（2018年不足400人）<br>增长率 <strong style="color:#38A169">+450%</strong></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">150+</div>
-                <div class="stat-desc">年均本科上线人数（2018年为空白）<br>实现从"零"到"批量"的跨越</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number gold">92%</div>
-                <div class="stat-desc">课堂有效参与率（2018年35%）<br>提升 <strong style="color:#38A169">+57个百分点</strong></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">+35</div>
-                <div class="stat-desc">文化课平均分提升（分）<br>高分段人数增长 <strong style="color:#38A169">+300%</strong></div>
-            </div>
-        </div>
-
-        <!-- Chart -->
-        <div class="chart-container fade-up" id="chart-growth"></div>
-
-        <!-- More Stats -->
-        <div class="stat-grid fade-up" style="margin-top:0">
-            <div class="stat-card">
-                <div class="stat-number gold">46项</div>
-                <div class="stat-desc">市级以上技能大赛奖项<br>一等奖10项·二等奖19项·三等奖17项</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">🥈</div>
-                <div class="stat-desc"><strong>2024世界职业院校技能大赛银奖</strong><br>创汉中市历史最佳成绩</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number gold">6所</div>
-                <div class="stat-desc">系统引进本成果的中职学校<br>辐射30+考察校·1个政策点</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">99.2%</div>
-                <div class="stat-desc">悦舍服务满意度<br>12.5k+服务人次·8.6k+评价</div>
-            </div>
-        </div>
-
-        <!-- Comparison Table -->
-        <div class="deep-dive fade-up">
-            <h3>核心指标全景对比</h3>
-            <table class="data-table">
-                <thead>
-                    <tr><th>指标</th><th>2018年（改革前）</th><th>2026年（改革后）</th><th>变化</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>在校生规模</td><td style="color:var(--danger)">不足400人</td><td style="color:var(--success)">2200余人</td><td>+450%</td></tr>
-                    <tr><td>本科上线</td><td style="color:var(--danger)">空白</td><td style="color:var(--success)">年均超150人</td><td>从0到1</td></tr>
-                    <tr><td>课堂有效参与率</td><td style="color:var(--danger)">35%</td><td style="color:var(--success)">92%</td><td>+57pp</td></tr>
-                    <tr><td>文化课平均分</td><td style="color:var(--danger)">基准线</td><td style="color:var(--success)">+35分</td><td>显著提升</td></tr>
-                    <tr><td>高分段人数</td><td style="color:var(--danger)">基准线</td><td style="color:var(--success)">+300%</td><td>三倍增长</td></tr>
-                    <tr><td>技能大赛获奖</td><td style="color:var(--danger)">零星</td><td style="color:var(--success)">46项（含世赛银奖）</td><td>质的飞跃</td></tr>
-                    <tr><td>新生辍学间隔</td><td style="color:var(--danger)">6.2个月</td><td style="color:var(--success)">基本消除</td><td>根本性改变</td></tr>
-                    <tr><td>跨县区生源</td><td style="color:var(--danger)">几乎为零</td><td style="color:var(--success)">近600人</td><td>区域吸引力</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================
-     EXHIBITION HALL 6: 未来之门
-============================================ -->
-<section id="hall-future">
-    <div class="section-inner">
-        <span class="section-label">展览厅 06 · 未来之门</span>
-        <h2 class="section-title">这不是终点，<span class="gold">这是起点</span></h2>
-        <p class="section-subtitle" style="margin:0 auto;max-width:700px">
-            从赋能型行动学习法（2010-2019），到"1+8+N"高效课堂（2016-2025），再到四真三化五链三场（2020-2026），再到现在集16大模块于一体的宁职创原AI平台——理论进化从未停止，实践探索永远在路上。
-        </p>
-
-        <div class="dark-quote fade-up" style="margin:48px auto;max-width:800px">
-            <p>"面向新时代，我们将持续以培养能担当民族复兴大任的时代新人为使命，扎根汉中职业教育大地，完善具有中国灵魂、自主创新的中职育人模式。"</p>
-            <div class="quote-author">—— 赋能型行动学习法成果报告结语</div>
-        </div>
-
-        <div class="stat-grid fade-up" style="max-width:900px;margin:32px auto">
-            <div class="stat-card">
-                <div class="stat-number gold">9年</div>
-                <div class="stat-desc">研究周期（2016-2025）</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">6年</div>
-                <div class="stat-desc">系统实践检验（2020起）</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number gold">15年</div>
-                <div class="stat-desc">完整深耕（2010-2026）</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">5家</div>
-                <div class="stat-desc">联合完成单位</div>
-            </div>
-        </div>
-
-        <p style="margin-top:48px;font-family:var(--font-display);font-size:1.4rem;color:var(--gold)">
-            "学真本事，拿硬文凭，挣踏实钱！"
-        </p>
-        <p style="color:var(--text-secondary);margin-top:8px">
-            —— 这里，是造"值钱"工匠的地方。
-        </p>
-    </div>
-</section>
-
-<!-- ============================================
-     DEEP DIVE: 全面内容展示区
-============================================ -->
-<section class="module-section" style="background:var(--deep-navy)">
-    <div class="section-inner">
-        <span class="section-label">深度展示</span>
-        <h2 class="section-title">全系统·<span class="gold">16大模块</span>深度解析</h2>
-
-        <!-- 宁职创原全功能 -->
-        <div class="deep-dive fade-up">
-            <h3>一、宁职创原 · 首页智能工作台</h3>
-            <p><strong>11大核心功能：</strong>时间感知问候 · 能量仪表盘 · 今日三件事（含语音输入）· 未来7天规划 · 昨日未完成同步 · 小确幸AI推荐 · 晚间复盘 · 每日金句 · 达叔浮窗 · 快捷入口 · 智能提醒</p>
-
-            <h3>二、产教融合AI系统 · 9大模块</h3>
-            <div class="module-grid">
-                <div class="module-card">
-                    <h3>1. 快速方案</h3>
-                    <p>输入专业与主题，AI自动生成产教融合教学方案。支持一键导出Word文档。</p>
-                </div>
-                <div class="module-card">
-                    <h3>2. 职考通（6子模块）</h3>
-                    <p>考纲拆解·考点图谱·真题精练·错题本·模拟测试·智能推荐，全方位备考支持。</p>
-                </div>
-                <div class="module-card">
-                    <h3>3. 毕业要求矩阵</h3>
-                    <p>对接国家专业教学标准，自动生成毕业能力要求与课程映射矩阵。</p>
-                </div>
-                <div class="module-card">
-                    <h3>4. 商业锻造</h3>
-                    <p>将学生实训作品转化为可商业化的产品方案，真实对接市场需求。</p>
-                </div>
-                <div class="module-card">
-                    <h3>5. AI突破</h3>
-                    <p>基于AI的个性化学习路径推荐，针对薄弱环节精准突破。</p>
-                </div>
-                <div class="module-card">
-                    <h3>6. 一人公司</h3>
-                    <p>指导学生从技能出发构建个人商业模式，培养超级个体能力。</p>
-                </div>
-                <div class="module-card">
-                    <h3>7. 经验萃取</h3>
-                    <p>将教师的隐性经验转化为可复制的结构化知识体系。</p>
-                </div>
-                <div class="module-card">
-                    <h3>8. 产教融合总经理</h3>
-                    <p>模拟企业经营决策，让学生在真实商业情境中锻炼综合能力。</p>
-                </div>
-                <div class="module-card">
-                    <h3>9. 心理测评+极简助农</h3>
-                    <p>7级风险分级心理测评系统+AI赚钱系统，关注学生全面成长。</p>
-                </div>
-            </div>
-
-            <h3>三、世赛服务 · 6大模块</h3>
-            <p>金牌教练工作页 · 技能标准解码 · 赛证融通方案 · 金牌选手画像 · 评分标准转化 · 校内技能竞赛设计</p>
-
-            <h3>四、职称跃升 · 6大模块</h3>
-            <p>职称评审材料包 · 教学成果奖策划 · 论文课题加速 · 教学质量提升 · 课程思政设计 · 教学改革方案</p>
-
-            <h3>五、产教融合课程设计 · 13子模块</h3>
-            <p>岗位-能力矩阵 · 课程产品化改造 · 四真课程锚定 · 四真三化五链三场 · 五链融合能力拆解 · 三场空间规划 · 公共课产品化 · 跨学科融合 · 项目化课程 · 技能达标测评 · 课程矩阵 · 企业标准转化 · 职业成长路径</p>
-
-            <h3>六、值餐系统 · 10+子页面</h3>
-            <p><strong>今日精选：</strong>三大餐类（悦颜·康膳·轻膳）12道菜品，含价格、卡路里、健康值、标签<br>
-            <strong>我的价值：</strong>口味画像五维雷达图（辣度·咸度·甜度·健康指数·冒险指数）+ 积分 + 订单记录 + 奖励兑换<br>
-            <strong>信任体系：</strong>四维评分（口味·健康·性价比·分量）+ 6项触动标签 + 用户评价 + 厨师回复<br>
-            <strong>共创：</strong>菜品投票 + 创意提案 + 教育内容（饮食文化·营养科学·后厨故事·人物专访）+ 厨师与学生共创<br>
-            <strong>厨房驾驶舱：</strong>订单总览 + 厨师团队 + 预警系统（食材库存·新增订单）+ 工位任务分配<br>
-            <strong>经营参谋：</strong>经营日报（订单数·销售额·客单价·毛利率+环比）+ 菜品排行TOP5 + 学生绩效<br>
-            <strong>AI对话：</strong>和达叔聊天的对话界面，支持文字输入和AI回复<br>
-            <strong>运营中心：</strong>后厨驾驶舱·经营参谋部·库存管理·质量管控 + 调研问卷·心理测评·预约管理·数据看板<br>
-            <strong>药食同源：</strong>秦巴山区天然好物，中药材类+食材类分类浏览，标准化品质保障<br>
-            <strong>用餐习惯设置：</strong>堂食/外带·取餐时段·座位偏好·茶水偏好·通知设置</p>
-
-            <h3>七、悦舍健康养生 · 5大板块</h3>
-            <p><strong>三大服务分类：</strong>悦颜坊7项（毛孔冲浪¥298·肌底净化¥358·玫瑰灌肤¥288·水光原液精华焕肤¥468·小部位脱毛¥168·大部位脱毛¥388·头部洗护¥198）+ 悦身堂6项（头部放松¥268·肩颈放松¥298·背部减压¥328·拔罐¥198·刮痧¥228·艾灸¥268）+ 精选套餐4项<br>
-            <strong>6位服务人员：</strong>袁琪（康复理疗）·张晋雯（中医康复）·陈矾（美容理疗）·龙英（美容理疗）·张小丽（美甲艺术）·安娥（美妆造型）<br>
-            <strong>预订倒计时：</strong>每日17:00截止，实时倒计时（时/分/秒）</p>
-
-            <h3>八、价值膳食调研 · 7类问卷</h3>
-            <p>在校学生版 · 教师版 · 毕业生版 · 企业版 · 社会公众版 · 实习学生版 · 教师值餐工坊问卷。每个问卷可生成专属二维码。</p>
-
-            <h3>九、管理后台 · 2大中心</h3>
-            <p><strong>预约管理中心：</strong>总预约数·状态分布·服务类型统计·理疗师统计·日期趋势·最近预约列表<br>
-            <strong>心理测评管理：</strong>7级风险分级（正常/轻度关注/良好/中度预警/关注/高度预警/危机干预）+ CSV一键导出 + 二维码生成</p>
-
-            <h3>十、知录 · 5大标签</h3>
-            <p>今日知录·历史知录·文件上传·成长洞察·设备同步。全天候个人语音日记与成长分析系统。</p>
-
-            <h3>十一、行动教练 · 3种对话模式</h3>
-            <p>三件事打磨·单个任务深度优化·晚间复盘。基于Dieter Rams"好设计的10原则"与Jony Ive极简主义，翡翠绿主色调，行动教练式引导。</p>
-
-            <h3>十二、达叔对话系统</h3>
-            <p>专家配置系统（多模块AI人格）+ TTS语音播报（语速0.85·音调0.9·磁性男声）+ 流式回复 + 持续上下文对话。</p>
-
-            <h3>十三、用户画像 · 七维标签体系</h3>
-            <p>身份标签·性格标签·能力标签·偏好标签·场景标签·人设标签·语气风格。组合预设，一键应用。数据持久化到localStorage，影响全局AI对话人格。</p>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================
-     TECHNICAL ARCHITECTURE
-============================================ -->
-<section class="module-section" style="background:var(--space-black)">
-    <div class="section-inner">
-        <span class="section-label">技术架构</span>
-        <h2 class="section-title">支撑体系：<span class="gold">技术与平台</span></h2>
-
-        <div class="deep-dive fade-up">
-            <h3>后端架构核心</h3>
-            <table class="data-table">
-                <thead>
-                    <tr><th>组件</th><th>规模</th><th>核心能力</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>GenerateService</td><td>~5900+行</td><td>AI内容生成引擎，12+级优先级注入，教育层次差异化（中职/高职/职教本科），异步生成+轮询，支持30+种generateType</td></tr>
-                    <tr><td>PaymentService</td><td>完整支付体系</td><td>微信支付/抖音支付/模拟支付，Supabase订单存储，模块解锁状态管理</td></tr>
-                    <tr><td>API路由</td><td>30+接口</td><td>全局前缀/api，覆盖生成/用户/预约/心理测评/药食/问卷/支付全链路</td></tr>
-                </tbody>
-            </table>
-
-            <h3>全局特性</h3>
-            <table class="data-table">
-                <thead>
-                    <tr><th>特性</th><th>方案</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>跨端兼容</td><td>微信小程序·抖音小程序·H5三端适配</td></tr>
-                    <tr><td>数据持久化</td><td>localStorage + Supabase数据库双写</td></tr>
-                    <tr><td>UI组件体系</td><td>基于shadcn/ui（Taro版）60+组件库，Tailwind CSS 4原子化样式，lucide-react-taro图标库</td></tr>
-                    <tr><td>分包策略</td><td>主包（首页/brain）+ zhican子包 + yushe子包 + capability子包 + main子包 + value-meal子包 + admin子包（共7大分包）</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================
-     FOOTER
-============================================ -->
-<footer class="footer">
-    <div class="section-inner">
+        
+    </div><!-- /scroll-container -->
+    
+    <!-- Footer -->
+    <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <h4>核心理论</h4>
-                <a href="#hall-theory">赋能型行动学习法</a>
-                <a href="#hall-theory">"1+8+N"高效课堂</a>
-                <a href="#hall-theory">四真三化五链三场</a>
-                <a href="#hall-theory">产业·课堂双螺旋</a>
+                <h4>成果内容</h4>
+                <ul>
+                    <li><a href="#hero-section">首页 · 投名状</a></li>
+                    <li><a href="#hall-darkness">黑暗之谷（2018困境）</a></li>
+                    <li><a href="#hall-theory">理论之光（双螺旋）</a></li>
+                    <li><a href="#hall-workshop">实战工坊（四真三化）</a></li>
+                    <li><a href="#hall-life">生命剧场（逆袭故事）</a></li>
+                    <li><a href="#hall-data">数据之巅（2018 vs 2026）</a></li>
+                    <li><a href="#hall-future">未来之门（开源共享）</a></li>
+                </ul>
             </div>
             <div class="footer-col">
-                <h4>实践平台</h4>
-                <a href="#hall-workshop">值餐系统</a>
-                <a href="#hall-workshop">悦舍健康养生</a>
-                <a href="#hall-workshop">产教融合AI系统</a>
-                <a href="#hall-workshop">文化基础课十门</a>
+                <h4>AI系统与平台</h4>
+                <ul>
+                    <li><a href="generator.html">AI系统 · 9大模块</a></li>
+                    <li><a href="zhican.html">值餐系统 · 10子页面</a></li>
+                    <li><a href="yushe.html">悦舍服务 · 17项服务</a></li>
+                    <li><a href="platform.html">平台生态 · 6大系统</a></li>
+                    <li><a href="cultural-courses.html">文化基础课 · 十门</a></li>
+                    <li><a href="architecture.html">技术架构 · API文档</a></li>
+                </ul>
             </div>
             <div class="footer-col">
-                <h4>育人成效</h4>
-                <a href="#hall-life">学生逆袭故事</a>
-                <a href="#hall-data">数据对比</a>
-                <a href="#hall-data">世赛成绩</a>
-                <a href="#hall-data">辐射推广</a>
+                <h4>申报材料</h4>
+                <ul>
+                    <li><a href="#">赋能型行动学习法（2010–2019）</a></li>
+                    <li><a href="#">"1+8+N"高效课堂（2016–2025）</a></li>
+                    <li><a href="#">四真三化五链三场（2020–2025）</a></li>
+                    <li><a href="#">宁职创原AI平台（2025–2026）</a></li>
+                </ul>
             </div>
             <div class="footer-col">
-                <h4>技术架构</h4>
-                <a href="#">GenerateService</a>
-                <a href="#">30+ API接口</a>
-                <a href="#">三端兼容</a>
-                <a href="#">7大分包策略</a>
+                <h4>联系与资源</h4>
+                <ul>
+                    <li style="color:var(--text-dim);">宁强县职业高级中学</li>
+                    <li style="color:var(--text-dim);">陕西省汉中市宁强县</li>
+                    <li style="color:var(--text-dim);">联系人：杨通达副校长</li>
+                    <li><a href="#">资源下载（操作手册/教案集）</a></li>
+                    <li><a href="#">帮扶学校申请入口</a></li>
+                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>成果完成人：杨通达、刘琼、刘兴兰、何涛、赵海利、王双明、张伟、袁杰、李建忠</p>
-            <p>完成单位：宁强县职业高级中学 · 南郑区职业教育中心 · 汉中市第一职业中等专业学校 · 勉县职业教育中心 · 陕西财经职业技术学院</p>
-            <p style="margin-top:12px;color:var(--gold)">推荐单位：汉中市教育局 &nbsp;|&nbsp; 实践检验：2016年9月—2026年6月 &nbsp;|&nbsp; 十五年深耕</p>
-            <p style="margin-top:8px;color:var(--text-dim)">© 2026 宁强县职业高级中学 &nbsp;|&nbsp; "让每个孩子都值钱"</p>
+            <p>© 2026 宁强县职业高级中学 · 国家级职业教育教学成果特等奖申报网站</p>
+            <p style="margin-top:0.5rem;font-size:0.8rem;">
+                "让每个孩子都值钱"——县域中职"产业·课堂双螺旋"育人的实践与探索
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Achievement Toast -->
+    <div class="achievement-toast" id="achievement-toast">
+        <div class="achievement-icon" id="toast-icon">🏆</div>
+        <div class="achievement-text">
+            <h4 id="toast-title">成就解锁</h4>
+            <p id="toast-desc">您已完成探索</p>
         </div>
     </div>
-</footer>
-
-<script>
-/* ============================================
-   1. LOADING SCREEN
-============================================ */
-(function(){
-    const canvas = document.getElementById('loading-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     
-    let particles = [];
-    const particleCount = 80;
-    
-    class Particle {
-        constructor(){
-            this.reset();
-        }
-        reset(){
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 0.5;
-            this.speedX = (Math.random() - 0.5) * 0.5;
-            this.speedY = (Math.random() - 0.5) * 0.5;
-            this.opacity = Math.random() * 0.5 + 0.2;
-            this.gold = Math.random() > 0.6;
-        }
-        update(){
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if(this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-            if(this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            this.opacity += (Math.random() - 0.5) * 0.01;
-            this.opacity = Math.max(0.1, Math.min(0.7, this.opacity));
-        }
-        draw(){
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-            ctx.fillStyle = this.gold 
-                ? `rgba(201,169,110,${this.opacity})` 
-                : `rgba(59,125,216,${this.opacity})`;
-            ctx.fill();
-        }
-    }
-    
-    for(let i=0;i<particleCount;i++) particles.push(new Particle());
-    
-    function animate(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animate);
-    }
-    animate();
-    
-    // Hide loading after 2.5s
-    setTimeout(()=>{
-        document.getElementById('loading').classList.add('hidden');
-        setTimeout(()=>{
-            const ld = document.getElementById('loading');
-            if(ld) ld.remove();
-        }, 800);
-    }, 2500);
-})();
-
-/* ============================================
-   2. HERO CANVAS - Double Helix Particles
-============================================ */
-(function(){
-    const canvas = document.getElementById('hero-canvas');
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let W,H;
-    
-    function resize(){
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-    
-    let dots = [];
-    const dotCount = 120;
-    
-    class HelixDot {
-        constructor(){
-            this.angle = Math.random() * Math.PI * 2;
-            this.yOff = Math.random() * H;
-            this.speed = 0.3 + Math.random() * 0.8;
-            this.amplitude = 60 + Math.random() * 120;
-            this.size = 1 + Math.random() * 2;
-            this.opacity = 0.15 + Math.random() * 0.35;
-            this.strand = Math.random() > 0.5 ? 1 : -1;
-            this.colorGold = Math.random() > 0.5;
-            this.centerX = W/2 + (Math.random() - 0.5) * 40;
-        }
-        update(scroll){
-            this.angle += this.speed * 0.01;
-            this.yOff -= this.speed;
-            if(this.yOff < -50) this.yOff = H + 50;
-            this.centerX = W/2 + Math.sin(scroll * 0.001) * 40;
-        }
-        draw(ctx){
-            const x = this.centerX + Math.cos(this.angle) * this.amplitude * this.strand;
-            const y = this.yOff;
-            if(y < -50 || y > H+50) return;
+    <!-- ===== Main JavaScript ===== -->
+    <script>
+    (function() {
+        'use strict';
+        
+        // ========== 1. Loading Screen ==========
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingBar = document.getElementById('loading-bar');
+        const openingCanvas = document.getElementById('opening-canvas');
+        const openingThreeCanvas = document.getElementById('opening-three-canvas');
+        const openingText = document.getElementById('opening-text');
+        
+        let loadProgress = 0;
+        const loadInterval = setInterval(() => {
+            loadProgress += Math.random() * 15 + 5;
+            if (loadProgress > 100) loadProgress = 100;
+            loadingBar.style.width = loadProgress + '%';
+            if (loadProgress >= 100) {
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                    startOpeningAnimation();
+                }, 800);
+            }
+        }, 200);
+        
+        // ========== 2. Opening Animation ==========
+        function startOpeningAnimation() {
+            openingCanvas.style.display = 'flex';
             
-            ctx.beginPath();
-            ctx.arc(x, y, this.size, 0, Math.PI*2);
-            const c = this.colorGold ? '201,169,110' : '59,125,216';
-            ctx.fillStyle = `rgba(${c},${this.opacity})`;
-            ctx.fill();
+            // Three.js opening scene
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x020815);
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5);
             
-            // Glow
-            if(this.size > 1.5){
-                ctx.beginPath();
-                ctx.arc(x, y, this.size*3, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(${c},${this.opacity*0.15})`;
-                ctx.fill();
+            const renderer = new THREE.WebGLRenderer({ canvas: openingThreeCanvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Particles - exploding from center
+            const particleCount = 2000;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const velocities = [];
+            
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = 0;
+                positions[i * 3 + 1] = 0;
+                positions[i * 3 + 2] = 0;
+                
+                // Gold and cyan colors
+                const isGold = Math.random() > 0.5;
+                colors[i * 3] = isGold ? 0.79 : 0;
+                colors[i * 3 + 1] = isGold ? 0.66 : 0.83;
+                colors[i * 3 + 2] = isGold ? 0.43 : 0.67;
+                
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.1,
+                    y: (Math.random() - 0.5) * 0.1,
+                    z: (Math.random() - 0.5) * 0.1
+                });
             }
-        }
-    }
-    
-    for(let i=0;i<dotCount;i++) dots.push(new HelixDot());
-    
-    let scrollY = 0;
-    window.addEventListener('scroll', ()=>{ scrollY = window.scrollY; });
-    
-    function animate(){
-        ctx.clearRect(0,0,W,H);
-        dots.forEach(d => { d.update(scrollY); d.draw(ctx); });
-        requestAnimationFrame(animate);
-    }
-    animate();
-})();
-
-/* ============================================
-   3. SCROLL ANIMATIONS
-============================================ */
-(function(){
-    const observer = new IntersectionObserver((entries)=>{
-        entries.forEach(entry=>{
-            if(entry.isIntersecting){
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.15 });
-    
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-})();
-
-/* ============================================
-   4. FLOATING NAVIGATION
-============================================ */
-(function(){
-    const dots = document.querySelectorAll('.nav-dot');
-    if(!dots.length) return;
-    
-    const sections = [];
-    dots.forEach(dot => {
-        const target = document.getElementById(dot.dataset.target);
-        if(target) sections.push({dot, target});
-    });
-    
-    function updateActive(){
-        const scrollPos = window.scrollY + window.innerHeight/3;
-        let active = null;
-        sections.forEach((s,i)=>{
-            if(scrollPos >= s.target.offsetTop){
-                active = i;
-            }
-        });
-        dots.forEach(d => d.classList.remove('active'));
-        if(active !== null) dots[active].classList.add('active');
-    }
-    
-    window.addEventListener('scroll', updateActive);
-    
-    dots.forEach(dot => {
-        dot.addEventListener('click', ()=>{
-            const target = document.getElementById(dot.dataset.target);
-            if(target){
-                target.scrollIntoView({behavior:'smooth'});
-            }
-        });
-    });
-})();
-
-/* ============================================
-   5. ECHARTS GROWTH CHART
-============================================ */
-(function(){
-    const container = document.getElementById('chart-growth');
-    if(!container) return;
-    
-    const chart = echarts.init(container, null, {
-        backgroundColor: 'transparent'
-    });
-    
-    const option = {
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(10,22,40,0.95)',
-            borderColor: 'rgba(201,169,110,0.3)',
-            textStyle: { color: '#E8E6E3', fontSize: 13 }
-        },
-        legend: {
-            data: ['在校生规模', '本科上线', '课堂参与率', '文化课均分提升'],
-            textStyle: { color: '#8B95A5', fontSize: 12 },
-            top: 0
-        },
-        grid: { left: '3%', right: '4%', bottom: '3%', top: '15%', containLabel: true },
-        xAxis: {
-            type: 'category',
-            data: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'],
-            axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-            axisLabel: { color: '#8B95A5' }
-        },
-        yAxis: [{
-            type: 'value',
-            name: '人数',
-            axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-            axisLabel: { color: '#8B95A5' },
-            splitLine: { lineStyle: { color: 'rgba(255,255,255,0.03)' } }
-        },{
-            type: 'value',
-            name: '百分比/分数',
-            axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-            axisLabel: { color: '#8B95A5' },
-            splitLine: { show: false }
-        }],
-        series: [
-            {
-                name: '在校生规模',
-                type: 'bar',
-                data: [380, 550, 780, 1100, 1400, 1700, 1950, 2100, 2200],
-                itemStyle: {
-                    color: new echarts.graphic.LinearGradient(0,0,0,1,[
-                        {offset:0, color:'rgba(201,169,110,0.8)'},
-                        {offset:1, color:'rgba(201,169,110,0.2)'}
-                    ])
-                },
-                barWidth: 18
-            },
-            {
-                name: '本科上线',
-                type: 'bar',
-                data: [0, 5, 20, 50, 80, 110, 135, 150, 158],
-                itemStyle: {
-                    color: new echarts.graphic.LinearGradient(0,0,0,1,[
-                        {offset:0, color:'rgba(59,125,216,0.8)'},
-                        {offset:1, color:'rgba(59,125,216,0.2)'}
-                    ])
-                },
-                barWidth: 18
-            },
-            {
-                name: '课堂参与率',
-                type: 'line',
-                yAxisIndex: 1,
-                data: [35, 42, 55, 65, 74, 82, 88, 90, 92],
-                lineStyle: { color: '#00D4AA', width: 2 },
-                itemStyle: { color: '#00D4AA' },
-                symbol: 'circle',
-                symbolSize: 6
-            },
-            {
-                name: '文化课均分提升',
-                type: 'line',
-                yAxisIndex: 1,
-                data: [0, 5, 10, 16, 21, 27, 31, 34, 35],
-                lineStyle: { color: '#E8D5B7', width: 2 },
-                itemStyle: { color: '#E8D5B7' },
-                symbol: 'diamond',
-                symbolSize: 8
-            }
-        ]
-    };
-    
-    chart.setOption(option);
-    window.addEventListener('resize', ()=>chart.resize());
-    
-    // Re-observe for resize
-    const obs = new IntersectionObserver((entries)=>{
-        if(entries[0].isIntersecting){
-            chart.resize();
-        }
-    });
-    obs.observe(container);
-})();
-
-/* ============================================
-   6. PARALLAX EFFECT ON SCROLL
-============================================ */
-(function(){
-    let ticking = false;
-    window.addEventListener('scroll', ()=>{
-        if(!ticking){
-            requestAnimationFrame(()=>{
-                const scrollY = window.scrollY;
-                // Fade hero canvas
-                const heroCanvas = document.getElementById('hero-canvas');
-                if(heroCanvas){
-                    const opacity = Math.max(0, 1 - scrollY / (window.innerHeight * 0.8));
-                    heroCanvas.style.opacity = opacity;
-                }
-                ticking = false;
+            
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.03,
+                vertexColors: true,
+                transparent: true,
+                opacity: 1,
+                blending: THREE.AdditiveBlending
             });
-            ticking = true;
-        }
-    });
-})();
-
-/* ============================================
-   7. GSAP ENHANCEMENTS (if available)
-============================================ */
-if(typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined'){
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Fade sections as they enter
-    document.querySelectorAll('section').forEach(section => {
-        gsap.fromTo(section, 
-            { opacity: 0, y: 60 },
-            {
-                opacity: 1, y: 0,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%',
-                    end: 'top 30%',
-                    toggleActions: 'play none none reverse'
+            
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            
+            // Double helix formation target
+            const helixPositions = [];
+            const helixCount = 500;
+            for (let i = 0; i < helixCount; i++) {
+                const t = (i / helixCount) * Math.PI * 8;
+                const r = 1.5;
+                // Helix 1 (gold)
+                helixPositions.push({
+                    x: Math.cos(t) * r,
+                    y: (i / helixCount) * 6 - 3,
+                    z: Math.sin(t) * r
+                });
+                // Helix 2 (blue)
+                helixPositions.push({
+                    x: Math.cos(t + Math.PI) * r,
+                    y: (i / helixCount) * 6 - 3,
+                    z: Math.sin(t + Math.PI) * r
+                });
+            }
+            
+            let openingTime = 0;
+            const openingDuration = 4; // seconds
+            
+            function animateOpening() {
+                openingTime += 0.016;
+                const progress = Math.min(openingTime / openingDuration, 1);
+                
+                const positions = particles.geometry.attributes.position.array;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    if (i < helixPositions.length && progress > 0.3) {
+                        // Form double helix
+                        const hp = helixPositions[i % helixPositions.length];
+                        const targetX = hp.x;
+                        const targetY = hp.y;
+                        const targetZ = hp.z;
+                        positions[i * 3] += (targetX - positions[i * 3]) * 0.05;
+                        positions[i * 3 + 1] += (targetY - positions[i * 3 + 1]) * 0.05;
+                        positions[i * 3 + 2] += (targetZ - positions[i * 3 + 2]) * 0.05;
+                    } else {
+                        // Explode outward
+                        positions[i * 3] += velocities[i].x;
+                        positions[i * 3 + 1] += velocities[i].y;
+                        positions[i * 3 + 2] += velocities[i].z;
+                        velocities[i].x *= 1.02;
+                        velocities[i].y *= 1.02;
+                        velocities[i].z *= 1.02;
+                    }
+                }
+                
+                particles.geometry.attributes.position.needsUpdate = true;
+                
+                // Camera movement
+                camera.position.y = -progress * 3;
+                camera.lookAt(0, 0, 0);
+                
+                renderer.render(scene, camera);
+                
+                if (progress < 1 || openingTime < openingDuration + 1) {
+                    requestAnimationFrame(animateOpening);
+                } else {
+                    // Show text and end opening
+                    openingText.style.opacity = 1;
+                    openingText.style.transition = 'opacity 1.5s ease';
+                    openingText.textContent = '从"学科拼盘"到"产业战场"';
+                    
+                    setTimeout(() => {
+                        openingCanvas.classList.add('hidden');
+                        initMainScene();
+                        initScrollAnimations();
+                        initECharts();
+                        initCountUp();
+                    }, 2000);
                 }
             }
-        );
-    });
-}
-
-console.log('🏆 宁强职教成果数字展馆已就绪');
-console.log('   "让每个孩子都值钱"');
-console.log('   产业·课堂双螺旋育人实践');
-console.log('   2010 — 2026 · 十五年深耕');
-</script>
-
+            
+            animateOpening();
+        }
+        
+        // ========== 3. Main Three.js Scene (Persistent Background) ==========
+        let mainScene, mainCamera, mainRenderer, mainParticles;
+        
+        function initMainScene() {
+            mainScene = new THREE.Scene();
+            mainCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            mainCamera.position.set(0, 0, 8);
+            
+            mainRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true, alpha: true });
+            mainRenderer.setSize(window.innerWidth, window.innerHeight);
+            mainRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            mainRenderer.setClearColor(0x000000, 0);
+            
+            // Double helix particles (persistent, subtle)
+            const helixParticleCount = 300;
+            const hPositions = new Float32Array(helixParticleCount * 3);
+            const hColors = new Float32Array(helixParticleCount * 3);
+            
+            for (let i = 0; i < helixParticleCount; i++) {
+                const t = (i / helixParticleCount) * Math.PI * 10;
+                const r = 3 + Math.sin(t * 0.5) * 0.5;
+                const isGold = i % 2 === 0;
+                
+                hPositions[i * 3] = Math.cos(t + (isGold ? 0 : Math.PI)) * r;
+                hPositions[i * 3 + 1] = (i / helixParticleCount) * 10 - 5;
+                hPositions[i * 3 + 2] = Math.sin(t + (isGold ? 0 : Math.PI)) * r;
+                
+                if (isGold) {
+                    hColors[i * 3] = 0.79; hColors[i * 3 + 1] = 0.66; hColors[i * 3 + 2] = 0.43;
+                } else {
+                    hColors[i * 3] = 0.23; hColors[i * 3 + 1] = 0.49; hColors[i * 3 + 2] = 0.85;
+                }
+            }
+            
+            const hGeometry = new THREE.BufferGeometry();
+            hGeometry.setAttribute('position', new THREE.BufferAttribute(hPositions, 3));
+            hGeometry.setAttribute('color', new THREE.BufferAttribute(hColors, 3));
+            
+            const hMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+            
+            mainParticles = new THREE.Points(hGeometry, hMaterial);
+            mainScene.add(mainParticles);
+            
+            // Render loop
+            function animate() {
+                requestAnimationFrame(animate);
+                if (mainParticles) {
+                    mainParticles.rotation.y += 0.002;
+                }
+                mainRenderer.render(mainScene, mainCamera);
+            }
+            animate();
+            
+            window.addEventListener('resize', () => {
+                mainCamera.aspect = window.innerWidth / window.innerHeight;
+                mainCamera.updateProjectionMatrix();
+                mainRenderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        // ========== 4. Scroll Animations (GSAP) ==========
+        function initScrollAnimations() {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+                // Fallback: just show elements
+                document.querySelectorAll('.fade-in-up').forEach(el => el.classList.add('visible'));
+                return;
+            }
+            
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Fade in up elements
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                gsap.fromTo(el,
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1, y: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 85%',
+                            toggleActions: 'play none none reverse'
+                        }
+                    }
+                );
+            });
+            
+            // Nav dots update
+            const sections = [
+                'hero-section', 'hall-darkness', 'hall-theory',
+                'hall-workshop', 'hall-life', 'hall-data', 'hall-future'
+            ];
+            
+            sections.forEach((id, index) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    ScrollTrigger.create({
+                        trigger: el,
+                        start: 'top center',
+                        end: 'bottom center',
+                        onEnter: () => setActiveDot(index),
+                        onEnterBack: () => setActiveDot(index)
+                    });
+                }
+            });
+        }
+        
+        function setActiveDot(index) {
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+        
+        // Nav dot click
+        document.querySelectorAll('.nav-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                const target = dot.getAttribute('data-target');
+                const el = document.getElementById(target);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        
+        // ========== 5. ECharts Data Visualization ==========
+        function initECharts() {
+            const chartDom = document.getElementById('main-chart');
+            if (!chartDom || typeof echarts === 'undefined') return;
+            
+            const chart = echarts.init(chartDom, null, { renderer: 'canvas' });
+            
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(10,22,40,0.95)',
+                    borderColor: 'rgba(201,169,110,0.3)',
+                    textStyle: { color: '#E8E8E8', fontSize: 13 }
+                },
+                legend: {
+                    data: ['2018年', '2026年'],
+                    top: 10,
+                    textStyle: { color: '#8A8A9A', fontSize: 13 }
+                },
+                grid: { left: '3%', right: '4%', bottom: '10%', top: '15%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['在校生规模', '课堂参与度', '文化课平均分', '本科上线/年', '高分段增长', '世赛奖项', '帮扶学校'],
+                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                    axisLabel: { color: '#8A8A9A', fontSize: 11, interval: 0, rotate: 20 }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
+                    axisLabel: { color: '#8A8A9A', fontSize: 11 }
+                },
+                series: [
+                    {
+                        name: '2018年',
+                        type: 'bar',
+                        barWidth: '35%',
+                        data: [400, 35, 45, 0, 10, 0, 1],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#E74C3C' },
+                                { offset: 1, color: '#C0392B' }
+                            ]),
+                            borderRadius: [4, 4, 0, 0]
+                        }
+                    },
+                    {
+                        name: '2026年',
+                        type: 'bar',
+                        barWidth: '35%',
+                        data: [2200, 92, 80, 150, 40, 46, 6],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#00D4AA' },
+                                { offset: 1, color: '#00AA88' }
+                            ]),
+                            borderRadius: [4, 4, 0, 0]
+                        }
+                    }
+                ],
+                animationDuration: 2000,
+                animationEasing: 'cubicOut'
+            };
+            
+            chart.setOption(option);
+            
+            // Growth line chart
+            const chart2 = echarts.init(chartDom, null, { renderer: 'canvas' });
+            // Will be swapped on scroll
+        }
+        
+        // ========== 6. Count-Up Animation ==========
+        function initCountUp() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.getAttribute('data-count'));
+                        animateCount(el, 0, target, 2000);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+        }
+        
+        function animateCount(el, start, end, duration) {
+            const range = end - start;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                const current = Math.floor(start + range * eased);
+                el.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // ========== 7. Achievement System ==========
+        let achievements = {
+            scrolled: false,
+            viewedCharts: false,
+            readStories: false
+        };
+        
+        function checkAchievements() {
+            // Scrolled past first section
+            if (!achievements.scrolled && window.scrollY > window.innerHeight * 0.5) {
+                achievements.scrolled = true;
+                showAchievement('👁️', '见证者', '您已开始探索改革之旅');
+            }
+            // Viewed data chart
+            const chartEl = document.getElementById('hall-data');
+            if (!achievements.viewedCharts && chartEl) {
+                const rect = chartEl.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    achievements.viewedCharts = true;
+                    showAchievement('📊', '数据解读员', '您已查看关键数据对比');
+                }
+            }
+        }
+        
+        function showAchievement(icon, title, desc) {
+            const toast = document.getElementById('achievement-toast');
+            document.getElementById('toast-icon').textContent = icon;
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-desc').textContent = desc;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+        
+        window.addEventListener('scroll', checkAchievements);
+        
+    })();
+    </script>
 </body>
 </html>
