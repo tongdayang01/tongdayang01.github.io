@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鎶€鏈灦鏋?鈥?瀹佽亴鍒涘師</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); color: white; padding: 72px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background: radial-gradient(circle at 50% 30%, rgba(99,102,241,0.08) 0%, transparent 70%); }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; position: relative; z-index: 1; }
+    .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; position: relative; z-index: 1; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 720px; margin: 0 auto; line-height: 1.8; position: relative; z-index: 1; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-tag { display: inline-block; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; color: white; }
+    .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Architecture diagram area */
+    .arch-diagram { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin-bottom: 32px; }
+    .layer { margin-bottom: 16px; padding: 16px 20px; border-radius: 10px; border-left: 5px solid; }
+    .layer h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .layer p { font-size: 0.85rem; color: var(--text-light); }
+
+    /* API Table */
+    .api-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .api-table thead { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
+    .api-table th { padding: 14px 16px; text-align: left; font-weight: 600; }
+    .api-table td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 0.84rem; }
+    .api-table tr:nth-child(even) { background: #f8f9fa; }
+    .api-table tr:hover { background: #eff6ff; }
+    .method { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+    .method-post { background: #dbeafe; color: #1e40af; }
+    .method-get { background: #d1fae5; color: #065f46; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card-head { padding: 24px 24px 16px; }
+    .card-head h3 { font-size: 1.1rem; font-weight: 700; color: white; }
+    .card-head p { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .card-body { padding: 20px 24px 24px; }
+    .card-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .card-body ul { list-style: none; margin-top: 8px; }
+    .card-body ul li { padding: 5px 0; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid #f0f0f0; }
+    .card-body ul li::before { content: "鈻?"; color: var(--gold); font-weight: bold; }
+    .card-body ul li:last-child { border-bottom: none; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+
+    .subpkg-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 16px; }
+    .subpkg-table th { background: #1e1b4b; color: white; padding: 10px 14px; text-align: left; }
+    .subpkg-table td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+    .subpkg-table tr:nth-child(even) { background: #f8f9fa; }
+
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.5rem; }
+        .card-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">馃彨 瀹佽亴鍒涘師</a>
+        <div class="navbar-links">
+            <a href="index.html">棣栭〉</a>
+            <a href="theory.html">鐞嗚妗嗘灦</a>
+            <a href="cases.html">鍏稿瀷妗堜緥</a>
+            <a href="worldskills.html">涓栬禌鏈嶅姟</a>
+            <a href="promotion.html">鑱岀О璺冨崌</a>
+            <a href="curriculum.html">璇剧▼璁捐</a>
+            <a href="generator.html">AI绯荤粺</a>
+            <a href="zhican.html">鍊奸</a>
+            <a href="yushe.html">鎮﹁垗</a>
+            <a href="platform.html">骞冲彴鐢熸€?/a>
+            <a href="architecture.html" class="active">鎶€鏈灦鏋?/a>
+            <a href="stories.html">鎴愰暱鏁呬簨</a>
+            <a href="videos.html">瑙嗛</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">馃彈锔?鍚庣鏋舵瀯 + 鍏ㄥ眬鐗规€?/div>
+    <h1>鎶€鏈灦鏋勶細璁╂瘡涓€琛屼唬鐮侀兘鏈夋暀鑲叉俯搴?/h1>
+    <p>GenerateService 12+绾т紭鍏堢骇娉ㄥ叆 路 30+鐢熸垚绫诲瀷 路 PaymentService鏀粯浣撶郴 路 30+API鎺ュ彛 路 璺ㄧ鍏煎 路 鍒嗗寘绛栫暐</p>
+</section>
+
+<div class="container">
+
+<!-- ============ 15. 鍚庣鏋舵瀯 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#1e1b4b,#6366f1);">鈿欙笍 鍚庣鏋舵瀯</span>
+        <h2 class="section-title">鏍稿績鏈嶅姟 路 API璺敱 路 鏀粯浣撶郴</h2>
+        <p class="section-desc">GenerateService(~5900+琛? + PaymentService + 30+ API鎺ュ彛</p>
+    </div>
+
+    <!-- GenerateService -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">馃 GenerateService 鈥?AI鍐呭鐢熸垚寮曟搸锛垀5900+琛岋級</h3>
+
+    <div class="arch-diagram">
+        <div class="layer" style="background:#f0fdf4;border-color:#10b981;">
+            <h4 style="color:#065f46;">馃尡 12+绾т紭鍏堢骇娉ㄥ叆绯荤粺 (Layer -1 ~ Layer 12+)</h4>
+            <p>浠庣郴缁熺骇榛樿鍊?鈫?鐢ㄦ埛鍋忓ソ 鈫?鍏ㄥ眬绛栫暐 鈫?妯″潡閰嶇疆 鈫?鏁欒偛灞傛 鈫?涓撲笟閫傞厤 鈫?鍘嗗彶涓婁笅鏂?鈫?瀹炴椂杈撳叆 鈫?鍔ㄦ€佽鐩栵紝閫愬眰鍙犲姞锛岀‘淇濇瘡娆＄敓鎴愮簿鍑嗛€傞厤褰撳墠鍦烘櫙銆?/p>
+        </div>
+        <div class="layer" style="background:#eff6ff;border-color:#3b82f6;">
+            <h4 style="color:#1e40af;">馃帗 鏁欒偛灞傛宸紓鍖?/h4>
+            <p>涓亴 / 楂樿亴 / 鑱屾暀鏈 涓変釜灞傛鐙珛绛栫暐閰嶇疆锛屽悓涓€妯″潡杈撳嚭涓嶅悓娣卞害鐨勫唴瀹广€備腑鑱屽亸閲嶅疄鎿嶄笌宸ュ崟锛岄珮鑱屽亸閲嶆柟妗堣璁★紝鑱屾暀鏈鍋忛噸鐞嗚浣撶郴涓庡垱鏂般€?/p>
+        </div>
+        <div class="layer" style="background:#fef3c7;border-color:#f59e0b;">
+            <h4 style="color:#92400e;">鈿?寮傛鐢熸垚 + 杞鏈哄埗</h4>
+            <p>POST /api/generate 鎻愪氦浠诲姟 鈫?杩斿洖 taskId 鈫?瀹㈡埛绔疆璇?GET /api/generate/result/:taskId 鈫?鑾峰彇瀹屾暣缁撴灉銆傛敮鎸侀暱鏂囨湰銆佸妯″潡骞惰鐢熸垚銆?/p>
+        </div>
+        <div class="layer" style="background:#f5f3ff;border-color:#8b5cf6;">
+            <h4 style="color:#5b21b6;">馃敡 30+绉?generateType</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">蹇€熸柟妗?/span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">鑱岃€冮€?/span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">姣曚笟瑕佹眰鐭╅樀</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">鍟嗕笟閿婚€?/span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">AI绐佺牬</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">涓€浜哄叕鍙?/span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">缁忛獙钀冨彇</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">鎬荤粡鐞?/span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">蹇冪悊娴嬭瘎</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">鍔╁啘绯荤粺</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">涓栬禌鏂规</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">鑱岀О璇勫</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">璇剧▼璁捐</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">... +17鏇村</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PaymentService -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">馃挸 PaymentService 鈥?鏀粯涓庤В閿?/h3>
+    <div class="card-grid" style="margin-bottom:32px;">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#059669,#10b981);">
+                <h3>寰俊鏀粯</h3><p>灏忕▼搴忕鍘熺敓鏀寔</p>
+            </div>
+            <div class="card-body"><p>寰俊灏忕▼搴忓唴鐩存帴璋冭捣鏀粯锛屾敮鎸佹ā鍧楄В閿併€佷細鍛樿喘涔般€佸€奸涓嬪崟銆佹偊鑸嶉绾︺€?/p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+                <h3>鎶栭煶鏀粯</h3><p>鎶栭煶灏忕▼搴忛€傞厤</p>
+            </div>
+            <div class="card-body"><p>鎶栭煶灏忕▼搴忕鐨勬敮浠橀€氶亾锛屼笌寰俊鏀粯骞宠鏀寔锛岃鐩栨洿骞跨敤鎴风兢銆?/p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                <h3>妯℃嫙鏀粯</h3><p>寮€鍙?婕旂ず鐜</p>
+            </div>
+            <div class="card-body"><p>寮€鍙戠幆澧冨拰婕旂ず鍦烘櫙涓嬬殑妯℃嫙鏀粯锛屾棤闇€鐪熷疄浜ゆ槗鍗冲彲娴嬭瘯瀹屾暣娴佺▼銆?/p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+                <h3>Supabase璁㈠崟瀛樺偍</h3><p>璁㈠崟鎸佷箙鍖?/p>
+            </div>
+            <div class="card-body"><p>鎵€鏈夋敮浠樿鍗曞瓨鍌ㄥ湪Supabase鏁版嵁搴擄紝鏀寔璁㈠崟鏌ヨ銆侀€€娆俱€佺粺璁″垎鏋愩€傛ā鍧楄В閿佺姸鎬佹湰鍦?浜戠鍙屽啓銆?/p></div>
+        </div>
+    </div>
+
+    <!-- API Routes -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">馃攲 API璺敱锛堝叏灞€鍓嶇紑 /api锛?/h3>
+    <div style="overflow-x:auto;">
+    <table class="api-table">
+        <thead>
+            <tr><th>Method</th><th>璺緞</th><th>鍔熻兘璇存槑</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/generate</td><td>AI鍐呭鐢熸垚锛堝紓姝ヨ繑鍥瀟askId锛?/td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/generate/result/:taskId</td><td>杞鐢熸垚缁撴灉</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/user/stats</td><td>鐢ㄦ埛缁熻鏁版嵁</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/quote/daily</td><td>姣忔棩閲戝彞</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/journey/small-joy/recommend</td><td>灏忕‘骞告帹鑽?/td></tr>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/journey/small-joy/save</td><td>淇濆瓨灏忕‘骞?/td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/coach/get-today-three-things</td><td>鑾峰彇浠婃棩涓変欢浜?/td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/booking/statistics</td><td>棰勭害缁熻</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/statistics</td><td>蹇冪悊娴嬭瘎缁熻</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/high-risk</td><td>楂橀闄╁垪琛?/td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/records</td><td>娴嬭瘎璁板綍</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/export-csv</td><td>CSV瀵煎嚭</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/yaoshi/categories</td><td>鑽鍒嗙被</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/yaoshi/products</td><td>鑽浜у搧</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/qrcode/survey</td><td>闂嵎浜岀淮鐮?/td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/qrcode/psy-assess</td><td>蹇冪悊娴嬭瘎浜岀淮鐮?/td></tr>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/admin/login</td><td>绠＄悊鍛樼櫥褰?/td></tr>
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);font-style:italic;">/api/payment/* 鈥?鏀粯鐩稿叧鎺ュ彛锛堝井淇℃敮浠?鎶栭煶鏀粯/妯℃嫙鏀粯/璁㈠崟鏌ヨ锛?/td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ============ 16. 鍏ㄥ眬鐗规€?============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#0f172a,#475569);">馃實 鍏ㄥ眬鐗规€?/span>
+        <h2 class="section-title">璺ㄧ鍏煎 路 鏁版嵁鎸佷箙鍖?路 UI缁勪欢 路 鍒嗗寘绛栫暐</h2>
+        <p class="section-desc">寰俊灏忕▼搴?/ 鎶栭煶灏忕▼搴?/ H5 涓夌閫傞厤锛?0+缁勪欢搴擄紝7澶у垎鍖?/p>
+    </div>
+
+    <div class="card-grid">
+        <!-- Cross-platform -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+                <h3>馃摫 璺ㄧ鍏煎</h3><p>寰俊 路 鎶栭煶 路 H5</p>
+            </div>
+            <div class="card-body">
+                <p><strong>涓夌閫傞厤绛栫暐锛?/strong></p>
+                <ul>
+                    <li>寰俊灏忕▼搴忥細鍘熺敓缁勪欢锛圕amera/RecorderManager绛夛級</li>
+                    <li>鎶栭煶灏忕▼搴忥細鎶栭煶鏀粯 + 鎶栭煶API閫傞厤</li>
+                    <li>H5绔細闄嶇骇鎻愮ず + 鍏煎澶勭悊</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);">鍩轰簬Taro璺ㄧ妗嗘灦锛屼竴濂椾唬鐮佷笁绔繍琛?/p>
+            </div>
+        </div>
+
+        <!-- Data Persistence -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+                <h3>馃捑 鏁版嵁鎸佷箙鍖?/h3><p>localStorage + Supabase 鍙屽啓</p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>localStorage锛?/strong>鏈湴缂撳瓨锛岀绾垮彲鐢?/li>
+                    <li><strong>Supabase鏁版嵁搴擄細</strong>浜戠鍚屾锛屽璁惧鍏变韩</li>
+                    <li><strong>鐧诲綍鎬佺鐞嗭細</strong>鐢ㄦ埛鐧诲綍鐘舵€佹寔涔呭寲</li>
+                    <li><strong>宸茶喘妯″潡缂撳瓨锛?/strong>鏈湴璁板綍瑙ｉ攣鐘舵€?/li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- UI Components -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">
+                <h3>馃帹 UI缁勪欢浣撶郴</h3><p>60+缁勪欢 路 鍘熷瓙鍖栨牱寮?/p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>shadcn/ui (Taro鐗?锛?/strong>60+鍙畾鍒剁粍浠?/li>
+                    <li><strong>Tailwind CSS 4锛?/strong>鍘熷瓙鍖栨牱寮忓紩鎿?/li>
+                    <li><strong>lucide-react-taro锛?/strong>鍥炬爣搴?/li>
+                    <li><strong>娣辫壊/娴呰壊涓婚锛?/strong>鍙屼富棰樻敮鎸?/li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Subpackage Strategy -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#92400e,#f59e0b);">
+                <h3>馃摝 鍒嗗寘绛栫暐</h3><p>7澶у垎鍖?路 鎸夐渶鍔犺浇</p>
+            </div>
+            <div class="card-body">
+                <table class="subpkg-table">
+                    <tr><th>鍖呭悕</th><th>鍐呭</th></tr>
+                    <tr><td><strong>涓诲寘</strong></td><td>棣栭〉銆乥rain椤甸潰</td></tr>
+                    <tr><td><strong>zhican</strong></td><td>鍊奸鐩稿叧椤甸潰锛?0+瀛愰〉闈級</td></tr>
+                    <tr><td><strong>yushe</strong></td><td>鎮﹁垗鐩稿叧椤甸潰锛堟湇鍔?浜哄憳/棰勮锛?/td></tr>
+                    <tr><td><strong>capability</strong></td><td>涓栬禌鏈嶅姟/鑱岀О璺冨崌/璇剧▼璁捐/鐭ュ綍/瀵硅瘽</td></tr>
+                    <tr><td><strong>main</strong></td><td>琛屽姩鏁欑粌/鐢ㄦ埛鐢诲儚/鍘嗗彶璁板綍</td></tr>
+                    <tr><td><strong>value-meal</strong></td><td>璋冪爺闂嵎锛?绫婚棶鍗?浜岀淮鐮侊級</td></tr>
+                    <tr><td><strong>admin</strong></td><td>绠＄悊鍚庡彴锛堥绾︾鐞?蹇冪悊娴嬭瘎锛?/td></tr>
+                </table>
+                <p style="font-size:0.78rem;color:var(--text-light);margin-top:8px;">鍒嗗寘鎸夐渶鍔犺浇锛屼紭鍖栭灞忔€ц兘锛岀鍚堝井淇″皬绋嬪簭2MB涓诲寘闄愬埗</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary banner -->
+    <div style="margin-top:40px;padding:32px;background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:var(--radius);text-align:center;color:white;">
+        <h3 style="font-size:1.2rem;color:var(--gold);margin-bottom:12px;">馃彈锔?瀹佽亴鍒涘師 路 鍏ㄦ爤鎶€鏈灦鏋?/h3>
+        <p style="color:rgba(255,255,255,0.75);line-height:1.9;font-size:0.95rem;">
+            <strong>鍓嶇锛?/strong>Taro + React + TypeScript + Tailwind CSS 4 + shadcn/ui<br>
+            <strong>鍚庣锛?/strong>Node.js + GenerateService(~5900琛? + PaymentService<br>
+            <strong>鏁版嵁锛?/strong>Supabase + localStorage 鍙屽啓<br>
+            <strong>AI锛?/strong>12+绾т紭鍏堢骇娉ㄥ叆 + 30+鐢熸垚绫诲瀷 + 寮傛鐢熸垚杞<br>
+            <strong>鏀粯锛?/strong>寰俊鏀粯 + 鎶栭煶鏀粯 + 妯℃嫙鏀粯<br>
+            <strong>璺ㄧ锛?/strong>寰俊灏忕▼搴?+ 鎶栭煶灏忕▼搴?+ H5<br>
+            <strong>API锛?/strong>30+ RESTful鎺ュ彛 路 鍏ㄥ眬鍓嶇紑 /api
+        </p>
+    </div>
+</section>
+
+</div>
+
+<footer class="footer">
+    <p>漏 2026 瀹佸己鍘胯亴涓氶珮绾т腑瀛?路 鍥涚湡涓夊寲浜旈摼涓夊満鏁欏鎴愭灉鍥㈤槦</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">棣栭〉</a> 路 <a href="generator.html">AI绯荤粺</a> 路 <a href="zhican.html">鍊奸</a> 路 <a href="yushe.html">鎮﹁垗</a> 路 <a href="platform.html">骞冲彴鐢熸€?/a>
+    </p>
+</footer>
+
+</body>
+</html>
