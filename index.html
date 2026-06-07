@@ -46,7 +46,46 @@
             line-height: 1.8;
         }
         
-        /* ===== Loading Screen ===== */
+        /* ===== Premium Visual Foundation ===== */
+        /* Subtle grain texture */
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        *:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+        
+        /* Premium glass card base */
+        .glass-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .glass-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(201,169,110,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,169,110,0.1) inset;
+            transform: translateY(-2px);
+        }
+        
+        /* Premium button hover */
+        .premium-btn {
+            position: relative; overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .premium-btn::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.15) 50%, transparent 55%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        
+        /* Smooth transition utility */
+        .smooth { transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        
         #loading-screen {
             position: fixed; inset: 0; z-index: 10000;
             background: var(--dark);
@@ -938,7 +977,22 @@
                 transition-duration: 0.01ms !important;
             }
         }
-        
+
+        /* ===== Print Styles (for application review) ===== */
+        @media print {
+            body { background: white !important; color: #111 !important; font-size: 11pt; }
+            #loading-screen, #nav-dots, #cursor-glow, #progress-bar,
+            .achievement-toast, .scroll-hint, canvas, video, iframe,
+            .three-canvas, #particles-js, .section-fog { display: none !important; }
+            .section { padding: 1.5rem 0 !important; break-inside: avoid; }
+            img { max-width: 100% !important; height: auto !important; }
+            .honor-grid, .evidence-2col, .evidence-3col, .evidence-4col,
+            .data-cards, .student-cards { grid-template-columns: repeat(2, 1fr) !important; }
+            a { color: #3B7DD8 !important; text-decoration: underline !important; }
+            .hero-title, .section-title { color: #1a1a2e !important; }
+            .section-tag { border: 1px solid #ddd !important; background: #f5f5f5 !important; color: #555 !important; }
+        }
+
         /* ===== Achievement Toast ===== */
         .achievement-toast {
             position: fixed; top: 2rem; right: 2rem;
@@ -1132,25 +1186,27 @@
             border-radius: 12px; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
             background: rgba(255,255,255,0.02);
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        box-shadow 0.45s ease, border-color 0.45s ease;
             cursor: pointer;
         }
         .evidence-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,169,110,0.15);
             border-color: var(--gold);
         }
         .evidence-card img {
-            width: 100%; display: block;
+            width: 100%; display: block; transition: transform 0.6s ease, filter 0.6s ease;
             filter: brightness(0.92) saturate(1.05);
         }
+        .evidence-card:hover img { transform: scale(1.03); filter: brightness(1) saturate(1.1); }
         .evidence-label {
             padding: 0.6rem 1rem; font-size: 0.78rem;
             color: var(--text-dim); text-align: center;
             background: rgba(2,8,21,0.9);
             border-top: 1px solid rgba(255,255,255,0.04);
             font-family: 'Noto Serif SC', serif;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.05em; transition: color 0.4s ease;
         }
         .evidence-card:hover .evidence-label { color: var(--gold-light); }
         
@@ -1163,16 +1219,20 @@
             border-radius: 10px; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
             background: rgba(10,15,30,0.6);
-            transition: transform 0.35s ease, border-color 0.35s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.4s ease, box-shadow 0.4s ease;
         }
         .honor-card:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-4px) scale(1.015);
             border-color: var(--gold);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
         }
         .honor-card img {
             width: 100%; display: block; aspect-ratio: 3/4;
             object-fit: cover; filter: brightness(0.9) saturate(1.05);
+            transition: filter 0.5s ease;
         }
+        .honor-card:hover img { filter: brightness(1) saturate(1.08); }
         .honor-card-caption {
             padding: 0.5rem 0.8rem; font-size: 0.7rem;
             color: var(--text-dim); text-align: center;
