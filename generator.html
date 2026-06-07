@@ -23,7 +23,7 @@
             min-height: 100vh;
             line-height: 1.8;
         }
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 40px; }
 
         /* 头部 */
         .header { text-align: center; margin-bottom: 48px; }
@@ -34,6 +34,7 @@
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .subtitle { color: var(--text-dim); margin-bottom: 12px; font-size: 0.95rem; }
         .version { color: var(--gold); font-size: 0.8rem; letter-spacing: 2px; }
@@ -119,17 +120,19 @@
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 8px;
         }
         .output-meta { color: var(--text-dim); font-size: 0.85rem; }
 
         .section-card {
-            background: rgba(255,255,255,0.025);
+            background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 14px;
             padding: 32px;
             margin-bottom: 28px;
             position: relative;
+            overflow: hidden;
         }
         .section-card::before {
             content: '';
@@ -158,6 +161,8 @@
             font-size: 0.92rem;
             line-height: 1.9;
             margin-bottom: 8px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .section-card ul, .section-card ol { padding-left: 24px; }
         .section-card li { margin-bottom: 6px; }
@@ -201,16 +206,22 @@
             border-collapse: collapse;
             margin: 16px 0;
             font-size: 0.88rem;
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
         }
         .sop-table th, .sop-table td {
             padding: 12px 16px;
             border: 1px solid rgba(255,255,255,0.08);
             text-align: left;
+            min-width: 100px;
         }
         .sop-table th {
             background: rgba(201,169,110,0.1);
             color: var(--gold-light);
             font-weight: 600;
+            position: sticky;
+            top: 0;
         }
 
         .highlight-box {
@@ -222,12 +233,49 @@
             font-size: 0.9rem;
             color: var(--text-dim);
             line-height: 1.8;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* 图片完整显示 */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 16px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         @media (max-width: 768px) {
             h1 { font-size: 1.6rem; }
             .form-grid { grid-template-columns: 1fr; }
             .section-card { padding: 20px; }
+            .container { padding: 20px 16px; }
+            .sop-table { font-size: 0.8rem; }
+            .sop-table th, .sop-table td { padding: 8px 10px; }
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark2); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        /* 动画 */
+        .section-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 打印样式 */
+        @media print {
+            body { background: white; color: black; }
+            .btn-group { display: none; }
+            .section-card { break-inside: avoid; border: 1px solid #ccc; }
         }
     </style>
 </head>
@@ -494,7 +542,7 @@ function renderSection4(d, el) {
         <p>② <strong>连续3次工单不达标</strong>：进入"技能强化营"，每日加练2小时，直至过关</p>
         <p>③ <strong>客户投诉</strong>：责任人当天完成整改报告，次日晨会宣读，全员警示</p>
 
-        <h4>📱 日清工单（每日收工必填）</h4>
+        <h4>📝 日清工单（每日收工必填）</h4>
         <div class="highlight-box">
             <strong>今日完成工单：</strong>_____份　　　<strong>合格率：</strong>_____%<br>
             <strong>客户好评数：</strong>_____　　　<strong>客户差评数：</strong>_____<br>
@@ -646,7 +694,7 @@ function renderSection8(d, el) {
             <tr><td>每年</td><td>融创者市集</td><td>全校师生 + 社区居民 + 媒体</td><td>学生走出校门，在夜市/社区摆摊，真实销售产品</td><td>年度营收报告 + 客户数据库</td></tr>
         </table>
 
-        <h4>👨🏫 教师转型保障机制</h4>
+        <h4>👨‍🏫 教师转型保障机制</h4>
         <p><strong>角色重塑</strong>：从"教书匠"转型为"产品经理+企业导师"，每周至少4课时走进产业场（值餐工坊/悦舍）与学生一起接单</p>
         <p><strong>备课机制</strong>：专业课教师 + 文化课教师每周联合备课1次，确保教学进度与产品项目同步，不出现"两张皮"</p>
         <p><strong>评价转型</strong>：教师评价不再看"讲完了多少内容"，而是看"学生做出的产品客户满不满意""企业抢不抢"</p>
@@ -693,7 +741,7 @@ function downloadSection(id) {
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${title.replace(/[①②②③④⑤⑥⑦⑧⑨⑩]/g, '').trim()}.txt`;
+    a.download = `${title.replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '').trim()}.txt`;
     a.click();
     URL.revokeObjectURL(a.href);
 }
