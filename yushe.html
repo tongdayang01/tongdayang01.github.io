@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鎮﹁垗 鈥?瀹佽亴鍒涘師</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+        --rose: #f43f5e; --purple: #8b5cf6; --teal: #14b8a6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #831843 0%, #9d174d 40%, #be185d 100%); color: white; padding: 80px 32px 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04) 0%, transparent 40%); }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; position: relative; }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; position: relative; }
+    .hero h1 span { background: linear-gradient(135deg, #fff, #fce7f3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 720px; margin: 0 auto 32px; line-height: 1.8; position: relative; }
+    .hero-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 2rem; font-weight: 800; color: #fce7f3; }
+    .hero-stat .label { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 52px; }
+    .section-tag { display: inline-block; background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+    .section-title { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Welcome Area */
+    .welcome-card { max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, #fdf2f8, #fce7f3, #fdf2f8); border-radius: 24px; padding: 48px; text-align: center; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+    .welcome-card::before { content:''; position:absolute; top:-100px; right:-100px; width:300px; height:300px; background:radial-gradient(circle, rgba(190,24,93,0.1) 0%, transparent 70%); border-radius:50%; }
+    .welcome-card h2 { font-size: 2rem; font-weight: 800; color: #831843; margin-bottom: 12px; }
+    .welcome-card .motto { font-size: 1.1rem; color: #9d174d; font-style: italic; margin-bottom: 28px; }
+    .welcome-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .welcome-stat { text-align: center; padding: 16px 24px; background: white; border-radius: 16px; box-shadow: var(--shadow); }
+    .welcome-stat .num { font-size: 1.6rem; font-weight: 800; color: #be185d; }
+    .welcome-stat .label { font-size: 0.82rem; color: var(--text-light); }
+
+    /* Service Tabs */
+    .service-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .service-tab { padding: 14px 32px; border-radius: 50px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; }
+    .service-tab:hover { border-color: #be185d; }
+    .service-tab.active { background: linear-gradient(135deg, #831843, #be185d); color: white; border-color: transparent; }
+
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .service-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; display: flex; align-items: flex-start; gap: 16px; }
+    .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: #fce7f3; }
+    .service-card .icon { font-size: 2rem; min-width: 48px; text-align: center; }
+    .service-card .info { flex: 1; }
+    .service-card .info h4 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .service-card .info .price { font-size: 1.15rem; font-weight: 800; color: #be185d; }
+    .service-card .info .desc { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Staff Grid */
+    .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .staff-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; text-align: center; }
+    .staff-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .staff-avatar { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 700; }
+    .staff-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .staff-card .role { font-size: 0.85rem; color: #be185d; font-weight: 600; margin-bottom: 8px; }
+    .staff-card .meta { font-size: 0.82rem; color: var(--text-light); margin-bottom: 4px; }
+    .staff-card .stars { color: #f59e0b; font-size: 0.9rem; margin-bottom: 8px; }
+    .staff-card .review { font-size: 0.82rem; color: var(--text-light); font-style: italic; line-height: 1.5; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+
+    /* Quick Actions */
+    .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .quick-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); text-align: center; transition: all 0.3s; border-top: 4px solid; cursor: pointer; }
+    .quick-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .quick-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .quick-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .quick-card p { font-size: 0.85rem; color: var(--text-light); }
+    .qc1 { border-color: #be185d; }
+    .qc2 { border-color: #8b5cf6; }
+    .qc3 { border-color: #f59e0b; }
+    .qc4 { border-color: #10b981; }
+
+    /* Timer */
+    .timer-section { max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 24px; padding: 40px; text-align: center; color: white; box-shadow: var(--shadow-lg); }
+    .timer-section h3 { font-size: 1.3rem; margin-bottom: 8px; }
+    .timer-section p { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 20px; }
+    .timer-digits { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .timer-digit { text-align: center; }
+    .timer-digit .num { font-size: 2.8rem; font-weight: 900; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; min-width: 70px; display: block; }
+    .timer-digit .unit { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .timer-sep { font-size: 2.4rem; font-weight: 300; color: rgba(255,255,255,0.4); align-self: center; }
+    .timer-expired { font-size: 1.3rem; color: #fca5a5; padding: 20px; display: none; }
+
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.6rem; }
+        .timer-digit .num { font-size: 2rem; min-width: 50px; padding: 8px 10px; }
+        .timer-sep { font-size: 1.6rem; }
+        .staff-grid, .service-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">馃彨 瀹佽亴鍒涘師</a>
+        <div class="navbar-links">
+            <a href="index.html">棣栭〉</a>
+            <a href="theory.html">鐞嗚妗嗘灦</a>
+            <a href="cases.html">鍏稿瀷妗堜緥</a>
+            <a href="worldskills.html">涓栬禌鏈嶅姟</a>
+            <a href="promotion.html">鑱岀О璺冨崌</a>
+            <a href="curriculum.html">璇剧▼璁捐</a>
+            <a href="generator.html">AI绯荤粺</a>
+            <a href="zhican.html">鍊奸</a>
+            <a href="yushe.html" class="active">鎮﹁垗</a>
+            <a href="platform.html">骞冲彴鐢熸€?/a>
+            <a href="architecture.html">鎶€鏈灦鏋?/a>
+            <a href="stories.html">鎴愰暱鏁呬簨</a>
+            <a href="videos.html">瑙嗛</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">馃拞 鍥涚湡涓夊寲浜旈摼涓夊満 路 鐪熷疄瀹㈡埛 路 鐪熷疄璇勪环 路 鐪熷疄鎴愰暱</div>
+    <h1>鎮﹁垗 Yushe 鈥?<span>鍋ュ悍鍏荤敓鏈嶅姟棰勭害骞冲彴</span></h1>
+    <p>涓尰缇庡鍜屽悍澶嶇悊鐤椾笓涓氬鐢熸彁渚涙湇鍔°€?br>鎮﹁韩锛屾偊蹇冿紝鎮﹁嚜宸?鈥斺€?璁╂瘡涓€娆℃湇鍔￠兘鏄湡瀹炵殑瀛︿範</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="num">12.5k+</div><div class="label">鏈嶅姟浜烘</div></div>
+        <div class="hero-stat"><div class="num">8.6k+</div><div class="label">璇勪环鏁?/div></div>
+        <div class="hero-stat"><div class="num">99.2%</div><div class="label">婊℃剰搴?/div></div>
+        <div class="hero-stat"><div class="num">6</div><div class="label">涓撲笟鏈嶅姟浜哄憳</div></div>
+    </div>
+</section>
+
+<div class="container">
+
+<!-- ============ 8.1 Welcome Area ============ -->
+<section class="section">
+    <div class="welcome-card">
+        <h2>鉁?鎮﹁韩锛屾偊蹇冿紝鎮﹁嚜宸?/h2>
+        <p class="motto">鈥斺€?涓尰缇庡 路 搴峰鐞嗙枟 路 鐢卞唴鑰屽鐨勫仴搴蜂箣缇?/p>
+        <div class="welcome-stats">
+            <div class="welcome-stat">
+                <div class="num">12,567</div>
+                <div class="label">鏈嶅姟浜烘</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">8,642</div>
+                <div class="label">鐢ㄦ埛璇勪环</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">99.2%</div>
+                <div class="label">婊℃剰搴?/div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">17</div>
+                <div class="label">鏈嶅姟椤圭洰</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.2 Three Service Categories ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">馃拞 涓夊ぇ鏈嶅姟鍒嗙被</span>
+        <h2 class="section-title">鎮﹂鍧?路 鎮﹁韩鍫?路 绮鹃€夊椁?/h2>
+        <p class="section-desc">涓尰缇庡涓撲笟 + 涓尰搴峰涓撲笟瀛︾敓鑱斿悎鎻愪緵鏈嶅姟锛?7椤逛笓涓氶」鐩?/p>
+    </div>
+
+    <div class="service-tabs">
+        <button class="service-tab active" onclick="showServiceTab('face')">馃尭 鎮﹂鍧?路 闈㈤儴鎶ょ悊</button>
+        <button class="service-tab" onclick="showServiceTab('body')">馃挭 鎮﹁韩鍫?路 鎺ㄦ嬁鐞嗙枟</button>
+        <button class="service-tab" onclick="showServiceTab('combo')">馃巵 绮鹃€夊椁?/button>
+    </div>
+
+    <!-- 鎮﹂鍧?7椤?-->
+    <div class="service-panel" id="panel-face">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">馃挦</div>
+                <div class="info"><h4>姣涘瓟鍐叉氮</h4><div class="price">楼298</div><div class="desc">娣卞眰娓呮磥姣涘瓟锛屽幓闄ら粦澶寸矇鍒猴紝鎼厤涓嵂钂告苯寮€瀛?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃Ч</div>
+                <div class="info"><h4>鑲屽簳鍑€鍖?/h4><div class="price">楼358</div><div class="desc">涓嵂闈㈣啘娣卞眰鍑€鍖栵紝鎺掑嚭鑲屽簳姣掔礌锛屾敼鍠勬殫娌夎偆鑹?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃尮</div>
+                <div class="info"><h4>鐜懓鐏岃偆</h4><div class="price">楼288</div><div class="desc">鐜懓绮炬补鐏岃偆瀵煎叆锛岃ˉ姘翠繚婀匡紝鎻愪寒瀚╄偆</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">鉁?/div>
+                <div class="info"><h4>姘村厜鍘熸恫绮惧崕鐒曡偆</h4><div class="price">楼468</div><div class="desc">楂樻祿搴︾幓灏块吀+鑳跺師铔嬬櫧鍘熸恫瀵煎叆锛屾繁灞傜剷鑲や慨澶?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">鉁傦笍</div>
+                <div class="info"><h4>灏忛儴浣嶈劚姣?/h4><div class="price">楼168</div><div class="desc">鍞囬儴/鑵嬩笅绛夊皬閮ㄤ綅娓╁拰鑴辨瘺</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃Φ</div>
+                <div class="info"><h4>澶ч儴浣嶈劚姣?/h4><div class="price">楼388</div><div class="desc">鑵块儴/鎵嬭噦绛夊ぇ閮ㄤ綅涓撲笟鑴辨瘺</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃拠</div>
+                <div class="info"><h4>澶撮儴娲楁姢</h4><div class="price">楼198</div><div class="desc">涓嵂娲楀彂+澶撮儴鎸夋懇+鎶ゅ彂绮惧崕锛岃垝缂撹В鍘?/div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 鎮﹁韩鍫?6椤?-->
+    <div class="service-panel" id="panel-body" style="display:none;">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">馃</div>
+                <div class="info"><h4>澶撮儴鏀炬澗</h4><div class="price">楼268</div><div class="desc">涓尰鎺ㄦ嬁鎵嬫硶鐤忛€氬ご閮ㄧ粡缁滐紝缂撹В澶寸棝澶辩湢</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃Υ</div>
+                <div class="info"><h4>鑲╅鏀炬澗</h4><div class="price">楼298</div><div class="desc">鎺ㄦ嬁+鍒棫+鎷旂綈涓夊悎涓€锛屾湁鏁堢紦瑙ｈ偐棰堝兊纭吀鐥?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃挭</div>
+                <div class="info"><h4>鑳岄儴鍑忓帇</h4><div class="price">楼328</div><div class="desc">绮炬补鎺ㄨ儗+缁忕粶鐤忛€氾紝閽堝涔呭潗鏃忚儗閮ㄧ柌鍔?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃珯</div>
+                <div class="info"><h4>鎷旂綈</h4><div class="price">楼198</div><div class="desc">浼犵粺涓尰鎷旂綈鐤楁硶锛岀婀挎帓姣掋€佽垝绛嬫椿缁?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃</div>
+                <div class="info"><h4>鍒棫</h4><div class="price">楼228</div><div class="desc">涓撲笟鍒棫鎵嬫硶锛岀枏閫氱粡缁溿€佹椿琛€鍖栫榾</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃敟</div>
+                <div class="info"><h4>鑹剧伕</h4><div class="price">楼268</div><div class="desc">闄堝勾鑹炬潯娓╃伕绌翠綅锛屾俯缁忔暎瀵掋€佹壎闃冲浐鏈?/div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 绮鹃€夊椁?4椤?-->
+    <div class="service-panel" id="panel-combo" style="display:none;">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">馃専</div>
+                <div class="info"><h4>澶撮儴鎸夋懇 + 鎷ㄧ瓔鍒棫 + 娲楁姢</h4><div class="price">楼598</div><div class="desc">澶撮儴鍏ㄥ鎶ょ悊锛屼粠澶村埌蹇冪殑鏀炬澗浣撻獙</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃拵</div>
+                <div class="info"><h4>绮炬补寮€鑳?+ 鎷旂綈</h4><div class="price">楼468</div><div class="desc">绮炬补鎺ㄨ儗鑸掔紦瑙ｅ帇锛屾嫈缃愭帓姣掔婀?/div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃幆</div>
+                <div class="info"><h4>鑲╅鏀炬澗 + 鍒棫</h4><div class="price">楼488</div><div class="desc">鑲╅閲嶇偣鏀炬澗锛屽埉鐥ф椿琛€閫氱粶</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">馃尭</div>
+                <div class="info"><h4>鍗靛发淇濆吇 + 鑹剧伕</h4><div class="price">楼588</div><div class="desc">涓尰璋冪悊鎵嬫硶+娓╃伕锛屽コ鎬т笓灞炰繚鍏诲椁?/div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.3 Staff Display ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">馃懇鈥嶁殨锔?鏈嶅姟鍥㈤槦</span>
+        <h2 class="section-title">6浣嶄笓涓氭湇鍔′汉鍛?/h2>
+        <p class="section-desc">涓尰缇庡 路 涓尰搴峰 路 缇庡鐞嗙枟 路 缇庣敳鑹烘湳 路 缇庡閫犲瀷 鈥斺€?涓撲笟瀵瑰彛鏈嶅姟</p>
+    </div>
+
+    <div class="staff-grid">
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#831843,#be185d);">琚?/div>
+            <h4>琚佺惇</h4>
+            <div class="role">搴峰鐞嗙枟甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙猸?4.9</div>
+            <div class="meta">1,247 鏉¤瘎浠?路 3骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氳偐棰堢悊鐤?路 鎷旂綈 路 鍒棫</div>
+            <div class="review">"鎵嬫硶涓撲笟锛屾寜瀹岃偐鑶€鏄庢樉杞绘澗浜嗗緢澶氾紝涓嬫杩樻壘琚佽€佸笀锛?</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">寮?/div>
+            <h4>寮犳檵闆?/h4>
+            <div class="role">涓尰搴峰甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙猸?4.8</div>
+            <div class="meta">1,089 鏉¤瘎浠?路 2骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氳壘鐏?路 鎺ㄦ嬁 路 缁忕粶璋冪悊</div>
+            <div class="review">"鑹剧伕鍋氬緱寰堣垝鏈嶏紝娓╂俯鐑儹鐨勶紝鍋氬畬鏁翠釜韬綋閮芥殩浜嗐€?</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">闄?/div>
+            <h4>闄堢熅</h4>
+            <div class="role">缇庡鐞嗙枟甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙 4.7</div>
+            <div class="meta">892 鏉¤瘎浠?路 2骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氶潰閮ㄦ姢鐞?路 鑴辨瘺 路 鐒曡偆</div>
+            <div class="review">"姣涘瓟鍐叉氮鍋氬畬鐨偆鐪熺殑鍙樺共鍑€浜嗭紝榛戝ご灏戜簡瓒呭锛?</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#7c2d12,#ea580c);">榫?/div>
+            <h4>榫欒嫳</h4>
+            <div class="role">缇庡鐞嗙枟甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙 4.6</div>
+            <div class="meta">756 鏉¤瘎浠?路 1骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氶潰閮ㄦ姢鐞?路 绮炬补鎸夋懇</div>
+            <div class="review">"鐜懓鐏岃偆鍋氬畬鑴稿瀚╃殑锛岃繛鐢锋湅鍙嬮兘璇寸毊鑲ゅ彉濂戒簡锛?</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#4a1942,#a855f7);">寮?/div>
+            <h4>寮犲皬涓?/h4>
+            <div class="role">缇庣敳鑹烘湳甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙 4.5</div>
+            <div class="meta">623 鏉¤瘎浠?路 1骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氱編鐢茶璁?路 鎵嬮儴鎶ょ悊</div>
+            <div class="review">"鍋氱殑娆惧紡澶ソ鐪嬩簡锛岃€屼笖寰堢墷鍥猴紝涓ゅ懆浜嗛兘娌℃帀锛?</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#065f46,#10b981);">瀹?/div>
+            <h4>瀹夊ē</h4>
+            <div class="role">缇庡閫犲瀷甯?/div>
+            <div class="stars">猸愨瓙猸愨瓙 4.5</div>
+            <div class="meta">498 鏉¤瘎浠?路 1骞寸粡楠?/div>
+            <div class="meta">涓撻暱锛氭棩甯稿 路 鑸炲彴濡?路 閫犲瀷璁捐</div>
+            <div class="review">"姣曚笟鍏哥ぜ鐨勫瀹瑰氨鏄畨鑰佸笀鍖栫殑锛岃秴绾т笂闀滐紒"</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.4 Quick Functions ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">鈿?蹇嵎鍔熻兘</span>
+        <h2 class="section-title">涓€閿Е杈?路 楂樻晥鏈嶅姟</h2>
+        <p class="section-desc">棰勭害鏄庢棩鎮︾枟 路 鎴戠殑鎮︾害 路 浼氬憳涓績 路 鍏荤敓灏忚</p>
+    </div>
+
+    <div class="quick-grid">
+        <div class="quick-card qc1">
+            <div class="icon">馃搮</div>
+            <h4>棰勭害鏄庢棩鎮︾枟</h4>
+            <p>浠婃棩 17:00 鍓嶄笅鍗?br>鏄庢棩鍗冲彲浜彈鏈嶅姟</p>
+        </div>
+        <div class="quick-card qc2">
+            <div class="icon">馃搵</div>
+            <h4>鎴戠殑鎮︾害</h4>
+            <p>寰呰荡绾︼細3 椤?br>鍘嗗彶璁板綍锛?7 椤?/p>
+        </div>
+        <div class="quick-card qc3">
+            <div class="icon">馃憫</div>
+            <h4>浼氬憳涓績</h4>
+            <p>绛夌骇锛氶粍閲戜細鍛?br>绉垎锛?,860 路 鏉冪泭锛?椤?/p>
+        </div>
+        <div class="quick-card qc4">
+            <div class="icon">馃摉</div>
+            <h4>鍏荤敓灏忚</h4>
+            <p>鍏荤敓鐭ヨ瘑 路 闆呴泦娲诲姩<br>鑺傛皵鍏荤敓 路 缁忕粶鍏ラ棬</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.5 Countdown Timer ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">鈴?棰勮鍊掕鏃?/span>
+        <h2 class="section-title">姣忔棩 17:00 鎴棰勮</h2>
+        <p class="section-desc">璇峰湪浠婃棩 17:00 鍓嶅畬鎴愰璁紝閫炬湡灏嗕簬鏄庢棩寮€鏀?/p>
+    </div>
+
+    <div class="timer-section">
+        <h3>鈴?璺濈浠婃棩棰勮鎴杩樻湁</h3>
+        <p>璇峰敖蹇畬鎴愪綘鐨勬偊鐤楅绾?/p>
+        <div class="timer-digits" id="liveTimer">
+            <div class="timer-digit"><span class="num" id="th">--</span><span class="unit">鏃?/span></div>
+            <div class="timer-sep">:</div>
+            <div class="timer-digit"><span class="num" id="tm">--</span><span class="unit">鍒?/span></div>
+            <div class="timer-sep">:</div>
+            <div class="timer-digit"><span class="num" id="ts">--</span><span class="unit">绉?/span></div>
+        </div>
+        <div class="timer-expired" id="timerExpired">浠婃棩棰勮宸叉埅姝紝璇锋槑澶╁啀鏉?~</div>
+    </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="footer">
+    <p>漏 2026 瀹佸己鍘胯亴涓氶珮绾т腑瀛?路 鍥涚湡涓夊寲浜旈摼涓夊満鏁欏鎴愭灉鍥㈤槦</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">棣栭〉</a> 路 <a href="zhican.html">鍊奸</a> 路 <a href="yushe.html">鎮﹁垗</a> 路 <a href="generator.html">AI绯荤粺</a>
+    </p>
+</footer>
+
+<script>
+function showServiceTab(tab) {
+    document.querySelectorAll('.service-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).style.display = '';
+    event.target.classList.add('active');
+}
+
+// Live countdown timer to 17:00
+function updateTimer() {
+    const now = new Date();
+    const deadline = new Date(now);
+    deadline.setHours(17, 0, 0, 0);
+    
+    if (now >= deadline) {
+        document.getElementById('liveTimer').style.display = 'none';
+        document.getElementById('timerExpired').style.display = 'block';
+        return;
+    }
+
+    const diff = deadline - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('th').textContent = String(h).padStart(2, '0');
+    document.getElementById('tm').textContent = String(m).padStart(2, '0');
+    document.getElementById('ts').textContent = String(s).padStart(2, '0');
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
