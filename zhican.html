@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鍊奸绯荤粺 鈥?瀹佽亴鍒涘師</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+        --green: #10b981; --orange: #f59e0b; --rose: #f43f5e;
+        --purple: #8b5cf6; --teal: #14b8a6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    /* Navigation */
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #92400e 0%, #b45309 40%, #d97706 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; }
+    .hero h1 span { background: linear-gradient(135deg, #fff, #fef3c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 680px; margin: 0 auto 28px; line-height: 1.8; }
+    .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 1.8rem; font-weight: 800; color: #fef3c7; }
+    .hero-stat .label { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* Section */
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 52px; }
+    .section-tag { display: inline-block; background: linear-gradient(135deg, #92400e, #b45309); color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+    .section-title { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Food Category Tabs */
+    .food-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .food-tab { padding: 14px 32px; border-radius: 50px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; }
+    .food-tab:hover { border-color: var(--orange); }
+    .food-tab.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+    /* Meal Cards */
+    .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .meal-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; }
+    .meal-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .meal-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .meal-img.beauty { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
+    .meal-img.health { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .meal-img.light { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .meal-body { padding: 20px 22px 24px; }
+    .meal-body h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .meal-body .desc { font-size: 0.85rem; color: var(--text-light); margin-bottom: 14px; line-height: 1.6; }
+    .meal-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .meal-meta span { font-size: 0.8rem; padding: 4px 10px; border-radius: 50px; font-weight: 600; }
+    .meta-price { background: #fef3c7; color: #92400e; }
+    .meta-cal { background: #f0fdf4; color: #065f46; }
+    .meta-health { background: #fdf2f8; color: #831843; }
+    .meta-tag { background: #eff6ff; color: #1e40af; }
+
+    /* Sub-section Grid */
+    .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
+    .sub-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+    .sub-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .sub-card-header { padding: 24px 24px 18px; position: relative; }
+    .sub-card-header .icon { font-size: 2rem; margin-bottom: 8px; }
+    .sub-card-header h3 { font-size: 1.1rem; font-weight: 700; color: white; }
+    .sub-card-header p { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .sub-card-body { padding: 20px 24px 24px; }
+    .sub-card-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .sub-card-body p strong { color: var(--primary); }
+    .sub-list { list-style: none; margin-top: 10px; }
+    .sub-list li { padding: 6px 0; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid #f0f0f0; }
+    .sub-list li::before { content: "鈻?"; color: var(--orange); font-weight: bold; }
+    .sub-list li:last-child { border-bottom: none; }
+
+    /* Color schemes for subcards */
+    .sc1 { background: linear-gradient(135deg, #92400e, #b45309); }
+    .sc2 { background: linear-gradient(135deg, #065f46, #047857); }
+    .sc3 { background: linear-gradient(135deg, #553c9a, #6b46c1); }
+    .sc4 { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+    .sc5 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
+    .sc6 { background: linear-gradient(135deg, #831843, #9d174d); }
+    .sc7 { background: linear-gradient(135deg, #1a365d, #2a4a7f); }
+    .sc8 { background: linear-gradient(135deg, #4a1942, #6b21a8); }
+    .sc9 { background: linear-gradient(135deg, #0f766e, #0d9488); }
+    .sc10 { background: linear-gradient(135deg, #334155, #475569); }
+
+    /* Trust System */
+    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .score-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+    .score-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+    .score-bar { margin-bottom: 12px; }
+    .score-bar .label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; }
+    .score-bar .bar { height: 8px; border-radius: 4px; background: #e2e8f0; overflow: hidden; }
+    .score-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+    /* Radar Placeholder */
+    .radar-placeholder { display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: var(--radius); min-height: 280px; }
+
+    /* Feature Tags */
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .feature-tag { display: inline-block; background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 50px; font-size: 0.82rem; font-weight: 600; }
+
+    /* Cockpit Cards */
+    .cockpit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .cockpit-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center; transition: all 0.3s; }
+    .cockpit-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .cockpit-card .number { font-size: 2rem; font-weight: 800; color: var(--primary); }
+    .cockpit-card .number.warn { color: #dc2626; }
+    .cockpit-card .label { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Advisory table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .data-table th { background: #1a365d; color: white; padding: 12px 14px; text-align: left; font-weight: 600; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+    .data-table tr:nth-child(even) { background: #f8f9fa; }
+    .data-table .up { color: #10b981; }
+    .data-table .down { color: #ef4444; }
+
+    /* YaoShi Grid */
+    .yaoshi-category { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .yaoshi-category h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--orange); }
+    .yaoshi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .yaoshi-item { background: #f8f9fa; border-radius: 10px; padding: 16px; text-align: center; border: 1px solid #e2e8f0; transition: all 0.3s; }
+    .yaoshi-item:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .yaoshi-item .name { font-weight: 700; font-size: 0.95rem; color: var(--primary); }
+    .yaoshi-item .price { color: #dc2626; font-weight: 600; margin: 4px 0; }
+    .yaoshi-item .features { font-size: 0.78rem; color: var(--text-light); }
+
+    /* Setting Cards */
+    .setting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .setting-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid #e2e8f0; transition: all 0.3s; }
+    .setting-card:hover { border-color: var(--orange); }
+    .setting-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .setting-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .setting-card .opts { display: flex; gap: 6px; flex-wrap: wrap; }
+    .setting-card .opt { padding: 5px 12px; border-radius: 50px; border: 1px solid #e2e8f0; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+    .setting-card .opt:hover, .setting-card .opt.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+    /* Footer */
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.6rem; }
+        .trust-grid { grid-template-columns: 1fr; }
+        .meal-grid, .sub-grid { grid-template-columns: 1fr; }
+        .navbar-inner { gap: 8px; }
+        .navbar-links a { font-size: 0.72rem; padding: 4px 7px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">馃彨 瀹佽亴鍒涘師</a>
+        <div class="navbar-links">
+            <a href="index.html">棣栭〉</a>
+            <a href="theory.html">鐞嗚妗嗘灦</a>
+            <a href="cases.html">鍏稿瀷妗堜緥</a>
+            <a href="worldskills.html">涓栬禌鏈嶅姟</a>
+            <a href="promotion.html">鑱岀О璺冨崌</a>
+            <a href="curriculum.html">璇剧▼璁捐</a>
+            <a href="generator.html">AI绯荤粺</a>
+            <a href="zhican.html" class="active">鍊奸</a>
+            <a href="yushe.html">鎮﹁垗</a>
+            <a href="platform.html">骞冲彴鐢熸€?/a>
+            <a href="architecture.html">鎶€鏈灦鏋?/a>
+            <a href="stories.html">鎴愰暱鏁呬簨</a>
+            <a href="videos.html">瑙嗛</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">馃嵆 鍥涚湡涓夊寲浜旈摼涓夊満 路 鐪熷疄浜т笟鐜板満</div>
+    <h1>鍊奸 Zhican 鈥?<span>鑱屼笟鏁欒偛鐗硅壊椁愰ギ绯荤粺</span></h1>
+    <p>璁╄鍫傛垚涓轰骇涓氱涓€鐜板満锛氬鐢熸帉鍕恒€佸鎴蜂笅鍗曘€佺湡閲戠櫧閾朵氦鏄撱€?br>涓夊ぇ椁愮被 路 淇′换璇勪环浣撶郴 路 鍏卞垱鏈哄埗 路 鍘ㄦ埧椹鹃┒鑸?路 缁忚惀鍙傝皨 鈥斺€?瀹屾暣澶嶅埢椁愰ギ浜т笟鍏ㄩ摼璺?/p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="num">3</div><div class="label">椁愮被</div></div>
+        <div class="hero-stat"><div class="num">30+</div><div class="label">鑿滃搧</div></div>
+        <div class="hero-stat"><div class="num">10</div><div class="label">鍔熻兘妯″潡</div></div>
+        <div class="hero-stat"><div class="num">100%</div><div class="label">鐪熷疄杩愯惀</div></div>
+    </div>
+</section>
+
+<div class="container">
+
+<!-- ============ 7.1 浠婃棩绮鹃€?============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">馃嵔锔?浠婃棩绮鹃€?/span>
+        <h2 class="section-title">涓夊ぇ椁愮被 路 鐪熸潗瀹炴枡 路 鐪熷疄浜ゆ槗</h2>
+        <p class="section-desc">涓尰缇庡涓撲笟銆佽惀鍏绘惌閰嶄笓涓氥€佽交椋熺児楗笓涓氬鐢熻仈鍚堝嚭鍝侊紝姣忔棩鏂伴矞渚涘簲</p>
+    </div>
+
+    <div class="food-tabs">
+        <button class="food-tab active" onclick="showFoodTab('beauty')">馃尭 鎮﹂锛堟紓浜锛?/button>
+        <button class="food-tab" onclick="showFoodTab('health')">馃挭 搴疯喅锛堝仴搴烽锛?/button>
+        <button class="food-tab" onclick="showFoodTab('light')">馃 杞昏喅锛堣交椋熼锛?/button>
+    </div>
+
+    <!-- 鎮﹂ -->
+    <div class="meal-grid food-panel active" id="panel-beauty">
+        <div class="meal-card">
+            <div class="meal-img beauty">馃尭</div>
+            <div class="meal-body">
+                <h4>鐜懓绾㈡灒鐐栭浮姹?/h4>
+                <p class="desc">涓尰缇庡涓撲笟鍑哄搧锛岀帿鐟拌姳鐤忚倽瑙ｉ儊銆佺孩鏋ｈˉ姘斿吇琛€銆佷箤楦℃粙闃存鼎鐕?/p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼38</span>
+                    <span class="meta-cal">320kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?92</span>
+                    <span class="meta-tag">鍏婚缇庡</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">馃尯</div>
+            <div class="meal-body">
+                <h4>褰撳綊榛勮姫鐐栨帓楠?/h4>
+                <p class="desc">缁忓吀姘旇鍙岃ˉ閰嶆柟锛屽綋褰掓椿琛€銆侀粍鑺ˉ姘旓紝鎼厤鎺掗娓╄ˉ涓嶇嚗</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼42</span>
+                    <span class="meta-cal">380kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?95</span>
+                    <span class="meta-tag">姘旇鍙岃ˉ</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">馃拹</div>
+            <div class="meal-body">
+                <h4>榛戣姖楹绘牳妗冪硦</h4>
+                <p class="desc">婊嬮槾琛ヨ偩銆佷箤鍙戝吇棰滐紝绉﹀反灞卞尯鍘熺敓榛戣姖楹?鏍告浠佺煶纾ㄦ參鐔?/p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼18</span>
+                    <span class="meta-cal">250kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?88</span>
+                    <span class="meta-tag">鎶楄“鑰?/span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">馃嵉</div>
+            <div class="meal-body">
+                <h4>閾惰€宠幉瀛愭灨鏉炵竟</h4>
+                <p class="desc">閾惰€虫鼎鑲恒€佽幉瀛愬吇蹇冦€佹灨鏉炴槑鐩紝鍥涘鐨嗗疁鐨勫吇棰滃湥鍝?/p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼22</span>
+                    <span class="meta-cal">180kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?90</span>
+                    <span class="meta-tag">婊嬮槾娑︾嚗</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 搴疯喅 -->
+    <div class="meal-grid food-panel" id="panel-health" style="display:none;">
+        <div class="meal-card">
+            <div class="meal-img health">馃ォ</div>
+            <div class="meal-body">
+                <h4>澶╅夯绾㈢儳鑲?/h4>
+                <p class="desc">钀ュ吇鎼厤涓撲笟鐜嬬墝鑿滐紝瀹佸己澶╅夯+绮鹃€変簲鑺憋紝鑽鍚屾簮鍏歌寖</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼45</span>
+                    <span class="meta-cal">520kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?85</span>
+                    <span class="meta-tag">鑽鍚屾簮</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">馃悷</div>
+            <div class="meal-body">
+                <h4>鍏氬弬榛勮姫钂搁矆楸?/h4>
+                <p class="desc">楂樿泲鐧戒綆鑴傝偑锛屽厷鍙傝ˉ涓泭姘斻€侀粍鑺寮哄厤鐤紝閫傚悎鏈悗搴峰</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼48</span>
+                    <span class="meta-cal">280kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?93</span>
+                    <span class="meta-tag">楂樿泲鐧?/span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">馃嵅</div>
+            <div class="meal-body">
+                <h4>鏋告潪灞辫嵂鐐栫緤鑲?/h4>
+                <p class="desc">鍐娓╄ˉ棣栭€夛紝灞辫嵂鍋ヨ劸銆佹灨鏉炲吇鑲濓紝缇婅倝娓╄€屼笉鐕?/p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼52</span>
+                    <span class="meta-cal">450kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?89</span>
+                    <span class="meta-tag">娓╄ˉ鍏荤敓</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">馃ガ</div>
+            <div class="meal-body">
+                <h4>鑽峰鏈堣壊钂告椂钄?/h4>
+                <p class="desc">鑾茶棔+鐧惧悎+鏈ㄨ€?瑗垮叞鑺憋紝娓呰捀淇濈暀钀ュ吇锛屾惌閰嶆灨鏉炵偣缂€</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼28</span>
+                    <span class="meta-cal">160kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?96</span>
+                    <span class="meta-tag">钀ュ吇鍧囪　</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 杞昏喅 -->
+    <div class="meal-grid food-panel" id="panel-light" style="display:none;">
+        <div class="meal-card">
+            <div class="meal-img light">馃</div>
+            <div class="meal-body">
+                <h4>钘滈害铏句粊娌欐媺纰?/h4>
+                <p class="desc">涓夎壊钘滈害+椴滆櫨浠?鐗涙补鏋?妯辨鐣寗锛岄珮绾ょ淮浣嶨I</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼35</span>
+                    <span class="meta-cal">220kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?94</span>
+                    <span class="meta-tag">浣庡崱浼橀€?/span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">馃</div>
+            <div class="meal-body">
+                <h4>楦¤兏鑲夎敩鑿滃嵎</h4>
+                <p class="desc">浣庢俯鎱㈢叜楦¤兏+鐢熻彍+鑳¤悵鍗滀笣+榛勭摐鏉★紝鎼厤鑷埗浣庤剛閰辨眮</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼28</span>
+                    <span class="meta-cal">190kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?91</span>
+                    <span class="meta-tag">楂樼氦缁?/span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">馃崑</div>
+            <div class="meal-body">
+                <h4>鏌犳钖勮嵎槌曢奔鎺?/h4>
+                <p class="desc">娣辨捣槌曢奔浣庢俯鐑瑰埗锛屾煚妾眮鎻愰矞銆佽杽鑽峰彾瑙ｈ吇锛屾竻鐖芥棤璐熸媴</p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼39</span>
+                    <span class="meta-cal">210kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?90</span>
+                    <span class="meta-tag">娓呯埥瑙ｈ吇</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">馃崜</div>
+            <div class="meal-body">
+                <h4>濂囦簹绫芥按鏋滈吀濂舵澂</h4>
+                <p class="desc">濂囦簹绫?甯岃厞閰稿ザ+鏃朵护椴滄灉+鍧氭灉纰庯紝楂樿泲鐧戒唬椁愰閫?/p>
+                <div class="meal-meta">
+                    <span class="meta-price">楼22</span>
+                    <span class="meta-cal">165kcal</span>
+                    <span class="meta-health">鍋ュ悍鍊?88</span>
+                    <span class="meta-tag">浠ｉ杞婚</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chef Team -->
+    <div style="margin-top:48px;text-align:center;">
+        <div class="section-tag" style="background:linear-gradient(135deg,#1a365d,#2a4a7f);">馃懆鈥嶐煃?鍘ㄥ笀鍥㈤槦</div>
+        <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">馃懆鈥嶐煃?/div>
+                <div style="font-weight:700;color:var(--primary);">鏉庡笀鍌?/div>
+                <div style="font-size:0.82rem;color:var(--text-light);">鐑归オ涓撲笟浜屽勾绾?br>鎿呴暱宸濊彍鑽喅</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">馃懇鈥嶐煃?/div>
+                <div style="font-weight:700;color:var(--primary);">寮犲悓瀛?/div>
+                <div style="font-size:0.82rem;color:var(--text-light);">鐑归オ涓撲笟涓夊勾绾?br>鎿呴暱闈㈢偣杞婚</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">馃懆鈥嶐煃?/div>
+                <div style="font-weight:700;color:var(--primary);">鐜嬪悓瀛?/div>
+                <div style="font-size:0.82rem;color:var(--text-light);">鐑归オ涓撲笟浜屽勾绾?br>鎿呴暱姹ゅ搧鐐栧搧</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">馃懇鈥嶐煃?/div>
+                <div style="font-weight:700;color:var(--primary);">璧靛悓瀛?/div>
+                <div style="font-size:0.82rem;color:var(--text-light);">鐑归オ涓撲笟涓€骞寸骇<br>鎿呴暱娌欐媺楗搧</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.2 鎴戠殑浠峰€?============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">馃懁 鎴戠殑浠峰€?/span>
+        <h2 class="section-title">鍙ｅ懗鐢诲儚 脳 绉垎 脳 璁㈠崟</h2>
+        <p class="section-desc">鏁版嵁椹卞姩鐨勪釜鎬у寲鐢ㄩ浣撻獙锛岃姣忎竴椁愰兘鎳備綘</p>
+    </div>
+
+    <div class="sub-grid">
+        <!-- 鍙ｅ懗鐢诲儚 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">馃幆</div>
+                <h3>鍙ｅ懗鐢诲儚 路 浜旂淮闆疯揪鍥?/h3>
+                <p>AI鎰熺煡浣犵殑鍛宠暰鍋忓ソ</p>
+            </div>
+            <div class="sub-card-body">
+                <div class="radar-placeholder">
+                    <svg width="260" height="260" viewBox="0 0 260 260">
+                        <defs>
+                            <linearGradient id="radarFill" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0.05"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Pentagon grid -->
+                        <g transform="translate(130,130)">
+                            <polygon points="0,-110 104.5,-34 64.5,89 -64.5,89 -104.5,-34" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-82 78,-25 48,66 -48,66 -78,-25" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-54 51,-17 32,44 -32,44 -51,-17" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-26 24.7,-8 15.3,21 -15.3,21 -24.7,-8" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <!-- Data polygon -->
+                            <polygon points="0,-90 80,-38 55,70 -55,55 -70,-30" fill="url(#radarFill)" stroke="#10b981" stroke-width="2"/>
+                            <!-- Points -->
+                            <circle cx="0" cy="-90" r="4" fill="#10b981"/>
+                            <circle cx="80" cy="-38" r="4" fill="#10b981"/>
+                            <circle cx="55" cy="70" r="4" fill="#10b981"/>
+                            <circle cx="-55" cy="55" r="4" fill="#10b981"/>
+                            <circle cx="-70" cy="-30" r="4" fill="#10b981"/>
+                            <!-- Labels -->
+                            <text x="0" y="-118" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">杈ｅ害 78</text>
+                            <text x="112" y="-42" text-anchor="start" fill="#1a365d" font-size="12" font-weight="700">鍜稿害 65</text>
+                            <text x="68" y="90" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">鐢滃害 55</text>
+                            <text x="-68" y="90" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">鍋ュ悍鎸囨暟 85</text>
+                            <text x="-112" y="-42" text-anchor="end" fill="#1a365d" font-size="12" font-weight="700">鍐掗櫓鎸囨暟 72</text>
+                        </g>
+                    </svg>
+                </div>
+                <p style="text-align:center;margin-top:12px;">浜旂淮闆疯揪鍥撅細<strong>杈ｅ害 78</strong> 路 <strong>鍜稿害 65</strong> 路 <strong>鐢滃害 55</strong> 路 <strong>鍋ュ悍鎸囨暟 85</strong> 路 <strong>鍐掗櫓鎸囨暟 72</strong></p>
+            </div>
+        </div>
+
+        <!-- 绉垎 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">馃挵</div>
+                <h3>鎴戠殑绉垎 路 娑堣垂绉疮</h3>
+                <p>姣忎竴椁愰兘鍦ㄧН绱环鍊?/p>
+            </div>
+            <div class="sub-card-body">
+                <div style="text-align:center;padding:20px;">
+                    <div style="font-size:3.5rem;font-weight:900;color:#6b46c1;">2,860</div>
+                    <div style="color:var(--text-light);">褰撳墠绉垎</div>
+                    <div style="margin-top:16px;background:#f8f9fa;border-radius:12px;padding:16px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span>娑堣垂 楼1 = 1 绉垎</span>
+                            <span style="color:#6b46c1;font-weight:600;">楼2,860 绱娑堣垂</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span>璇勪环濂栧姳</span>
+                            <span style="color:#6b46c1;font-weight:600;">+80 绉垎</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>鍏卞垱璐＄尞</span>
+                            <span style="color:#6b46c1;font-weight:600;">+120 绉垎</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 璁㈠崟璁板綍 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">馃搵</div>
+                <h3>璁㈠崟璁板綍</h3>
+                <p>宸插畬鎴?/ 寰呭鐞?/ 宸插彇娑?/p>
+            </div>
+            <div class="sub-card-body">
+                <div style="display:flex;gap:12px;margin-bottom:16px;">
+                    <button style="background:#10b981;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">宸插畬鎴?47</button>
+                    <button style="background:#f59e0b;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">寰呭鐞?3</button>
+                    <button style="background:#ef4444;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">宸插彇娑?5</button>
+                </div>
+                <ul class="sub-list">
+                    <li>浠婃棩 路 澶╅夯绾㈢儳鑲?楼45 路 <span style="color:#10b981;">宸插畬鎴?/span></li>
+                    <li>鏄ㄦ棩 路 钘滈害铏句粊娌欐媺纰?楼35 路 <span style="color:#10b981;">宸插畬鎴?/span></li>
+                    <li>06/05 路 鐜懓绾㈡灒鐐栭浮姹?楼38 路 <span style="color:#10b981;">宸插畬鎴?/span></li>
+                    <li>06/05 路 楦¤兏鑲夎敩鑿滃嵎 楼28 路 <span style="color:#f59e0b;">寰呭鐞?/span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 濂栧姳鍏戞崲 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">馃巵</div>
+                <h3>濂栧姳鍏戞崲</h3>
+                <p>浼樻儬鍒?路 浣撻獙 路 绀煎搧</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="background:#fef3c7;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">馃帿</span>
+                        <div style="flex:1;"><strong>婊?0鍑?0浼樻儬鍒?/strong><br><span style="font-size:0.8rem;color:var(--text-light);">娑堣€?200 绉垎</span></div>
+                    </div>
+                    <div style="background:#f0fdf4;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">馃専</span>
+                        <div style="flex:1;"><strong>鏂板搧璇曞悆浣撻獙鍒?/strong><br><span style="font-size:0.8rem;color:var(--text-light);">娑堣€?150 绉垎</span></div>
+                    </div>
+                    <div style="background:#fdf2f8;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">馃巵</span>
+                        <div style="flex:1;"><strong>瀹氬埗椁愬叿绀肩洅</strong><br><span style="font-size:0.8rem;color:var(--text-light);">娑堣€?800 绉垎</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.3 淇′换浣撶郴 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">猸?淇′换浣撶郴</span>
+        <h2 class="section-title">鍥涚淮璇勪环 脳 瑙﹀姩鏍囩</h2>
+        <p class="section-desc">鐪熷疄璇勪环椹卞姩鐪熷疄鎴愰暱 鈥斺€?鍙ｅ懗銆佸仴搴枫€佹€т环姣斻€佸垎閲忓洓缁磋瘎鍒嗭紝瑙﹀姩鏍囩鐩磋揪浜哄績</p>
+    </div>
+
+    <div class="trust-grid">
+        <!-- 璇勫垎 -->
+        <div class="score-card">
+            <h4>馃搳 鍥涚淮璇勫垎绯荤粺</h4>
+            <div class="score-bar">
+                <div class="label"><span>鍙ｅ懗</span><span>4.8 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:96%;background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>鍋ュ悍</span><span>4.6 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:92%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>鎬т环姣?/span><span>4.5 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>鍒嗛噺</span><span>4.3 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:86%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"></div></div>
+            </div>
+        </div>
+
+        <!-- 瑙﹀姩鏍囩 -->
+        <div class="score-card">
+            <h4>馃挐 瑙﹀姩鏍囩</h4>
+            <div class="feature-tags">
+                <span class="feature-tag">鉂わ笍 寰堢敤蹇?(156)</span>
+                <span class="feature-tag">馃構 鍛抽亾鎯婂枩 (132)</span>
+                <span class="feature-tag">馃帹 鎽嗙洏濂界湅 (98)</span>
+                <span class="feature-tag">馃崠 鍒嗛噺瓒?(87)</span>
+                <span class="feature-tag">馃 鏈嶅姟濂?(74)</span>
+                <span class="feature-tag">馃憤 浼氭帹鑽?(112)</span>
+            </div>
+            <div style="margin-top:20px;padding:16px;background:#f8f9fa;border-radius:10px;">
+                <p style="font-size:0.88rem;line-height:1.7;">
+                    <strong>馃弳 璇勪环缁熻锛?/strong><br>
+                    鎬昏Е鍔ㄥ€?<span style="color:#10b981;font-weight:700;">2,847</span> 路 
+                    TOP璐＄尞鑰?<span style="color:#f59e0b;font-weight:700;">寮犺€佸笀 (328 瑙﹀姩)</span> 路 
+                    鏈€鍙楁杩庡帹甯?<span style="color:#8b5cf6;font-weight:700;">鏉庡笀鍌?(4.9鍒?</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- 璇勪环鍒楄〃 -->
+        <div class="score-card" style="grid-column:span 2;">
+            <h4>馃挰 鏈€鏂拌瘎浠?/h4>
+            <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+                <div style="padding:16px;border-bottom:1px solid #f0f0f0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <span style="font-weight:700;">鐜嬭€佸笀</span><span style="color:#f59e0b;">猸愨瓙猸愨瓙猸?/span>
+                        <span style="font-size:0.78rem;color:var(--text-light);">06/07 12:30</span>
+                    </div>
+                    <p style="font-size:0.88rem;">澶╅夯绾㈢儳鑲夌粷浜嗭紒鑲夌倴寰楀叆鍙ｅ嵆鍖栵紝澶╅夯鐨勬竻棣欏垰濂戒腑鍜屼簡娌硅吇銆傚鐢熻兘鍋氬嚭杩欎釜姘村钩锛岀湡鐨勫緢鎯婂枩銆?/p>
+                    <div style="margin-top:6px;"><span class="feature-tag" style="font-size:0.72rem;">寰堢敤蹇?/span><span class="feature-tag" style="font-size:0.72rem;">鍛抽亾鎯婂枩</span><span class="feature-tag" style="font-size:0.72rem;">浼氭帹鑽?/span></div>
+                    <div style="background:#f8f9fa;padding:10px;border-radius:8px;margin-top:8px;font-size:0.82rem;color:var(--text-light);">
+                        <strong>馃懆鈥嶐煃?鏉庡笀鍌呭洖澶嶏細</strong>璋㈣阿鐜嬭€佸笀锛佸ぉ楹绘槸鏄ㄥぉ鍒氫粠灞变笂鏀剁殑椴滆揣锛屽搧璐ㄥソ鍛抽亾鎵嶅埌浣嶃€備笅娆℃潵璇曡瘯鏂板嚭鐨勫綋褰掓帓楠▇
+                    </div>
+                </div>
+                <div style="padding:16px;border-bottom:1px solid #f0f0f0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <span style="font-weight:700;">鏉庡悓瀛?/span><span style="color:#f59e0b;">猸愨瓙猸愨瓙</span>
+                        <span style="font-size:0.78rem;color:var(--text-light);">06/06 12:15</span>
+                    </div>
+                    <p style="font-size:0.88rem;">钘滈害铏句粊娌欐媺寰堜笉閿欙紝鍒嗛噺瀵逛竴涓コ鐢熷垰濂斤紝濡傛灉鑳藉鍔犵偣铏句粊灏辨洿濂戒簡锛?/p>
+                    <div style="margin-top:6px;"><span class="feature-tag" style="font-size:0.72rem;">鎽嗙洏濂界湅</span><span class="feature-tag" style="font-size:0.72rem;">鏈嶅姟濂?/span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.4 鍏卞垱 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">馃 鍏卞垱 Co-Create</span>
+        <h2 class="section-title">鏁欏鐩搁暱 路 浜ф暀鍏卞垱</h2>
+        <p class="section-desc">瀛︾敓鍙備笌鑿滃搧鐮斿彂銆佺敤鎴锋姇绁ㄥ喅瀹氫笂鏂般€佸垱鎰忔彁妗堢ぞ鍖哄鍖?/p>
+    </div>
+
+    <div class="sub-grid">
+        <div class="sub-card">
+            <div class="sub-card-header sc1">
+                <div class="icon">馃棾锔?/div>
+                <h3>鑿滃搧鎶曠エ</h3>
+                <p>鏂拌彍鍝佷笂绾垮墠鐨勬皯涓诲喅绛?/p>
+            </div>
+            <div class="sub-card-body">
+                <div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;">
+                    <strong>馃崉 鏉捐尭鐐栭浮</strong> <span style="float:right;color:#10b981;">142 绁?鉁?/span>
+                    <div class="bar" style="margin-top:6px;"><div class="bar-fill" style="width:78%;background:#10b981;"></div></div>
+                </div>
+                <div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;">
+                    <strong>馃 鐗涙补鏋滄媽闈?/strong> <span style="float:right;color:#f59e0b;">98 绁?/span>
+                    <div class="bar" style="margin-top:6px;"><div class="bar-fill" style="width:54%;background:#f59e0b;"></div></div>
+                </div>
+                <p style="font-size:0.82rem;color:var(--text-light);">鏉捐尭鐐栭浮寰楃エ鏈€楂橈紝灏嗕簬涓嬪懆姝ｅ紡涓婄嚎锛?/p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">馃挕</div>
+                <h3>鍒涙剰鎻愭</h3>
+                <p>鎻愪氦浣犵殑鑿滃搧鍒涙剰锛岀ぞ鍖虹偣璧炶瘎璁?/p>
+            </div>
+            <div class="sub-card-body">
+                <div style="padding:12px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;">
+                    <strong>馃尪锔?姹変腑楹昏荆棣欓攨</strong><br>
+                    <span style="font-size:0.82rem;color:var(--text-light);">鎻愭浜猴細闄堝悓瀛︼紙鐑归オ涓€锛?| 鉂わ笍 67 路 馃挰 23</span>
+                </div>
+                <div style="padding:12px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;">
+                    <strong>馃崰 绱柉灞辫嵂绯?/strong><br>
+                    <span style="font-size:0.82rem;color:var(--text-light);">鎻愭浜猴細鍒樺悓瀛︼紙鐑归オ浜岋級 | 鉂わ笍 45 路 馃挰 15</span>
+                </div>
+                <p style="font-size:0.82rem;color:var(--text-light);">瀛︾敓鎻愭缁忕ぞ鍖烘姇绁ㄥ悗鍙繘鍏ュ疄闄呯爺鍙戦樁娈?/p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">馃摎</div>
+                <h3>鏁欒偛鍐呭</h3>
+                <p>鍥涚被鍐呭娣卞害鍛堢幇</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li>馃崪 楗鏂囧寲锛氱Е宸村北鍖洪鏉愭晠浜?/li>
+                    <li>馃敩 钀ュ吇绉戝锛氳嵂椋熷悓婧愮煡璇嗗浘璋?/li>
+                    <li>馃敟 鍚庡帹鏁呬簨锛氭暀瀹ら噷鐨勭儫鐏皵</li>
+                    <li>馃懁 浜虹墿涓撹锛氫粠娲楄彍宸ュ埌鎺屽嫼甯堝倕</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">瀛︾敓鎾板啓銆佹暀甯堝鏍搞€佺ぞ鍖轰簰鍔紝褰㈡垚鍙寔缁殑鍐呭鐢熸€?/p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc5">
+                <div class="icon">馃嵆</div>
+                <h3>鍘ㄥ笀涓庡鐢熷叡鍒?/h3>
+                <p>璁╄鍫傛垚涓虹爺鍙戜腑蹇?/p>
+            </div>
+            <div class="sub-card-body">
+                <p><strong>鍏卞垱娴佺▼锛?/strong></p>
+                <ul class="sub-list">
+                    <li>瀛︾敓鎻愭 鈫?鍘ㄥ笀瀹℃牳 鈫?鑱斿悎鐮斿彂</li>
+                    <li>璇曞仛鍝佸皾 鈫?杩唬浼樺寲 鈫?涓婄嚎鎶曠エ</li>
+                    <li>鏍囧噯鍒跺畾 鈫?閲忓寲閰嶆柟 鈫?鍐欏叆鏁欐</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">宸叉湁 <strong>12閬?/strong> 鑿滃搧閫氳繃鍏卞垱鏈哄埗绾冲叆姝ｅ紡鑿滃崟</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.5 鍘ㄦ埧椹鹃┒鑸?============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">馃摗 鍘ㄦ埧椹鹃┒鑸?/span>
+        <h2 class="section-title">瀹炴椂鏁版嵁 路 绮惧噯鎺屾帶</h2>
+        <p class="section-desc">璁㈠崟鎬昏銆佸帹甯堝洟闃熴€侀璀︾郴缁熴€佸伐浣嶄换鍔?鈥斺€?涓€灞忓敖瑙?/p>
+    </div>
+
+    <div class="cockpit-grid">
+        <div class="cockpit-card"><div class="number">127</div><div class="label">鎬昏鍗曟暟</div></div>
+        <div class="cockpit-card"><div class="number">89</div><div class="label">宸查璁?/div></div>
+        <div class="cockpit-card"><div class="number warn">12</div><div class="label">寰呯‘璁?/div></div>
+        <div class="cockpit-card"><div class="number" style="color:#10b981;">楼5,842</div><div class="label">棰勪及鏀跺叆</div></div>
+    </div>
+
+    <div class="sub-grid" style="margin-top:32px;">
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">馃懆鈥嶐煃?/div>
+                <h3>鍘ㄥ笀鍥㈤槦 路 褰撳墠鍊肩彮</h3>
+                <p>A缁勶細鏉庡笀鍌呫€佸紶鍚屽銆佺帇鍚屽</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li>馃懆鈥嶐煃?鏉庡笀鍌咃紙涓诲帹锛夛細鐑彍鍖?路 宸插嚭 34 鍗?/li>
+                    <li>馃懇鈥嶐煃?寮犲悓瀛︼紙鍓帹锛夛細鍑夎彍鍖?路 宸插嚭 22 鍗?/li>
+                    <li>馃懆鈥嶐煃?鐜嬪悓瀛︼紙甯帹锛夛細姹ゅ搧鍖?路 宸插嚭 18 鍗?/li>
+                    <li>馃懇鈥嶐煃?璧靛悓瀛︼紙澶囪彍锛夛細鍒囬厤鍖?路 澶囨枡鍏呰冻</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc5">
+                <div class="icon">鈿狅笍</div>
+                <h3>棰勮绯荤粺</h3>
+                <p>瀹炴椂鐩戞帶 路 鍙婃椂鍝嶅簲</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="padding:10px;background:#fef2f2;border-radius:8px;margin-bottom:8px;border-left:4px solid #ef4444;">
+                    <strong>馃敶 椋熸潗棰勮锛?/strong>澶╅夯搴撳瓨浠呭墿 3 浠?                </div>
+                <div style="padding:10px;background:#fffbeb;border-radius:8px;margin-bottom:8px;border-left:4px solid #f59e0b;">
+                    <strong>馃煛 搴撳瓨棰勮锛?/strong>钘滈害鍗冲皢浣庝簬瀹夊叏搴撳瓨
+                </div>
+                <div style="padding:10px;background:#f0fdf4;border-radius:8px;border-left:4px solid #10b981;">
+                    <strong>馃煝 鏂拌鍗曟彁閱掞細</strong>+3 鍗?路 閿呭璞嗚厫 脳2 + 娌欐媺 脳1
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc1">
+                <div class="icon">馃搳</div>
+                <h3>璁㈠崟姹囨€?/h3>
+                <p>姣忛亾鑿滆鍗曟暟 + 鐗规畩闇€姹?/p>
+            </div>
+            <div class="sub-card-body">
+                <table class="data-table">
+                    <tr><th>鑿滃搧</th><th>璁㈠崟</th><th>鐗规畩闇€姹?/th></tr>
+                    <tr><td>澶╅夯绾㈢儳鑲?/td><td>28</td><td>灏戞补 脳3</td></tr>
+                    <tr><td>閿呭璞嗚厫</td><td>22</td><td>鍔犺荆 脳2</td></tr>
+                    <tr><td>钘滈害娌欐媺</td><td>18</td><td>鍘昏櫨 脳1</td></tr>
+                    <tr><td>鐜懓楦℃堡</td><td>15</td><td>鈥?/td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">馃敡</div>
+                <h3>宸ヤ綅浠诲姟鍒嗛厤</h3>
+                <p>鍚勫伐浣嶅埗浣滀换鍔℃槑缁?/p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>鐑彍宸ヤ綅锛?/strong>绾㈢儳鑲壝?2銆佽眴鑵惷?0銆佽捀楸济?</li>
+                    <li><strong>鍑夎彍宸ヤ綅锛?/strong>娌欐媺脳14銆佽敩鑿滃嵎脳8銆侀吀濂舵澂脳6</li>
+                    <li><strong>姹ゅ搧宸ヤ綅锛?/strong>楦℃堡脳10銆佹帓楠ㄦ堡脳8銆侀摱鑰崇竟脳6</li>
+                    <li><strong>闈㈢偣宸ヤ綅锛?/strong>寰呭垎閰?/li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.6 缁忚惀鍙傝皨 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">馃搱 缁忚惀鍙傝皨</span>
+        <h2 class="section-title">鏁版嵁椹卞姩鐨勭粡钀ュ喅绛?/h2>
+        <p class="section-desc">缁忚惀鏃ユ姤 路 鑿滃搧鎺掕 路 瀛︾敓缁╂晥 路 瓒嬪娍鍥捐〃</p>
+    </div>
+
+    <div class="cockpit-grid">
+        <div class="cockpit-card">
+            <div class="number">127</div>
+            <div class="label">浠婃棩璁㈠崟鏁?<span class="up">鈫?12%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">楼5,842</div>
+            <div class="label">浠婃棩閿€鍞 <span class="up">鈫?8%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">楼46.0</div>
+            <div class="label">瀹㈠崟浠?<span class="up">鈫?3%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">62<span style="font-size:1rem;">%</span></div>
+            <div class="label">姣涘埄鐜?<span class="up">鈫?2%</span></div>
+        </div>
+    </div>
+
+    <div class="trust-grid" style="margin-top:32px;">
+        <div class="score-card">
+            <h4>馃弳 鑿滃搧閿€閲?TOP5</h4>
+            <table class="data-table">
+                <tr><th>鎺掑悕</th><th>鑿滃搧</th><th>閿€閲?/th><th>璇勫垎</th><th>澧為暱</th></tr>
+                <tr><td>馃</td><td>澶╅夯绾㈢儳鑲?/td><td>28</td><td>4.9</td><td class="up">+15%</td></tr>
+                <tr><td>馃</td><td>閿呭璞嗚厫</td><td>22</td><td>4.7</td><td class="up">+8%</td></tr>
+                <tr><td>馃</td><td>钘滈害铏句粊娌欐媺</td><td>18</td><td>4.6</td><td class="up">+22%</td></tr>
+                <tr><td>4</td><td>鐜懓绾㈡灒楦℃堡</td><td>15</td><td>4.8</td><td class="up">+5%</td></tr>
+                <tr><td>5</td><td>楦¤兏鑲夎敩鑿滃嵎</td><td>12</td><td>4.5</td><td class="down">-2%</td></tr>
+            </table>
+        </div>
+
+        <div class="score-card">
+            <h4>馃懆鈥嶐煃?瀛︾敓缁╂晥</h4>
+            <table class="data-table">
+                <tr><th>瀛︾敓</th><th>鍒朵綔鏁?/th><th>璇勫垎</th><th>瑙﹀姩鍊?/th><th>娴垂鐜?/th></tr>
+                <tr><td>鏉庡笀鍌?/td><td>34</td><td>4.9</td><td>156</td><td class="up">3.2%</td></tr>
+                <tr><td>寮犲悓瀛?/td><td>22</td><td>4.7</td><td>98</td><td class="up">4.5%</td></tr>
+                <tr><td>鐜嬪悓瀛?/td><td>18</td><td>4.6</td><td>72</td><td>5.1%</td></tr>
+                <tr><td>璧靛悓瀛?/td><td>15</td><td>4.4</td><td>45</td><td class="down">7.8%</td></tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.7 AI 瀵硅瘽 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">馃挰 AI 瀵硅瘽</span>
+        <h2 class="section-title">鍜岃揪鍙旇亰澶?/h2>
+        <p class="section-desc">浠庨椤垫诞绐楃洿鎺ヨ烦杞?路 鏂囧瓧杈撳叆 路 AI 鏅鸿兘鍥炲</p>
+    </div>
+
+    <div style="max-width:600px;margin:0 auto;background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;">
+        <div style="background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">馃</div>
+            <div><strong>杈惧彅</strong><br><span style="font-size:0.78rem;opacity:0.8;">AI 瀵硅瘽 路 鍦ㄧ嚎</span></div>
+        </div>
+        <div style="padding:20px;min-height:300px;background:#f8f9fa;">
+            <div style="background:white;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;">
+                <p style="font-size:0.9rem;">杈惧彅锛屼粖澶╁€奸鏈変粈涔堟帹鑽愶紵</p>
+            </div>
+            <div style="background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;margin-left:auto;">
+                <p style="font-size:0.9rem;">浠婂ぉ澶╅夯绾㈢儳鑲夊垰鍑洪攨锛岀敤鐨勬槸鏄ㄥぉ灞变笂鏀剁殑鏂伴矞澶╅夯锛岄厤涓婃瀹楃殑浜旇姳涓夊眰锛屽悓浜嬩滑閮借濂斤紒鍙﹀钘滈害铏句粊娌欐媺涔熷緢鍙楁杩庯紝娓呯埥鍋ュ悍銆備綘鎯虫潵鐐逛粈涔堬紵馃槉</p>
+            </div>
+            <div style="background:white;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;">
+                <p style="font-size:0.9rem;">缁欐垜鏉ヤ釜澶╅夯绾㈢儳鑲夊惂锛屽啀鍔犱釜钘滈害娌欐媺銆?/p>
+            </div>
+            <div style="background:#eff6ff;border-radius:12px;padding:12px 16px;max-width:80%;margin-left:auto;">
+                <p style="font-size:0.9rem;">濂藉槥锛佸ぉ楹荤孩鐑ц倝 楼45 + 钘滈害铏句粊娌欐媺 楼35 = 鎬诲叡 楼80銆傚凡涓嬪崟锛岄璁?12:20 鍙彇椁愩€傝寰楁潵鍙栧摝~</p>
+            </div>
+        </div>
+        <div style="padding:12px 16px;border-top:1px solid #e2e8f0;display:flex;gap:10px;">
+            <input type="text" placeholder="杈撳叆娑堟伅..." style="flex:1;padding:10px 16px;border:1px solid #e2e8f0;border-radius:50px;font-size:0.9rem;">
+            <button style="background:var(--orange);color:white;border:none;padding:10px 20px;border-radius:50px;font-weight:600;cursor:pointer;">鍙戦€?/button>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.8 杩愯惀 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">鈿欙笍 杩愯惀涓績</span>
+        <h2 class="section-title">杩愯惀妯″潡 + 绠＄悊妯″潡</h2>
+        <p class="section-desc">鍚庡帹椹鹃┒鑸?路 缁忚惀鍙傝皨閮?路 搴撳瓨绠＄悊 路 璐ㄩ噺绠℃帶 路 璋冪爺闂嵎 路 蹇冪悊娴嬭瘎 路 棰勭害绠＄悊 路 鏁版嵁鐪嬫澘</p>
+    </div>
+
+    <div class="sub-grid">
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">馃殌</div>
+                <h3>杩愯惀妯″潡</h3>
+                <p>鍥涘ぇ杩愯惀鍏ュ彛</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>鍚庡帹椹鹃┒鑸憋細</strong>鐢熶骇缁勭鐞?路 鎺掔彮璋冨害 路 瀹炴椂鐩戞帶</li>
+                    <li><strong>缁忚惀鍙傝皨閮細</strong>鏁版嵁鍒嗘瀽 路 缁忚惀鍐崇瓥 路 鎶ヨ〃鐢熸垚</li>
+                    <li><strong>搴撳瓨绠＄悊锛?/strong>椋熸潗鍏ュ簱 路 鍑哄簱璁板綍 路 搴撳瓨棰勮</li>
+                    <li><strong>璐ㄩ噺绠℃帶锛?/strong>鍝佹楠屾敹 路 杩囩▼鎺у埗 路 闂杩芥函</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">馃搵</div>
+                <h3>绠＄悊妯″潡</h3>
+                <p>鍥涘ぇ绠＄悊鍏ュ彛</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>璋冪爺闂嵎锛?/strong>鍦ㄦ牎瀛︾敓 / 姣曚笟鐢?/ 浼佷笟 / 绀句細 / 鏁欏笀 浜旂被闂嵎</li>
+                    <li><strong>蹇冪悊娴嬭瘎绠＄悊锛?/strong>椋庨櫓璇勪及 路 鍗辨満骞查 路 CSV瀵煎嚭</li>
+                    <li><strong>棰勭害绠＄悊锛?/strong>鎮﹁垗鏈嶅姟棰勭害 路 鍊奸璁㈤绠＄悊</li>
+                    <li><strong>鏁版嵁鐪嬫澘锛?/strong>鍏ㄥ眬鏁版嵁鍙鍖?路 瀹炴椂鐩戞帶澶у睆</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">馃摝</div>
+                <h3>搴撳瓨绠＄悊</h3>
+                <p>椋熸潗鍏ㄦ祦绋嬭拷韪?/p>
+            </div>
+            <div class="sub-card-body">
+                <p><strong>鍏ュ簱绠＄悊锛?/strong>椋熸潗閲囪喘鍏ュ簱璁板綍銆佷緵搴斿晢淇℃伅銆佹壒娆¤拷婧?/p>
+                <p><strong>鍑哄簱璁板綍锛?/strong>姣忛亾鑿滈鏉愭秷鑰楄嚜鍔ㄦ墸鍑?/p>
+                <p><strong>搴撳瓨棰勮锛?/strong>瀹夊叏搴撳瓨闃堝€艰瀹氾紝浣庝簬闃堝€艰嚜鍔ㄦ彁閱?/p>
+                <p style="color:#ef4444;font-weight:600;">鈿狅笍 澶╅夯浠呭墿 3 浠斤紝璇峰強鏃惰ˉ璐?/p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">鉁?/div>
+                <h3>璐ㄩ噺绠℃帶</h3>
+                <p>鍝佹 路 杩囩▼ 路 杩芥函</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>鍝佹楠屾敹锛?/strong>椋熸潗鍏ュ簱鍝佽川妫€鏌?/li>
+                    <li><strong>杩囩▼鎺у埗锛?/strong>鍒朵綔杩囩▼涓殑鍗敓銆佹俯搴︺€佹椂闂寸洃鎺?/li>
+                    <li><strong>闂杩芥函锛?/strong>浠讳竴鑿滃搧鍙拷婧埌鍘熸枡鎵规鍜屽埗浣滆€?/li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">鎵€鏈夊搧鎺ф暟鎹綍鍏ュ鐢熸垚闀挎。妗堬紝浣滀负瀹炶鎴愮哗渚濇嵁</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.9 鑽鍚屾簮 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">馃尶 鑽鍚屾簮</span>
+        <h2 class="section-title">绉﹀反灞卞尯澶╃劧濂界墿 路 鏍囧噯鍖栧搧璐ㄤ繚闅?/h2>
+        <p class="section-desc">涓嵂鏉愮被 + 椋熸潗绫讳袱澶у垎绫伙紝姣忎釜浜у搧鍚鎯呴〉涓庡姛鏁堣鏄?/p>
+    </div>
+
+    <div class="yaoshi-category">
+        <h4>馃尡 涓嵂鏉愮被</h4>
+        <div class="yaoshi-grid">
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃尶</div>
+                <div class="name">瀹佸己澶╅夯</div>
+                <div class="price">楼68/鏂?/div>
+                <div class="features">鎭姝㈢棄 路 骞宠倽娼滈槼</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃尭</div>
+                <div class="name">姹変腑榛勮姫</div>
+                <div class="price">楼45/鏂?/div>
+                <div class="features">琛ユ皵鍥鸿〃 路 鍒╂按娑堣偪</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃崅</div>
+                <div class="name">绉﹀反褰撳綊</div>
+                <div class="price">楼58/鏂?/div>
+                <div class="features">琛ヨ娲昏 路 璋冪粡姝㈢棝</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃崉</div>
+                <div class="name">绉﹀箔鐏佃姖</div>
+                <div class="price">楼128/鏂?/div>
+                <div class="features">琛ユ皵瀹夌 路 姝㈠挸骞冲枠</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="yaoshi-category">
+        <h4>馃ガ 椋熸潗绫?/h4>
+        <div class="yaoshi-grid">
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃</div>
+                <div class="name">绉﹀反鏍告</div>
+                <div class="price">楼25/鏂?/div>
+                <div class="features">琛ヨ偩鍋ヨ剳 路 娑﹁偁閫氫究</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃珮</div>
+                <div class="name">姹変腑榛戣姖楹?/div>
+                <div class="price">楼18/鏂?/div>
+                <div class="features">琛ヨ倽鑲?路 鐩婄簿琛€</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃珤</div>
+                <div class="name">绉﹀箔鏋告潪</div>
+                <div class="price">楼35/鏂?/div>
+                <div class="features">婊嬭ˉ鑲濊偩 路 鐩婄簿鏄庣洰</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">馃尠</div>
+                <div class="name">绉﹀反灞辫嵂</div>
+                <div class="price">楼15/鏂?/div>
+                <div class="features">鍋ヨ劸鍏昏儍 路 琛ヨ偤鍥鸿偩</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;padding:20px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border-radius:var(--radius);border:1px solid #fde68a;">
+        <p style="color:#92400e;font-weight:600;">馃摗 鏁版嵁鏉ユ簮锛氬悗绔?/api/yaoshi/categories 鍜?/api/yaoshi/products | 瀛愰〉闈細herbs锛堣嵂鏉愶級/ foods锛堥鏉愶級/ detail锛堣鎯咃級</p>
+    </div>
+</section>
+
+<!-- ============ 7.10 鐢ㄩ涔犳儻璁剧疆 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">鈿欙笍 鐢ㄩ涔犳儻璁剧疆</span>
+        <h2 class="section-title">涓€у寲鐢ㄩ浣撻獙</h2>
+        <p class="section-desc">鍫傞/澶栧甫 路 鍙栭鏃舵 路 搴т綅鍋忓ソ 路 鑼舵按鍋忓ソ 路 閫氱煡璁剧疆</p>
+    </div>
+
+    <div class="setting-grid">
+        <div class="setting-card">
+            <div class="icon">馃嵔锔?/div>
+            <h4>鐢ㄩ鏂瑰紡</h4>
+            <div class="opts">
+                <span class="opt active">馃彔 鍫傞</span>
+                <span class="opt">馃摝 澶栧甫</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">鈴?/div>
+            <h4>鍙栭鏃舵</h4>
+            <div class="opts">
+                <span class="opt">11:30</span>
+                <span class="opt active">11:45</span>
+                <span class="opt">12:00</span>
+                <span class="opt">12:15</span>
+                <span class="opt">12:30</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">馃獞</div>
+            <h4>搴т綅鍋忓ソ</h4>
+            <div class="opts">
+                <span class="opt">馃獰 闈犵獥</span>
+                <span class="opt">馃搻 瑙掕惤</span>
+                <span class="opt">鈿?鍦嗘</span>
+                <span class="opt active">馃幉 闅忎究</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">馃嵉</div>
+            <h4>鑼舵按鍋忓ソ</h4>
+            <div class="opts">
+                <span class="opt active">鈽?闇€瑕?/span>
+                <span class="opt">馃毇 涓嶉渶瑕?/span>
+            </div>
+        </div>
+        <div class="setting-card" style="grid-column:span 2;">
+            <div class="icon">馃敂</div>
+            <h4>閫氱煡璁剧疆</h4>
+            <div class="opts">
+                <span class="opt active">馃搮 棰勭害鎻愰啋</span>
+                <span class="opt active">馃摝 鍙栭鎻愰啋</span>
+                <span class="opt">馃敟 鐑归オ閫氱煡</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<footer class="footer">
+    <p>漏 2026 瀹佸己鍘胯亴涓氶珮绾т腑瀛?路 鍥涚湡涓夊寲浜旈摼涓夊満鏁欏鎴愭灉鍥㈤槦</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">棣栭〉</a> 路 <a href="theory.html">鐞嗚妗嗘灦</a> 路 <a href="generator.html">AI绯荤粺</a> 路 <a href="zhican.html">鍊奸</a> 路 <a href="yushe.html">鎮﹁垗</a>
+    </p>
+</footer>
+
+<script>
+function showFoodTab(tab) {
+    document.querySelectorAll('.food-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.food-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).style.display = 'grid';
+    event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
