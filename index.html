@@ -728,136 +728,215 @@
             opacity: 1; transform: translateY(0);
         }
         
-        /* ===== Responsive ===== */
+        /* ===== Responsive: Premium Mobile Experience ===== */
         @media (max-width: 768px) {
-            /* Section spacing */
-            .section { padding: 4rem 1rem; }
+            /* === Global === */
+            html { font-size: 15px; }
+            body { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+            *, *::before, *::after { -webkit-tap-highlight-color: transparent; }
+
+            /* === Hero === */
+            .hero { min-height: 100vh; padding: 0 1.2rem 3rem; justify-content: center; }
+            .hero-title { font-size: clamp(1.7rem, 7vw, 2.6rem); letter-spacing: 0.04em; line-height: 1.25; }
+            .hero-subtitle { font-size: 0.88rem; padding: 0 0.3rem; line-height: 1.7; opacity: 0.85; }
+            .hero-title .highlight { display: inline; }
+            .hero-stats { gap: 1rem; padding: 0 0.2rem; }
+            .hero-stat { flex: 0 0 calc(50% - 0.5rem); padding: 1.2rem 0.6rem; border-radius: 14px; }
+            .hero-stat-num { font-size: clamp(1.5rem, 9vw, 2.4rem); }
+            .hero-stat-label { font-size: 0.72rem; opacity: 0.7; }
+            .scroll-hint { bottom: 1.8rem; font-size: 0.72rem; }
+            .scroll-hint-arrow { width: 18px; height: 18px; }
+
+            /* === Campus Hero Image === */
+            .campus-hero-img { max-width: 100%; width: 100%; margin-top: 1.5rem; border-radius: 12px; overflow: hidden; }
+            .campus-hero-overlay { font-size: 0.82rem; padding: 0.6rem 1rem; border-radius: 0 0 12px 12px; }
+
+            /* === Campus Banner === */
+            .campus-banner { max-height: 220px; margin-top: -0.5rem; }
+            .campus-banner img { width: 100%; height: 220px; object-fit: cover; }
+            .campus-banner-label { padding: 0.8rem 1rem 0.5rem; font-size: 0.75rem; letter-spacing: 0.12em; }
+
+            /* === Campus Future Image === */
+            .campus-future-img { max-width: 100%; border-radius: 12px; overflow: hidden; }
+
+            /* === Section Shared === */
+            .section { padding: 3.5rem 1.2rem; }
             .section-inner { padding: 0; }
-            .deep-section { padding: 3rem 1rem; }
+            .deep-section { padding: 2.8rem 1.2rem; }
+            .section-header { margin-bottom: 2.2rem; }
+            .section-tag { font-size: 0.72rem; padding: 0.35rem 1rem; }
+            .section-title { font-size: clamp(1.4rem, 5.5vw, 2.1rem); line-height: 1.3; }
+            .section-desc { font-size: 0.85rem; padding: 0 0.3rem; line-height: 1.7; }
 
-            /* Hero */
-            .hero-stats { gap: 1.2rem; }
-            .hero-stat { flex: 0 0 calc(50% - 0.6rem); }
-            .hero-stat-num { font-size: clamp(1.5rem, 8vw, 2.5rem); }
-            .hero-title { font-size: clamp(1.6rem, 6vw, 2.5rem); }
-            .hero-subtitle { font-size: 0.9rem; padding: 0 0.5rem; }
-            .campus-hero-img { max-width: 100%; width: 100%; }
-            .campus-banner { max-height: 200px; margin-top: -1rem; }
-            .campus-banner-label { padding: 1rem 1rem 0.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
-            .campus-future-img { max-width: 100%; }
+            /* === Timeline === */
+            .timeline { padding: 1rem 0; }
+            .timeline::before { left: 18px; width: 2px; }
+            .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; padding-left: 0; }
+            .timeline-dot { left: 18px; width: 14px; height: 14px; border-width: 2px; }
+            .timeline-content { width: calc(100% - 44px); margin-left: 44px; padding: 1.2rem; border-radius: 12px; }
+            .timeline-content h3 { font-size: 1.05rem; }
+            .timeline-content p { font-size: 0.82rem; line-height: 1.7; }
+            .timeline-item { margin-bottom: 1.8rem; }
 
-            /* Navigation */
-            #nav-dots { display: none; }
+            /* === Helix / Theory Cards === */
+            .helix-cards { grid-template-columns: 1fr; gap: 1.2rem; }
+            .helix-card { padding: 1.5rem 1.2rem; border-radius: 14px; }
+            .helix-card h3 { font-size: 1.05rem; }
+            .helix-card p { font-size: 0.82rem; line-height: 1.7; }
 
-            /* Section headers */
-            .section-header { margin-bottom: 2.5rem; }
-            .section-title { font-size: clamp(1.4rem, 5vw, 2rem); }
-            .section-desc { font-size: 0.9rem; padding: 0 0.5rem; }
+            /* === Method Grid === */
+            .method-grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+            .method-step { padding: 1.4rem 1rem; border-radius: 14px; }
+            .method-step .step-num { font-size: 1.6rem; }
+            .method-step h4 { font-size: 0.95rem; }
+            .method-step p { font-size: 0.78rem; line-height: 1.65; }
 
-            /* Timeline */
-            .timeline::before { left: 20px; }
-            .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; }
-            .timeline-dot { left: 20px; width: 16px; height: 16px; }
-            .timeline-content { width: calc(100% - 50px); margin-left: 50px; padding: 1.2rem; }
-            .timeline-item { margin-bottom: 2rem; }
+            /* === Loop Grid (8-link) === */
+            .loop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+            .loop-item { padding: 1rem 0.6rem; border-radius: 10px; font-size: 0.75rem; min-height: 64px; display: flex; align-items: center; justify-content: center; }
+            .loop-item-num { font-size: 1.1rem; }
 
-            /* Theory cards */
-            .helix-cards { grid-template-columns: 1fr; }
+            /* === Workshop === */
+            .workshop-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .workshop-card { border-radius: 14px; overflow: hidden; }
+            .workshop-card .card-body { padding: 1.2rem; }
+            .workshop-card h4 { font-size: 1rem; }
+            .workshop-card p { font-size: 0.82rem; line-height: 1.7; }
 
-            /* Four-step method */
-            .method-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-            .method-step { padding: 1.5rem 1rem; }
+            /* === Student Cards === */
+            .student-cards { grid-template-columns: 1fr; gap: 1.2rem; }
+            .student-card { border-radius: 14px; overflow: hidden; }
+            .student-card .card-body { padding: 1.2rem; }
+            .student-card h4 { font-size: 1rem; }
+            .student-card .story-text { font-size: 0.82rem; line-height: 1.75; }
+            .student-card .tag { font-size: 0.68rem; padding: 0.2rem 0.6rem; }
 
-            /* 8-link loop */
-            .loop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-            .loop-item { padding: 1rem 0.5rem; font-size: 0.8rem; }
-            .loop-item-num { font-size: 1.2rem; }
+            /* === Evidence Grids === */
+            .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; gap: 1.2rem; }
+            .evidence-card { border-radius: 14px; overflow: hidden; }
+            .evidence-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+            .evidence-label { font-size: 0.75rem; padding: 0.65rem 0.8rem; line-height: 1.5; }
 
-            /* Workshop */
-            .workshop-grid { grid-template-columns: 1fr; }
+            /* === Honor Wall === */
+            .honor-section-title { font-size: 0.95rem; margin-bottom: 1.2rem; }
+            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+            .honor-card { border-radius: 10px; overflow: hidden; }
+            .honor-card img { aspect-ratio: 3/4; width: 100%; object-fit: cover; }
+            .honor-card-caption { font-size: 0.63rem; padding: 0.4rem 0.5rem; min-height: 2.2rem; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
 
-            /* Student cards */
-            .student-cards { grid-template-columns: 1fr; }
-
-            /* Evidence grids */
-            .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; gap: 1rem; }
-
-            /* Honor wall */
-            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-            .honor-card img { aspect-ratio: 3/4; }
-            .honor-card-caption { font-size: 0.65rem; padding: 0.4rem 0.5rem; min-height: 2rem; }
-            .honor-section-title { font-size: 0.95rem; }
-
-            /* Data cards */
-            .data-cards { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-            .data-card { padding: 1rem 0.8rem; }
+            /* === Data Cards === */
+            .data-cards { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .data-card { padding: 1.1rem 0.8rem; border-radius: 12px; }
             .data-card-num { font-size: 1.5rem; }
             .data-card-num.cyan { font-size: 1.2rem; }
+            .data-card-label { font-size: 0.72rem; opacity: 0.7; }
+            .data-card-desc { font-size: 0.7rem; line-height: 1.5; }
 
-            /* Charts */
-            .chart-container { height: 320px; padding: 0.8rem; }
-            .radar-container { height: 320px; padding: 0.8rem; max-width: 100%; }
+            /* === Chart Containers === */
+            .chart-container { height: 300px; padding: 0.8rem; border-radius: 14px; }
+            .radar-container { height: 300px; padding: 0.8rem; border-radius: 14px; }
 
-            /* Video showcase */
-            .video-main iframe { height: auto; }
-            .video-secondary { grid-template-columns: 1fr; gap: 1rem; }
-            .video-secondary iframe { height: auto; }
+            /* === Video Showcase === */
             .video-showcase { gap: 1.5rem; }
-            .video-caption { font-size: 0.8rem; }
-            .video-caption strong { font-size: 0.9rem; }
+            .video-main { border-radius: 14px; overflow: hidden; }
+            .video-main iframe { width: 100%; aspect-ratio: 16/9; height: auto; }
+            .video-secondary { grid-template-columns: 1fr; gap: 1rem; }
+            .video-secondary iframe { width: 100%; aspect-ratio: 16/9; height: auto; border-radius: 10px; }
+            .video-caption { font-size: 0.78rem; padding: 0.5rem 0.3rem; }
+            .video-caption strong { font-size: 0.85rem; }
+            .video-note { font-size: 0.72rem; }
+            .video-placeholder { aspect-ratio: 16/9; border-radius: 12px; font-size: 0.8rem; }
 
-            /* Future gate */
+            /* === Future Gate === */
             .future-content { grid-template-columns: 1fr; gap: 2rem; }
-            .future-text h3 { font-size: 1.4rem; }
-            .future-text p { font-size: 0.9rem; }
-            .future-badges { gap: 0.5rem; }
-            .future-badge { font-size: 0.78rem; padding: 0.4rem 0.8rem; }
-            .future-quote { padding: 1rem; font-size: 0.85rem; }
+            .future-text h3 { font-size: 1.35rem; line-height: 1.35; }
+            .future-text p { font-size: 0.85rem; line-height: 1.75; }
+            .future-badges { gap: 0.5rem; flex-wrap: wrap; }
+            .future-badge { font-size: 0.75rem; padding: 0.35rem 0.8rem; border-radius: 20px; }
+            .future-quote { padding: 1.2rem; font-size: 0.84rem; line-height: 1.7; border-radius: 12px; margin-top: 1.5rem; }
+            #future-3d-box { min-height: 200px; font-size: 3rem; }
 
-            /* Module cards */
-            .module-grid { grid-template-columns: 1fr; }
+            /* === Module Grid === */
+            .module-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .module-card { border-radius: 14px; padding: 1.5rem 1.2rem; }
+            .module-icon { font-size: 2rem; }
+            .module-card h4 { font-size: 1rem; }
+            .module-card p { font-size: 0.82rem; line-height: 1.7; }
 
-            /* Footer */
-            footer { padding: 3rem 1rem 1.5rem; }
+            /* === Navigation Dots (hide) === */
+            #nav-dots { display: none; }
+
+            /* === Footer === */
+            footer { padding: 2.5rem 1.2rem 1.5rem; }
             .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-            .footer-col h4 { font-size: 0.9rem; }
-            .footer-col a { font-size: 0.8rem; }
+            .footer-col h4 { font-size: 0.88rem; margin-bottom: 0.8rem; }
+            .footer-col li { margin-bottom: 0.5rem; }
+            .footer-col a { font-size: 0.78rem; }
+            .footer-bottom { font-size: 0.72rem; padding-top: 1.5rem; margin-top: 1.5rem; }
 
-            /* Toast */
-            .achievement-toast { right: 0.5rem; left: 0.5rem; top: auto; bottom: 1rem; border-radius: 10px; padding: 0.8rem 1rem; }
+            /* === Toast === */
+            .achievement-toast {
+                right: 0.8rem; left: 0.8rem; top: auto; bottom: 1.2rem;
+                border-radius: 12px; padding: 0.9rem 1.2rem;
+                transform: translateY(120%);
+                max-width: 100%;
+            }
             .achievement-toast.show { transform: translateY(0); }
-            .achievement-toast { transform: translateY(120%); }
             .achievement-icon { font-size: 1.5rem; }
+            .achievement-text h4 { font-size: 0.82rem; }
+            .achievement-text p { font-size: 0.72rem; }
 
-            /* Loading */
-            .loading-title { font-size: 1.6rem; }
-            .loading-subtitle { font-size: 0.8rem; }
-            .loading-bar-wrap { width: 180px; }
+            /* === Loading Screen === */
+            .loading-title { font-size: 1.5rem; letter-spacing: 0.1em; }
+            .loading-subtitle { font-size: 0.75rem; }
+            .loading-bar-wrap { width: 160px; height: 3px; }
+            #opening-text { bottom: 22%; font-size: 1.1rem; letter-spacing: 0.08em; }
 
-            /* Opening text */
-            #opening-text { bottom: 25%; font-size: 1.2rem; }
-
-            /* Cursor glow - disable on touch devices */
+            /* === Cursor Glow (disabled on touch) === */
             #cursor-glow { display: none; }
 
-            /* Card animations - reduce on mobile for performance */
-            .darkness-card:hover, .helix-card:hover, .workshop-card:hover, .student-card:hover, .evidence-card:hover, .honor-card:hover { transform: none; }
+            /* === Disable hover transforms on touch === */
+            @media (hover: none) {
+                .darkness-card:hover, .helix-card:hover, .workshop-card:hover,
+                .student-card:hover, .evidence-card:hover, .honor-card:hover,
+                .data-card:hover, .module-card:hover, .method-step:hover {
+                    transform: none !important;
+                }
+            }
 
-            /* Prevent horizontal overflow */
+            /* === Prevent horizontal overflow === */
             html, body { max-width: 100vw; overflow-x: hidden; }
+
+            /* === Smooth scrollbar for webkit === */
+            ::-webkit-scrollbar { width: 4px; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 4px; }
         }
 
-        /* Extra small phones */
-        @media (max-width: 400px) {
-            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
-            .honor-card-caption { font-size: 0.6rem; padding: 0.3rem; }
-            .data-cards { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-            .hero-stats { gap: 0.8rem; }
-            .hero-stat { flex: 0 0 calc(50% - 0.4rem); }
+        /* === Extra Small Phones (iPhone SE, etc.) === */
+        @media (max-width: 380px) {
+            html { font-size: 14px; }
+            .hero-title { font-size: clamp(1.4rem, 6.5vw, 2rem); }
+            .hero-stat { flex: 0 0 100%; max-width: 220px; margin: 0 auto; }
+            .hero-stats { justify-content: center; }
+            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
+            .honor-card-caption { font-size: 0.6rem; padding: 0.35rem 0.4rem; }
+            .data-cards { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+            .data-card { padding: 0.9rem 0.6rem; }
             .method-grid { grid-template-columns: 1fr; }
-            .loop-grid { grid-template-columns: repeat(2, 1fr); }
-            .section { padding: 3rem 0.8rem; }
+            .loop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
+            .section { padding: 3rem 1rem; }
             .footer-grid { grid-template-columns: 1fr; }
+            .evidence-label { font-size: 0.7rem; padding: 0.5rem 0.6rem; }
+        }
+
+        /* === Reduced Motion (accessibility) === */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
         
         /* ===== Achievement Toast ===== */
