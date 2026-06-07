@@ -855,6 +855,76 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
             pointer-events: none; border-radius: inherit;
         }
+        
+        /* ===== Campus Images ===== */
+        .campus-hero-img {
+            position: relative; z-index: 2;
+            margin-top: 2rem; max-width: 700px; width: 90%;
+            border-radius: 16px; overflow: hidden;
+            border: 2px solid rgba(201,169,110,0.25);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,169,110,0.1);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        .campus-hero-img:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.6), 0 0 60px rgba(201,169,110,0.2);
+        }
+        .campus-hero-img img {
+            width: 100%; display: block;
+            filter: brightness(0.9) saturate(1.1);
+        }
+        .campus-hero-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to top, rgba(2,8,21,0.9), transparent);
+            font-size: 0.85rem; color: var(--gold-light);
+            font-family: 'Noto Serif SC', serif; letter-spacing: 0.15em;
+        }
+        
+        .campus-banner {
+            width: 100%; position: relative;
+            margin: -3rem 0 0 0; padding: 0;
+            max-height: 420px; overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .campus-banner img {
+            width: 100%; display: block;
+            filter: brightness(0.85) saturate(1.15);
+            transform: scale(1.02);
+            transition: transform 8s ease;
+        }
+        .campus-banner:hover img { transform: scale(1.06); }
+        .campus-banner-label {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2rem 2rem 1rem; text-align: center;
+            background: linear-gradient(to top, rgba(2,8,21,0.95) 0%, rgba(2,8,21,0.6) 50%, transparent 100%);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem; color: var(--gold-light);
+            letter-spacing: 0.2em; z-index: 2;
+        }
+        
+        .campus-future-img {
+            max-width: 800px; width: 100%; margin: 2.5rem auto 0;
+            border-radius: 16px; overflow: hidden;
+            border: 2px solid rgba(0,212,170,0.25);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5), 0 0 30px rgba(0,212,170,0.08);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        .campus-future-img:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 50px rgba(0,212,170,0.15);
+        }
+        .campus-future-img img {
+            width: 100%; display: block;
+            filter: brightness(0.95) saturate(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .campus-hero-img { max-width: 95%; }
+            .campus-banner { max-height: 250px; margin-top: -2rem; }
+            .campus-future-img { max-width: 95%; }
+        }
     </style>
 </head>
 <body>
@@ -930,6 +1000,10 @@
                     </div>
                 </div>
             </div>
+            <div class="campus-hero-img fade-in-up" style="margin-left:auto;margin-right:auto;">
+                <img src="assets/campus-gate.jpg" alt="宁强县职业技术教育中心" loading="lazy">
+                <div class="campus-hero-overlay">宁强县职业技术教育中心</div>
+            </div>
             <div class="scroll-hint">
                 <span>向下探索改革之旅</span>
                 <div class="scroll-hint-arrow"></div>
@@ -986,6 +1060,12 @@
             <div class="section-fog"></div>
         </section>
         
+        <!-- ===== Campus Banner: Aerial View ===== -->
+        <div class="campus-banner fade-in-up">
+            <img src="assets/campus-aerial.jpg" alt="宁强县职业高级中学鸟瞰全景" loading="lazy">
+            <div class="campus-banner-label">🏫 秦巴山麓 · 校园全景 — 一所正在重生的县域中职</div>
+        </div>
+        
         <!-- ===== HALL 2: Theory Light ===== -->
         <section id="hall-theory" class="section">
             <div class="section-inner">
@@ -1019,18 +1099,6 @@
                                 解决"课堂怎么教"——1个教师发展体系 + 8环节闭环流程 + N项智能技术融合。<br>
                                 课堂参与度从35%提升至92%，文化课平均分提升35分。<br>
                                 <span style="color:var(--cyan);font-size:0.85rem;">✅ 陕西省第五届教学成果奖特等奖</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year" style="color:var(--gold-light);">2021</div>
-                            <div class="timeline-title">市级优秀课题</div>
-                            <div class="timeline-desc">
-                                汉中市教育科研优秀课题结题。<br>
-                                为后续省级课题申报奠定研究基础与方法论积累。<br>
-                                <span style="color:var(--cyan);font-size:0.85rem;">✅ 汉中市优秀课题（优良结题）</span>
                             </div>
                         </div>
                     </div>
@@ -1155,7 +1223,7 @@
             <div class="section-inner">
                 <div class="section-header fade-in-up">
                     <div class="section-tag" style="background:rgba(0,212,170,0.1);color:var(--cyan);">展厅3 · 实战工坊</div>
-                    <h2 class="section-title">四真三化五链三场<span style="color:var(--cyan)">：从课堂到战场</span></h2>
+                    <h2 class="section-title">四真三化五链三场<span style="color:var(--cyan)">：从课堂到产业</span></h2>
                     <p class="section-desc">死磕县域产业，拆解真实岗位，重构课程逻辑——让每一堂课都与市场直接对话</p>
                 </div>
                 
@@ -1715,6 +1783,12 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Campus Courtyard Image -->
+                        <div class="campus-future-img fade-in-up">
+                            <img src="assets/campus-courtyard.jpg" alt="宁强县职业高级中学校园实景" loading="lazy">
+                        </div>
+                        
                         <div class="future-quote">
                             "端出去的菜，就是职教的投名状。这里，是造值钱工匠的地方。"
                             <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 改革宣言</div>
