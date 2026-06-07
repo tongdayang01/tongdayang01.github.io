@@ -920,10 +920,80 @@
             filter: brightness(0.95) saturate(1.1);
         }
         
+        /* ===== Evidence Image Grids ===== */
+        .evidence-2col, .evidence-3col, .evidence-4col {
+            display: grid; gap: 1.5rem; margin: 2rem 0;
+        }
+        .evidence-2col { grid-template-columns: repeat(2, 1fr); }
+        .evidence-3col { grid-template-columns: repeat(3, 1fr); }
+        .evidence-4col { grid-template-columns: repeat(4, 1fr); }
+        
+        .evidence-card {
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            cursor: pointer;
+        }
+        .evidence-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            border-color: var(--gold);
+        }
+        .evidence-card img {
+            width: 100%; display: block;
+            filter: brightness(0.92) saturate(1.05);
+        }
+        .evidence-label {
+            padding: 0.6rem 1rem; font-size: 0.78rem;
+            color: var(--text-dim); text-align: center;
+            background: rgba(2,8,21,0.9);
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 0.05em;
+        }
+        .evidence-card:hover .evidence-label { color: var(--gold-light); }
+        
+        /* Honor Wall Grid */
+        .honor-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem; margin: 2rem 0;
+        }
+        .honor-card {
+            border-radius: 10px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(10,15,30,0.6);
+            transition: transform 0.35s ease, border-color 0.35s ease;
+        }
+        .honor-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: var(--gold);
+        }
+        .honor-card img {
+            width: 100%; display: block; aspect-ratio: 3/4;
+            object-fit: cover; filter: brightness(0.9) saturate(1.05);
+        }
+        .honor-card-caption {
+            padding: 0.5rem 0.8rem; font-size: 0.7rem;
+            color: var(--text-dim); text-align: center;
+            line-height: 1.4; border-top: 1px solid rgba(255,255,255,0.03);
+            min-height: 2.5rem; display: flex; align-items: center; justify-content: center;
+        }
+        .honor-card:hover .honor-card-caption { color: var(--gold-light); }
+        
+        .honor-section-title {
+            text-align: center; font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem; color: var(--gold-light);
+            letter-spacing: 0.15em; margin-bottom: 1.5rem;
+        }
+        .honor-section-title span { color: var(--cyan); }
+        
         @media (max-width: 768px) {
             .campus-hero-img { max-width: 95%; }
             .campus-banner { max-height: 250px; margin-top: -2rem; }
             .campus-future-img { max-width: 95%; }
+            .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; }
+            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
         }
     </style>
 </head>
@@ -1128,6 +1198,18 @@
                                 12+级优先级注入，30+生成类型。
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- 核心成果实证 -->
+                <div class="evidence-2col fade-in-up" style="margin-top:2rem;">
+                    <div class="evidence-card">
+                        <img src="assets/provincial-special-award.jpg" alt="陕西省第二届教学成果奖特等奖证书" loading="lazy">
+                        <div class="evidence-label">🏆 陕西省教学成果奖特等奖 · 陕西省教育厅+人社厅双章认证</div>
+                    </div>
+                    <div class="evidence-card">
+                        <img src="assets/research-conclusion.jpg" alt="课题结题证书" loading="lazy">
+                        <div class="evidence-label">📋 市级课题结题证书 · 学术主持：杨通达</div>
                     </div>
                 </div>
                 
@@ -1523,8 +1605,19 @@
                                 <span style="font-size:1.1rem;font-weight:700;color:var(--cyan);">美术</span>
                             </div>
                             <p style="color:var(--text-dim);font-size:0.9rem;line-height:1.8;margin:0;">
-                                不再是临摹素描、学透视，而是<strong style="color:var(--gold-light);">设计产品包装与视觉陈列、打造工坊空间美学</strong>，用审美力提升品牌格调与客户体验。
+                                不再是临摹素描、学透视，而是<strong style="color:var(--gold-light);">设计产品包装与视觉陈列、打造工坊空间美学</strong>，                                用审美力提升品牌格调与客户体验。
                             </p>
+                        </div>
+                    </div>
+                    <!-- 天麻产业链实证：县域真实产业 → 课堂产品化 -->
+                    <div class="evidence-2col fade-in-up" style="margin-top:2.5rem;">
+                        <div class="evidence-card">
+                            <img src="assets/tianma-chain.jpg" alt="天麻中药材产业链" loading="lazy">
+                            <div class="evidence-label">🍄 天麻产业链：产地挖掘 → 晾晒加工 → 成品药材</div>
+                        </div>
+                        <div class="evidence-card">
+                            <img src="assets/tianma-dishes.jpg" alt="天麻药食同源菜品开发" loading="lazy">
+                            <div class="evidence-label">🍲 天麻菜品化：药食同源 · 从原材料到餐桌产品</div>
                         </div>
                     </div>
                 </div>
@@ -1539,6 +1632,18 @@
                     <div class="section-tag" style="background:rgba(255,105,180,0.1);color:#FF69B4;">展厅4 · 生命剧场</div>
                     <h2 class="section-title">四个孩子的逆袭<span style="color:var(--gold-light)">：从厌学到融创</span></h2>
                     <p class="section-desc">真实的蜕变故事，是改革成效最有力的证明</p>
+                </div>
+                
+                <!-- 世赛成果实证 -->
+                <div class="evidence-2col fade-in-up" style="margin-bottom:2rem;">
+                    <div class="evidence-card">
+                        <img src="assets/worldskills-team.jpg" alt="世界职业院校技能大赛总决赛合影" loading="lazy">
+                        <div class="evidence-label">🏆 世界职业院校技能大赛 · 医药卫生赛道 · 康复技术组</div>
+                    </div>
+                    <div class="evidence-card">
+                        <img src="assets/worldskills-silver.jpg" alt="世赛银奖获奖证书" loading="lazy">
+                        <div class="evidence-label">🥈 2024世界职业院校技能大赛银奖 · 宁强县职业高级中学</div>
+                    </div>
                 </div>
                 
                 <div class="student-cards">
@@ -1707,6 +1812,51 @@
             </div>
         </section>
         
+        <!-- ===== 荣誉长廊：Honor Wall ===== -->
+        <section class="section" style="padding-top:2rem;padding-bottom:2rem;">
+            <div class="section-inner">
+                <div class="honor-section-title fade-in-up">🏆 <span>杨通达 · 十年耕耘荣誉长廊</span></div>
+                <div class="honor-grid fade-in-up">
+                    <div class="honor-card">
+                        <img src="assets/2010-new-star.jpg" alt="宁强县教坛新秀" loading="lazy">
+                        <div class="honor-card-caption">2010 · 宁强县教坛新秀</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2010-moral-edu.jpg" alt="德育工作先进教师" loading="lazy">
+                        <div class="honor-card-caption">2010 · 德育工作先进教师</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2011-design-award.jpg" alt="教学设计比赛二等奖" loading="lazy">
+                        <div class="honor-card-caption">2011 · 省教学设计比赛二等奖</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2012-teaching-master.jpg" alt="汉中市教学能手" loading="lazy">
+                        <div class="honor-card-caption">2012 · 汉中市教学能手</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2018-excellent-teacher.jpg" alt="汉中市优秀教师" loading="lazy">
+                        <div class="honor-card-caption">2018 · 汉中市优秀教师</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2020-advanced-worker.jpg" alt="职业教育先进工作者" loading="lazy">
+                        <div class="honor-card-caption">2020 · 职业教育先进工作者</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2022-judge-invite.jpg" alt="评委抽调函" loading="lazy">
+                        <div class="honor-card-caption">2022 · 市级教学能手评委</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/2019-judge-meeting.jpg" alt="教学能手评委会议" loading="lazy">
+                        <div class="honor-card-caption">2019 · 教学能手评委会议</div>
+                    </div>
+                    <div class="honor-card">
+                        <img src="assets/research-approval.jpg" alt="课题立项通知书" loading="lazy">
+                        <div class="honor-card-caption">2020 · 市级课题立项</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <!-- ===== HALL 6: Future Gate ===== -->
         <section id="hall-future" class="section">
             <div class="section-inner">
@@ -1781,6 +1931,53 @@
                                         培训人数 <strong style="color:var(--gold-light);">120 → 680人/年</strong>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 全国教研影响力实证 -->
+                        <div class="evidence-3col fade-in-up" style="margin-top:2.5rem;">
+                            <div class="evidence-card">
+                                <img src="assets/east-west-forum.jpg" alt="2026年东西部联合教研交流活动" loading="lazy">
+                                <div class="evidence-label">📢 2026东西部联合教研 · 教育部职教发展中心主办</div>
+                            </div>
+                            <div class="evidence-card">
+                                <img src="assets/theory-share.jpg" alt="三化五链理论分享" loading="lazy">
+                                <div class="evidence-label">📊 三化·五链理论框架 · 陕苏两省教科院承办</div>
+                            </div>
+                            <div class="evidence-card">
+                                <img src="assets/sizhen-share.jpg" alt="四真真实战场分享" loading="lazy">
+                                <div class="evidence-label">🎯 四真·真实战场 · 县域职教改革走出陕西</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 省教科院邀请函 + 教研现场 -->
+                        <div class="evidence-2col fade-in-up" style="margin-top:1.5rem;">
+                            <div class="evidence-card">
+                                <img src="assets/shengjiao-invite.jpg" alt="陕西省教育科学研究院邀请函" loading="lazy">
+                                <div class="evidence-label">📜 陕西省教科院正式邀请函 · 2026中职高本贯通培养教研活动</div>
+                            </div>
+                            <div class="evidence-card">
+                                <img src="assets/training-lecture.jpg" alt="教研培训现场分享" loading="lazy">
+                                <div class="evidence-label">🎤 教研培训现场 · 杨通达老师跨省分享改革经验</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 省政府背书三连证 -->
+                        <div style="text-align:center;margin-top:2.5rem;" class="fade-in-up">
+                            <div class="honor-section-title">🏛️ <span>省政府级官方认证</span></div>
+                        </div>
+                        <div class="evidence-3col fade-in-up">
+                            <div class="evidence-card">
+                                <img src="assets/reform-application.jpg" alt="陕西省职业教育改革成效明显地方申报表" loading="lazy">
+                                <div class="evidence-label">📋 改革申报表 · 宁强县人民政府公章</div>
+                            </div>
+                            <div class="evidence-card">
+                                <img src="assets/shengzheng-policy.jpg" alt="陕西省人民政府文件" loading="lazy">
+                                <div class="evidence-label">📄 陕政字〔2022〕69号 · 省政府督查激励通报</div>
+                            </div>
+                            <div class="evidence-card">
+                                <img src="assets/shengzheng-list.jpg" alt="职业教育改革成效明显地方名单" loading="lazy">
+                                <div class="evidence-label">📍 宁强县被省政府点名 · 2023年获专项资金倾斜</div>
                             </div>
                         </div>
                         
