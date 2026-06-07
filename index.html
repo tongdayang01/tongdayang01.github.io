@@ -103,7 +103,7 @@
             background: var(--dark);
             display: flex; align-items: center; justify-content: center;
         }
-        #opening-canvas.hidden { display: none; }
+        #opening-canvas.hidden { display: none !important; }
         #opening-text {
             position: absolute; bottom: 15%;
             font-family: 'Noto Serif SC', serif;
@@ -724,10 +724,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .fade-in-up {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        .fade-in-up.visible {
+            /* Default visible — GSAP handles animation, but content stays visible if JS fails */
             opacity: 1; transform: translateY(0);
         }
         
@@ -757,6 +754,107 @@
         .achievement-icon { font-size: 2rem; }
         .achievement-text h4 { font-size: 0.9rem; color: var(--gold-light); }
         .achievement-text p { font-size: 0.8rem; color: var(--text-dim); }
+        
+        /* ===== Scroll Progress Bar ===== */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--cyan), var(--gold));
+            z-index: 10001; width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(201,169,110,0.5), 0 0 30px rgba(0,212,170,0.3);
+        }
+        
+        /* ===== Cursor Glow ===== */
+        #cursor-glow {
+            position: fixed; pointer-events: none; z-index: 9998;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, rgba(59,125,216,0.04) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        #cursor-glow.visible { opacity: 1; }
+        
+        /* ===== Card 3D Tilt ===== */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.1s ease-out;
+        }
+        .tilt-card-inner {
+            transition: transform 0.1s ease-out;
+        }
+        
+        /* ===== Card Border Glow Animation ===== */
+        @keyframes border-glow {
+            0%, 100% { border-color: rgba(201,169,110,0.08); }
+            50% { border-color: rgba(201,169,110,0.25); }
+        }
+        .darkness-card, .helix-card, .workshop-card, .student-card, .data-card, .module-card {
+            animation: border-glow 4s ease-in-out infinite;
+        }
+        .darkness-card:nth-child(2), .workshop-card:nth-child(2), .student-card:nth-child(2) { animation-delay: 1s; }
+        .darkness-card:nth-child(3), .workshop-card:nth-child(3), .student-card:nth-child(3) { animation-delay: 2s; }
+        .darkness-card:nth-child(4), .workshop-card:nth-child(4), .student-card:nth-child(4) { animation-delay: 3s; }
+        
+        /* ===== Section Transition Fog ===== */
+        .section-fog {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 120px; pointer-events: none;
+            background: linear-gradient(to top, var(--dark) 0%, transparent 100%);
+            z-index: 1;
+        }
+        
+        /* ===== Radar Chart Container ===== */
+        .radar-container {
+            width: 100%; max-width: 600px; height: 420px;
+            margin: 2rem auto;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; padding: 1.5rem;
+        }
+        
+        /* ===== Magnetic Button ===== */
+        .magnetic-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem; border-radius: 2rem;
+            background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(201,169,110,0.05));
+            border: 1px solid rgba(201,169,110,0.3);
+            color: var(--gold-light); font-size: 0.9rem;
+            cursor: pointer; text-decoration: none;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .magnetic-btn::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(201,169,110,0.2), transparent);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .magnetic-btn:hover::before { opacity: 1; }
+        .magnetic-btn:hover { border-color: rgba(201,169,110,0.6); box-shadow: 0 0 30px rgba(201,169,110,0.2); }
+        
+        /* ===== Particle Emitter (for section transitions) ===== */
+        .particle-burst {
+            position: fixed; pointer-events: none; z-index: 9001;
+        }
+        .particle-burst .particle {
+            position: absolute; border-radius: 50%;
+            animation: particle-fly 1.5s ease-out forwards;
+        }
+        @keyframes particle-fly {
+            0% { opacity: 1; transform: translate(0,0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+        }
+        
+        /* ===== Enhanced Hover States ===== */
+        .section-inner .fade-in-up.visible {
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+        }
+        
+        /* ===== Glass Card Reflection ===== */
+        .glass-reflect {
+            position: absolute; top: 0; left: 0; right: 0; height: 60%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            pointer-events: none; border-radius: inherit;
+        }
     </style>
 </head>
 <body>
@@ -772,13 +870,19 @@
     </div>
     
     <!-- Opening Animation Canvas -->
-    <div id="opening-canvas">
+    <div id="opening-canvas" style="cursor:pointer;" title="点击跳过">
         <canvas id="opening-three-canvas" style="width:100%;height:100%"></canvas>
         <div id="opening-text"></div>
-    </div>
+        <div style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.3);font-size:0.8rem;letter-spacing:0.1em;">点击任意位置跳过</div>
     
     <!-- Three.js Persistent Background -->
     <canvas id="three-canvas"></canvas>
+    
+    <!-- Scroll Progress Bar -->
+    <div id="progress-bar"></div>
+    
+    <!-- Cursor Glow -->
+    <div id="cursor-glow"></div>
     
     <!-- Navigation Dots -->
     <div id="nav-dots">
@@ -829,6 +933,7 @@
                 <span>向下探索改革之旅</span>
                 <div class="scroll-hint-arrow"></div>
             </div>
+            <div class="section-fog"></div>
         </section>
         
         <!-- ===== HALL 1: Darkness Valley ===== -->
@@ -872,6 +977,7 @@
                     <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 杨通达 · 宁强县职业高级中学副校长</div>
                 </div>
             </div>
+            <div class="section-fog"></div>
         </section>
         
         <!-- ===== HALL 2: Theory Light ===== -->
@@ -1021,6 +1127,7 @@
                     </div>
                 </div>
             </div>
+            <div class="section-fog"></div>
         </section>
         
         <!-- ===== HALL 3: Workshop ===== -->
@@ -1188,6 +1295,7 @@
                     </div>
                 </div>
             </div>
+            <div class="section-fog"></div>
         </section>
         
         <!-- ===== HALL 4: Life Theater ===== -->
@@ -1337,6 +1445,12 @@
                         <div class="data-card-change up">↑ +5所</div>
                     </div>
                 </div>
+                
+                <!-- Radar Chart: 五链三场能力图谱 -->
+                <div class="radar-container fade-in-up" id="radar-chart"></div>
+                
+                <!-- Growth Trajectory Line Chart -->
+                <div class="chart-container fade-in-up" id="growth-chart" style="height:380px;"></div>
             </div>
         </section>
         
@@ -1402,6 +1516,7 @@
                     </div>
                 </div>
             </div>
+            <div class="section-fog"></div>
         </section>
         
         <!-- ===== Deep Content: AI System ===== -->
@@ -1458,13 +1573,6 @@
                         <div class="module-title">世赛服务（6模块）</div>
                     </div>
                     <div class="module-desc">金牌教练工作页、技能标准解码、赛证融通方案、金牌选手画像、评分标准转化、校内技能竞赛设计</div>
-                </div>
-                <div class="module-card">
-                    <div class="module-card-header">
-                        <div class="module-icon ai">📈</div>
-                        <div class="module-title">职称跃升（6模块）</div>
-                    </div>
-                    <div class="module-desc">职称评审材料包、教学成果奖策划、论文课题加速、教学质量提升、课程思政设计、教学改革方案</div>
                 </div>
                 <div class="module-card">
                     <div class="module-card-header">
@@ -1602,8 +1710,40 @@
         /* =====================================================
            2. Opening Animation  (3.5 s cinematic)
            ===================================================== */
+        let openingActive = true;
+        let contentInited = false;
+
+        function initContent() {
+            if (contentInited) return;
+            contentInited = true;
+            initMainScene();
+            initScrollAnimations();
+            initECharts();
+            initCountUp();
+            initMouseInteraction();
+            
+            // Safety fallback: ensure all content visible after 6s
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in-up').forEach(el => {
+                    if (parseFloat(getComputedStyle(el).opacity) < 0.5 || el.style.opacity === '0') {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }
+                });
+            }, 6000);
+        }
+
+        function skipOpening() {
+            if (openingCanvas.classList.contains('hidden')) return;
+            openingActive = false;
+            openingCanvas.classList.add('hidden');
+            initContent();
+        }
+        openingCanvas.addEventListener('click', skipOpening);
+
         function startOpening() {
-            openingCanvas.style.display = 'flex';
+            openingCanvas.classList.remove('hidden');
+            openingActive = true;
             const scene   = new THREE.Scene();
             scene.background = new THREE.Color(0x020815);
             const camera  = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
@@ -1648,6 +1788,7 @@
             const endCamPos   = { x: 0, y: -2.5, z: 4 };
 
             (function tick() {
+                if (!openingActive) { renderer.dispose(); return; }
                 elapsed += 0.016;
                 const p = Math.min(elapsed / DURATION, 1);
                 const e = 1 - Math.pow(1 - p, 3);  // ease-out cubic
@@ -1675,33 +1816,134 @@
                 camera.lookAt(0, 0, 0);
                 renderer.render(scene, camera);
 
-                if (p < 1 || elapsed < DURATION + 1.2) {
-                    requestAnimationFrame(tick);
+                if (!openingActive || (p >= 1 && elapsed >= DURATION + 1.2)) {
+                    if (openingActive) {
+                        openingActive = false;
+                        openingText.style.opacity = '1';
+                        openingText.style.transition = 'opacity 1.6s ease';
+                        openingText.textContent = '从"学科拼盘"到"产业战场"';
+                        setTimeout(() => {
+                            openingCanvas.classList.add('hidden');
+                            initContent();
+                        }, 2200);
+                    }
+                    renderer.dispose();
                 } else {
-                    openingText.style.opacity = '1';
-                    openingText.style.transition = 'opacity 1.6s ease';
-                    openingText.textContent = '从"学科拼盘"到"产业战场"';
-                    setTimeout(() => {
-                        openingCanvas.classList.add('hidden');
-                        initMainScene();
-                        initScrollAnimations();
-                        initECharts();
-                        initCountUp();
-                        initMouseInteraction();
-                    }, 2200);
+                    requestAnimationFrame(tick);
                 }
-            })();
+            }());
         }
 
         /* =====================================================
-           3. Main Three.js Scene  (persistent background)
+           3. Main Three.js Scene - Hall-Aware Dynamic Particles
            ===================================================== */
         let mScene, mCamera, mRenderer, mPoints, mMaterial;
-        let mouseNDC = { x: 0, y: 0 };  // normalised device coords (-1…+1)
+        let mouseNDC = { x: 0, y: 0 };
+        let currentHall = 0, targetHall = 0;
+        let hallTransitionProgress = 1; // 1 = fully transitioned
+        const PCNT = 600;
+        let particleTargets = []; // target positions for current hall
+        let particleColors  = []; // target colors for current hall
+
+        // Hall particle configurations
+        function getHallConfig(hallIdx) {
+            const configs = [
+                // Hall 0: Hero - Golden Double Helix
+                { getPos: (i) => {
+                    const t = (i / PCNT) * Math.PI * 12;
+                    const r = 3.5 + Math.sin(t * 0.4) * 0.6;
+                    const isG = i % 2 === 0;
+                    const a = t + (isG ? 0 : Math.PI);
+                    return [Math.cos(a)*r, (i/PCNT)*12-6, Math.sin(a)*r];
+                }, getCol: (i) => {
+                    if (i%2===0) return [0.79,0.66,0.43];
+                    return [0.23,0.49,0.85];
+                }},
+                // Hall 1: Darkness - Red falling cascade
+                { getPos: (i) => {
+                    const seed = i * 137.508;
+                    return [
+                        (Math.sin(seed*0.7)*5 + Math.cos(seed*1.3)*2),
+                        ((i/PCNT)*14 - 7 + Math.sin(i*0.1)*0.5),
+                        (Math.cos(seed*0.9)*3 + Math.sin(seed*1.1)*1.5)
+                    ];
+                }, getCol: (i) => {
+                    const v = Math.random();
+                    return [0.7+v*0.2, 0.05+v*0.1, 0.05+v*0.15];
+                }},
+                // Hall 2: Theory - Blue/Gold ascending spiral
+                { getPos: (i) => {
+                    const t = (i/PCNT)*Math.PI*9;
+                    const r = 2 + Math.sin(t*0.6)*1.5;
+                    const h = (i/PCNT)*10 - 5;
+                    const phase = i%3 === 0 ? 0 : (i%3===1 ? 2.094 : 4.188);
+                    return [Math.cos(t+phase)*r, h, Math.sin(t+phase)*r];
+                }, getCol: (i) => {
+                    if (i%3===0) return [0.23,0.49,0.85];
+                    if (i%3===1) return [0.79,0.55,0.2];
+                    return [0.0,0.83,0.67];
+                }},
+                // Hall 3: Workshop - Green grid/cube
+                { getPos: (i) => {
+                    const gx = ((i%8)-3.5)*1.2;
+                    const gy = (Math.floor(i/64)-3)*1.2;
+                    const gz = (Math.floor(i/8)%8-3.5)*1.2;
+                    return [gx+Math.sin(i*0.5)*0.3, gy+Math.cos(i*0.7)*0.3, gz];
+                }, getCol: (i) => {
+                    return [0.0, 0.6+Math.random()*0.3, 0.3+Math.random()*0.2];
+                }},
+                // Hall 4: Life - Warm pink/gold floating
+                { getPos: (i) => {
+                    const phi = Math.acos(2*(i/PCNT)-1);
+                    const theta = (i*137.508)*0.05;
+                    const r = 2.5 + Math.sin(i*0.03)*1.5;
+                    return [Math.sin(phi)*Math.cos(theta)*r, Math.cos(phi)*r, Math.sin(phi)*Math.sin(theta)*r];
+                }, getCol: (i) => {
+                    const mix = i/PCNT;
+                    return [0.79*mix+0.9*(1-mix), 0.3*mix+0.4*(1-mix), 0.5*mix+0.6*(1-mix)];
+                }},
+                // Hall 5: Data - Cyan data streams
+                { getPos: (i) => {
+                    const col = i%10;
+                    const row = Math.floor(i/10);
+                    return [
+                        (col-4.5)*0.9 + Math.sin(i*0.4)*0.3,
+                        (row/PCNT*10)*10 - 5,
+                        Math.cos(i*0.3)*0.8
+                    ];
+                }, getCol: (i) => {
+                    return [0.0, 0.6+Math.random()*0.3, 0.5+Math.random()*0.3];
+                }},
+                // Hall 6: Future - Full spectrum vortex
+                { getPos: (i) => {
+                    const t = (i/PCNT)*Math.PI*14;
+                    const r = 1.5 + (i/PCNT)*3;
+                    return [Math.cos(t)*r, (i/PCNT)*8-4, Math.sin(t)*r];
+                }, getCol: (i) => {
+                    const hue = i/PCNT;
+                    return [
+                        0.5+Math.sin(hue*Math.PI*2)*0.4,
+                        0.5+Math.sin(hue*Math.PI*2+2)*0.4,
+                        0.5+Math.sin(hue*Math.PI*2+4)*0.4
+                    ];
+                }}
+            ];
+            return configs[Math.min(hallIdx, 6)];
+        }
+
+        function getHallTargets(hallIdx) {
+            const cfg = getHallConfig(hallIdx);
+            const tgts = [], cols = [];
+            for (let i = 0; i < PCNT; i++) {
+                tgts.push(cfg.getPos(i));
+                cols.push(cfg.getCol(i));
+            }
+            return { tgts, cols };
+        }
 
         function initMainScene() {
             mScene = new THREE.Scene();
-            mCamera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+            mCamera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
             mCamera.position.set(0, 0, 10);
 
             mRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), antialias: true, alpha: true });
@@ -1709,56 +1951,89 @@
             mRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
             mRenderer.setClearColor(0x000000, 0);
 
-            const HCNT = 400;
-            const hPos = new Float32Array(HCNT * 3);
-            const hCol = new Float32Array(HCNT * 3);
-            for (let i = 0; i < HCNT; i++) {
-                const t = (i / HCNT) * Math.PI * 12;
-                const r = 3.5 + Math.sin(t * 0.4) * 0.6;
-                const isG = i % 2 === 0;
-                hPos[i*3]   = Math.cos(t + (isG ? 0 : Math.PI)) * r;
-                hPos[i*3+1] = (i / HCNT) * 12 - 6;
-                hPos[i*3+2] = Math.sin(t + (isG ? 0 : Math.PI)) * r;
-                if (isG) { hCol[i*3]=0.79; hCol[i*3+1]=0.66; hCol[i*3+2]=0.43; }
-                else      { hCol[i*3]=0.23; hCol[i*3+1]=0.49; hCol[i*3+2]=0.85; }
-            }
-            const hGeo = new THREE.BufferGeometry();
-            hGeo.setAttribute('position', new THREE.BufferAttribute(hPos, 3));
-            hGeo.setAttribute('color',    new THREE.BufferAttribute(hCol, 3));
+            // Init with hall 0 config
+            const initCfg = getHallTargets(0);
+            particleTargets = initCfg.tgts;
+            particleColors  = initCfg.cols;
 
-            // Use custom shader material for glow effect
-            const shaderUniforms = {
+            const posArr = new Float32Array(PCNT*3);
+            const colArr = new Float32Array(PCNT*3);
+            for (let i = 0; i < PCNT; i++) {
+                posArr[i*3]=particleTargets[i][0]; posArr[i*3+1]=particleTargets[i][1]; posArr[i*3+2]=particleTargets[i][2];
+                colArr[i*3]=particleColors[i][0]; colArr[i*3+1]=particleColors[i][1]; colArr[i*3+2]=particleColors[i][2];
+            }
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+            geo.setAttribute('color',    new THREE.BufferAttribute(colArr, 3));
+
+            const uniforms = {
                 uTime:  { value: 0 },
-                uMouse: { value: new THREE.Vector2(0, 0) }
+                uMouse: { value: new THREE.Vector2(0, 0) },
+                uTransition: { value: 0 }
             };
             mMaterial = new THREE.ShaderMaterial({
                 vertexShader,
                 fragmentShader,
-                uniforms: shaderUniforms,
+                uniforms: uniforms,
                 transparent: true,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
-            // Also set vertexColors so "color" attribute is picked up
-            mMaterial.vertexColors = true;  // not a standard prop – we pass color via varyings
-
-            // THREE.ShaderMaterial doesn't auto-pick "color" attr; we must use "attribute color" in the shader (already done)
-            mPoints = new THREE.Points(hGeo, mMaterial);
+            mPoints = new THREE.Points(geo, mMaterial);
             mScene.add(mPoints);
+
+            // Ambient sphere for depth
+            const ambGeo = new THREE.SphereGeometry(12, 32, 32);
+            const ambMat = new THREE.MeshBasicMaterial({ color: 0x020815, side: THREE.BackSide, transparent: true, opacity: 0.3 });
+            const ambSphere = new THREE.Mesh(ambGeo, ambMat);
+            mScene.add(ambSphere);
 
             // Render loop
             const clock = new THREE.Clock();
             (function anim() {
                 requestAnimationFrame(anim);
                 const t = clock.getElapsedTime();
-                if (mPoints) {
-                    mPoints.rotation.y += 0.0012;
-                    mPoints.rotation.x = Math.sin(t * 0.15) * 0.04;
+                const dt = Math.min(t - (anim._lastT || t), 0.1);
+                anim._lastT = t;
+
+                // Smooth hall transition
+                if (targetHall !== currentHall) {
+                    hallTransitionProgress = Math.min(1, hallTransitionProgress + dt * 3);
+                    if (hallTransitionProgress >= 1) {
+                        currentHall = targetHall;
+                        hallTransitionProgress = 1;
+                        // Snap to new targets
+                        const newCfg = getHallTargets(currentHall);
+                        particleTargets = newCfg.tgts;
+                        particleColors  = newCfg.cols;
+                    }
                 }
-                // scroll-linked camera rotation
+
+                // Update particles toward targets
+                const posAttr = mPoints.geometry.attributes.position;
+                const colAttr = mPoints.geometry.attributes.color;
+                const pArr = posAttr.array;
+                const cArr = colAttr.array;
+                const lerpFactor = 0.06;
+                for (let i = 0; i < PCNT; i++) {
+                    const ti = i < particleTargets.length ? i : i % particleTargets.length;
+                    pArr[i*3]   += (particleTargets[ti][0] - pArr[i*3]) * lerpFactor;
+                    pArr[i*3+1] += (particleTargets[ti][1] - pArr[i*3+1]) * lerpFactor;
+                    pArr[i*3+2] += (particleTargets[ti][2] - pArr[i*3+2]) * lerpFactor;
+                    if (i < particleColors.length) {
+                        cArr[i*3]   += (particleColors[i][0] - cArr[i*3]) * lerpFactor;
+                        cArr[i*3+1] += (particleColors[i][1] - cArr[i*3+1]) * lerpFactor;
+                        cArr[i*3+2] += (particleColors[i][2] - cArr[i*3+2]) * lerpFactor;
+                    }
+                }
+                posAttr.needsUpdate = true;
+                colAttr.needsUpdate = true;
+
+                // Scroll-linked camera
                 const scrollPct = window.scrollY / (document.body.scrollHeight - innerHeight || 1);
-                mCamera.position.x = Math.sin(scrollPct * Math.PI * 2) * 1.2;
-                mCamera.position.z = 10 + Math.sin(scrollPct * Math.PI) * 1.5;
+                mCamera.position.x = Math.sin(scrollPct * Math.PI * 2) * 1.5;
+                mCamera.position.z = 10 + Math.sin(scrollPct * Math.PI) * 2;
+                mCamera.position.y = scrollPct * 2;
                 mCamera.lookAt(0, 0, 0);
 
                 if (mMaterial && mMaterial.uniforms) {
@@ -1766,47 +2041,163 @@
                     mMaterial.uniforms.uMouse.value.set(mouseNDC.x, mouseNDC.y);
                 }
                 mRenderer.render(mScene, mCamera);
+
+                // Check which hall is in view
+                updateActiveHall();
             })();
 
             window.addEventListener('resize', () => {
-                mCamera.aspect = innerWidth / innerHeight;
+                mCamera.aspect = innerWidth/innerHeight;
                 mCamera.updateProjectionMatrix();
                 mRenderer.setSize(innerWidth, innerHeight);
             });
         }
 
+        function updateActiveHall() {
+            const halls = [
+                'hero-section','hall-darkness','hall-theory',
+                'hall-workshop','hall-life','hall-data','hall-future'
+            ];
+            let detected = 0;
+            for (let i = halls.length-1; i >= 0; i--) {
+                const el = document.getElementById(halls[i]);
+                if (el) {
+                    const r = el.getBoundingClientRect();
+                    if (r.top < innerHeight * 0.5) { detected = i; break; }
+                }
+            }
+            if (detected !== targetHall && detected !== currentHall) {
+                targetHall = detected;
+                const newCfg = getHallTargets(detected);
+                particleTargets = newCfg.tgts;
+                particleColors  = newCfg.cols;
+            }
+        }
+
         /* =====================================================
-           4. Mouse Interaction  (particles react to mouse)
+           4. Mouse Interaction - Cursor Glow + Card Tilt + Progress Bar
            ===================================================== */
         function initMouseInteraction() {
+            const cursorGlow = document.getElementById('cursor-glow');
+            const progressBar = document.getElementById('progress-bar');
+            let glowTimeout;
+
             window.addEventListener('mousemove', (e) => {
                 mouseNDC.x =  (e.clientX / innerWidth)  * 2 - 1;
                 mouseNDC.y = -(e.clientY / innerHeight) * 2 + 1;
+
+                // Cursor glow follow
+                if (cursorGlow) {
+                    cursorGlow.style.left = e.clientX + 'px';
+                    cursorGlow.style.top = e.clientY + 'px';
+                    cursorGlow.classList.add('visible');
+                    clearTimeout(glowTimeout);
+                    glowTimeout = setTimeout(() => cursorGlow.classList.remove('visible'), 800);
+                }
+
+                // Card tilt effect
+                document.querySelectorAll('.darkness-card, .helix-card, .workshop-card, .student-card, .data-card, .module-card').forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const cx = rect.left + rect.width/2;
+                    const cy = rect.top + rect.height/2;
+                    const dx = (e.clientX - cx) / rect.width;
+                    const dy = (e.clientY - cy) / rect.height;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 1.5) {
+                        const maxTilt = 8;
+                        card.style.transform = `perspective(800px) rotateY(${-dx*maxTilt}deg) rotateX(${dy*maxTilt}deg) translateY(-4px)`;
+                        card.style.transition = 'transform 0.15s ease-out';
+                        // Dynamic border glow
+                        const glowIntensity = Math.max(0, 1 - dist);
+                        card.style.borderColor = `rgba(201,169,110,${0.08 + glowIntensity*0.3})`;
+                        card.style.boxShadow = `0 ${8+glowIntensity*20}px ${20+glowIntensity*30}px rgba(201,169,110,${glowIntensity*0.15})`;
+                    } else {
+                        card.style.transform = '';
+                        card.style.transition = 'transform 0.6s ease-out, border-color 0.6s, box-shadow 0.6s';
+                        card.style.borderColor = '';
+                        card.style.boxShadow = '';
+                    }
+                });
             });
-            // touch support
+
+            // Touch support
             window.addEventListener('touchmove', (e) => {
                 const t = e.touches[0];
                 mouseNDC.x =  (t.clientX / innerWidth)  * 2 - 1;
                 mouseNDC.y = -(t.clientY / innerHeight) * 2 + 1;
+                if (cursorGlow) {
+                    cursorGlow.style.left = t.clientX + 'px';
+                    cursorGlow.style.top = t.clientY + 'px';
+                    cursorGlow.classList.add('visible');
+                }
             }, { passive: true });
+
+            // Scroll progress bar
+            window.addEventListener('scroll', () => {
+                if (progressBar) {
+                    const scrollH = document.body.scrollHeight - innerHeight;
+                    const pct = scrollH > 0 ? (window.scrollY / scrollH) * 100 : 0;
+                    progressBar.style.width = Math.min(100, pct) + '%';
+                }
+            });
+
+            // Mouse leave: reset all cards
+            window.addEventListener('mouseleave', () => {
+                document.querySelectorAll('.darkness-card, .helix-card, .workshop-card, .student-card, .data-card, .module-card').forEach(card => {
+                    card.style.transform = '';
+                    card.style.borderColor = '';
+                    card.style.boxShadow = '';
+                    card.style.transition = 'transform 0.6s ease-out, border-color 0.6s, box-shadow 0.6s';
+                });
+                if (cursorGlow) cursorGlow.classList.remove('visible');
+            });
         }
 
         /* =====================================================
            5. Scroll Animations  (GSAP + ScrollTrigger)
            ===================================================== */
         function initScrollAnimations() {
+            const allFade = document.querySelectorAll('.fade-in-up');
+            
+            // Immediate fallback: if GSAP missing, show everything
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-                document.querySelectorAll('.fade-in-up').forEach(el => el.classList.add('visible'));
+                allFade.forEach(el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
                 return;
             }
             gsap.registerPlugin(ScrollTrigger);
 
-            document.querySelectorAll('.fade-in-up').forEach(el => {
-                gsap.fromTo(el,
-                    { opacity: 0, y: 60 },
-                    { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
-                      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none reverse' } }
-                );
+            // Use IntersectionObserver as reliable fallback
+            if (typeof IntersectionObserver !== 'undefined') {
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, { threshold: 0.1 });
+                allFade.forEach(el => obs.observe(el));
+            }
+
+            // GSAP enhanced animation — overlays the IntersectionObserver
+            allFade.forEach(el => {
+                // Hide initially for entrance animation effect
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(60px)';
+                el.style.transition = 'none';
+                
+                gsap.to(el, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 88%',
+                        toggleActions: 'play none none none',  // only play forward, never reverse
+                        // markers: false
+                    }
+                });
             });
 
             const SECTION_IDS = [
@@ -1835,55 +2226,156 @@
         });
 
         /* =====================================================
-           6. ECharts  (data visualisation)
+           6. ECharts - Main Chart, Radar, Growth Line
            ===================================================== */
         function initECharts() {
-            const dom = document.getElementById('main-chart');
-            if (!dom || typeof echarts === 'undefined') return;
+            if (typeof echarts === 'undefined') return;
 
-            const chart = echarts.init(dom, null, { renderer: 'canvas' });
-            chart.setOption({
-                backgroundColor: 'transparent',
-                tooltip: {
-                    trigger: 'axis',
-                    backgroundColor: 'rgba(10,22,40,0.95)',
-                    borderColor: 'rgba(201,169,110,0.3)',
-                    textStyle: { color: '#E8E8E8', fontSize: 13 },
-                    axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(201,169,110,0.05)' } }
-                },
-                legend: { data: ['2018年','2026年'], top: 12, textStyle: { color: '#8A8A9A', fontSize: 13, fontFamily: 'Noto Sans SC' } },
-                grid: { left: '4%', right: '5%', bottom: '12%', top: '16%', containLabel: true },
-                xAxis: {
-                    type: 'category',
-                    data: ['在校生','课堂参与','文化课均分','本科上线','高分段','世赛奖项','帮扶学校'],
-                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-                    axisLabel: { color: '#8A8A9A', fontSize: 11, interval: 0, rotate: 15, fontFamily: 'Noto Sans SC' },
-                    axisTick: { show: false }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
-                    axisLabel: { color: '#8A8A9A', fontSize: 11 }
-                },
-                series: [
-                    {
-                        name: '2018年', type: 'bar', barWidth: '38%', barGap: '20%',
-                        data: [400, 35, 45, 0, 10, 0, 1],
-                        itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#E74C3C'},{offset:1,color:'#C0392B'}]), borderRadius: [6,6,0,0] },
-                        animationDelay: idx => idx * 120
+            // ---- Main Bar Chart (2018 vs 2026) ----
+            const dom = document.getElementById('main-chart');
+            if (dom) {
+                const chart = echarts.init(dom, null, { renderer: 'canvas' });
+                chart.setOption({
+                    backgroundColor: 'transparent',
+                    tooltip: {
+                        trigger: 'axis',
+                        backgroundColor: 'rgba(10,22,40,0.95)',
+                        borderColor: 'rgba(201,169,110,0.3)',
+                        textStyle: { color: '#E8E8E8', fontSize: 13 },
+                        axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(201,169,110,0.05)' } }
                     },
-                    {
-                        name: '2026年', type: 'bar', barWidth: '38%',
-                        data: [2200, 92, 80, 150, 40, 46, 6],
-                        itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#00D4AA'},{offset:1,color:'#00AA88'}]), borderRadius: [6,6,0,0] },
-                        animationDelay: idx => idx * 120 + 60
-                    }
-                ],
-                animationDuration: 2200,
-                animationEasing: 'cubicOut'
-            });
-            window.addEventListener('resize', () => chart.resize());
+                    legend: { data: ['2018年','2026年'], top: 12, textStyle: { color: '#8A8A9A', fontSize: 13, fontFamily: 'Noto Sans SC' } },
+                    grid: { left: '4%', right: '5%', bottom: '12%', top: '16%', containLabel: true },
+                    xAxis: {
+                        type: 'category',
+                        data: ['在校生','课堂参与','文化课均分','本科上线','高分段','世赛奖项','帮扶学校'],
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                        axisLabel: { color: '#8A8A9A', fontSize: 11, interval: 0, rotate: 15, fontFamily: 'Noto Sans SC' },
+                        axisTick: { show: false }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
+                        axisLabel: { color: '#8A8A9A', fontSize: 11 }
+                    },
+                    series: [
+                        {
+                            name: '2018年', type: 'bar', barWidth: '38%', barGap: '20%',
+                            data: [400, 35, 45, 0, 10, 0, 1],
+                            itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#E74C3C'},{offset:1,color:'#C0392B'}]), borderRadius: [6,6,0,0] },
+                            animationDelay: idx => idx * 120,
+                            emphasis: { itemStyle: { shadowBlur: 20, shadowColor: 'rgba(231,76,60,0.5)' } }
+                        },
+                        {
+                            name: '2026年', type: 'bar', barWidth: '38%',
+                            data: [2200, 92, 80, 150, 40, 46, 6],
+                            itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#00D4AA'},{offset:1,color:'#00AA88'}]), borderRadius: [6,6,0,0] },
+                            animationDelay: idx => idx * 120 + 60,
+                            emphasis: { itemStyle: { shadowBlur: 20, shadowColor: 'rgba(0,212,170,0.5)' } }
+                        }
+                    ],
+                    animationDuration: 2200,
+                    animationEasing: 'cubicOut'
+                });
+                window.addEventListener('resize', () => chart.resize());
+            }
+
+            // ---- Radar Chart: 五链三场能力图谱 ----
+            const radarDom = document.getElementById('radar-chart');
+            if (radarDom) {
+                const rChart = echarts.init(radarDom, null, { renderer: 'canvas' });
+                rChart.setOption({
+                    backgroundColor: 'transparent',
+                    title: { text: '五链三场能力雷达图', left: 'center', top: 8, textStyle: { color: '#C9A96E', fontSize: 16, fontFamily: 'Noto Serif SC', fontWeight: 700 } },
+                    tooltip: { backgroundColor: 'rgba(10,22,40,0.95)', borderColor: 'rgba(201,169,110,0.3)', textStyle: { color: '#E8E8E8' } },
+                    legend: { data: ['2018年','2026年'], bottom: 8, textStyle: { color: '#8A8A9A', fontSize: 12 } },
+                    radar: {
+                        center: ['50%', '52%'],
+                        radius: '62%',
+                        indicator: [
+                            { name: '人才链', max: 100 },
+                            { name: '产业链', max: 100 },
+                            { name: '教育链', max: 100 },
+                            { name: '创新链', max: 100 },
+                            { name: '评价链', max: 100 },
+                            { name: '工场', max: 100 },
+                            { name: '市场', max: 100 },
+                            { name: '职场', max: 100 }
+                        ],
+                        axisName: { color: '#8A8A9A', fontSize: 11, fontFamily: 'Noto Sans SC' },
+                        splitArea: { areaStyle: { color: ['rgba(255,255,255,0.01)','rgba(255,255,255,0.02)'] } },
+                        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+                    },
+                    series: [{
+                        type: 'radar',
+                        data: [
+                            { value: [15, 10, 20, 5, 8, 12, 5, 10], name: '2018年',
+                              areaStyle: { color: 'rgba(231,76,60,0.15)' },
+                              lineStyle: { color: '#E74C3C', width: 2 },
+                              itemStyle: { color: '#E74C3C' },
+                              symbol: 'circle', symbolSize: 6 },
+                            { value: [88, 92, 95, 85, 90, 82, 78, 86], name: '2026年',
+                              areaStyle: { color: 'rgba(0,212,170,0.2)' },
+                              lineStyle: { color: '#00D4AA', width: 2.5 },
+                              itemStyle: { color: '#00D4AA' },
+                              symbol: 'circle', symbolSize: 6 }
+                        ],
+                        animationDuration: 2800,
+                        animationEasing: 'elasticOut'
+                    }]
+                });
+                window.addEventListener('resize', () => rChart.resize());
+            }
+
+            // ---- Growth Trajectory Line Chart ----
+            const growthDom = document.getElementById('growth-chart');
+            if (growthDom) {
+                const gChart = echarts.init(growthDom, null, { renderer: 'canvas' });
+                gChart.setOption({
+                    backgroundColor: 'transparent',
+                    title: { text: '关键指标年度增长轨迹（2018-2026）', left: 'center', top: 8, textStyle: { color: '#8A8A9A', fontSize: 14, fontFamily: 'Noto Sans SC' } },
+                    tooltip: { trigger: 'axis', backgroundColor: 'rgba(10,22,40,0.95)', borderColor: 'rgba(201,169,110,0.3)', textStyle: { color: '#E8E8E8' } },
+                    legend: { data: ['在校生规模','课堂参与度','本科上线','帮扶学校'], bottom: 8, textStyle: { color: '#8A8A9A', fontSize: 11 } },
+                    grid: { left: '5%', right: '5%', bottom: '14%', top: '16%', containLabel: true },
+                    xAxis: {
+                        type: 'category', boundaryGap: false,
+                        data: ['2018','2019','2020','2021','2022','2023','2024','2025','2026'],
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                        axisLabel: { color: '#8A8A9A', fontSize: 11 }
+                    },
+                    yAxis: [
+                        { type: 'value', name: '人数', axisLabel: { color: '#8A8A9A' }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } } },
+                        { type: 'value', name: '百分比/所', axisLabel: { color: '#8A8A9A' }, splitLine: { show: false } }
+                    ],
+                    series: [
+                        { name: '在校生规模', type: 'line', smooth: true,
+                          data: [400,520,680,890,1200,1500,1750,1950,2200],
+                          lineStyle: { color: '#C9A96E', width: 3 }, itemStyle: { color: '#C9A96E' },
+                          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(201,169,110,0.3)'},{offset:1,color:'rgba(201,169,110,0)'}]) },
+                          symbol: 'circle', symbolSize: 8 },
+                        { name: '课堂参与度', type: 'line', smooth: true, yAxisIndex: 1,
+                          data: [35,45,52,60,70,78,84,88,92],
+                          lineStyle: { color: '#00D4AA', width: 3 }, itemStyle: { color: '#00D4AA' },
+                          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(0,212,170,0.25)'},{offset:1,color:'rgba(0,212,170,0)'}]) },
+                          symbol: 'circle', symbolSize: 8 },
+                        { name: '本科上线', type: 'line', smooth: true,
+                          data: [0,5,15,30,55,78,100,125,150],
+                          lineStyle: { color: '#3B7DD8', width: 3 }, itemStyle: { color: '#3B7DD8' },
+                          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(59,125,216,0.25)'},{offset:1,color:'rgba(59,125,216,0)'}]) },
+                          symbol: 'circle', symbolSize: 8 },
+                        { name: '帮扶学校', type: 'line', smooth: true, yAxisIndex: 1,
+                          data: [1,1,2,2,3,4,5,5,6],
+                          lineStyle: { color: '#FF69B4', width: 3 }, itemStyle: { color: '#FF69B4' },
+                          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(255,105,180,0.2)'},{offset:1,color:'rgba(255,105,180,0)'}]) },
+                          symbol: 'circle', symbolSize: 8 }
+                    ],
+                    animationDuration: 3000,
+                    animationEasing: 'cubicInOut'
+                });
+                window.addEventListener('resize', () => gChart.resize());
+            }
         }
 
         /* =====================================================
@@ -1948,6 +2440,18 @@
         window.addEventListener('scroll', checkAch);
 
     })();
+        
+        /* 安全网：即使所有CDN失败，10秒后强制显示内容 */
+        setTimeout(function(){
+            var oc = document.getElementById('opening-canvas');
+            if(oc) oc.classList.add('hidden');
+            document.querySelectorAll('.fade-in-up').forEach(function(e){
+                e.style.opacity = '1';
+                e.style.transform = 'translateY(0)';
+            });
+            var pb = document.getElementById('progress-bar');
+            if(pb) pb.style.width = '100%';
+        }, 10000);
     </script>
 </body>
 </html>
