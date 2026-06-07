@@ -158,9 +158,12 @@
             <li><a href="index.html">首页</a></li>
             <li><a href="theory.html">理论框架</a></li>
             <li><a href="cases.html">典型案例</a></li>
+            <li><a href="worldskills.html">世赛服务</a></li>
+            <li><a href="promotion.html">职称跃升</a></li>
+            <li><a href="curriculum.html">课程设计</a></li>
+            <li><a href="generator.html" class="active">AI系统</a></li>
             <li><a href="stories.html">成长故事</a></li>
             <li><a href="videos.html">视频展示</a></li>
-            <li><a href="generator.html" class="active">AI系统</a></li>
         </ul>
     </div>
 </nav>
@@ -208,14 +211,14 @@
         </div>
     </div>
 
-    <!-- ====== Module 2: 考霸速成 ====== -->
+    <!-- ====== Module 2: 职考通（6子模块） ====== -->
     <div class="module-card" id="mod-exam-prep">
         <div class="module-header" onclick="toggleModule('mod-exam-prep')">
             <div class="module-header-left">
                 <div class="module-icon" style="background:#ebf4ff;">🎯</div>
                 <div>
-                    <h3>考霸速成</h3>
-                    <div class="module-sub">输入考试信息，生成精准备考攻略</div>
+                    <h3>职考通 — AI备考全系统</h3>
+                    <div class="module-sub">6大子模块 · 基于十年真题数据 · 精准备考</div>
                 </div>
             </div>
             <div class="module-badges">
@@ -224,13 +227,72 @@
             </div>
         </div>
         <div class="module-body">
-            <div class="form-grid">
-                <div class="form-group"><label>考试名称</label><input type="text" id="ep-exam" placeholder="如：职教高考 / 职业技能等级考试"></div>
-                <div class="form-group"><label>报考级别</label><select id="ep-level"><option>初级</option><option>中级</option><option selected>高级</option></select></div>
-                <div class="form-group"><label>考试科目</label><input type="text" id="ep-subject" placeholder="如：中式烹调师（三级）"></div>
-                <div class="form-group"><label>备考时间</label><select id="ep-time"><option>1个月</option><option selected>3个月</option><option>6个月</option><option>1年</option></select></div>
+            <div class="sub-tabs" id="exam-sub-tabs">
+                <div class="sub-tab active" onclick="switchExamTab('strategy')">📋 备考战略</div>
+                <div class="sub-tab" onclick="switchExamTab('topics')">🔍 高频考点</div>
+                <div class="sub-tab" onclick="switchExamTab('paper')">📝 模拟试卷</div>
+                <div class="sub-tab" onclick="switchExamTab('wrongbook')">📒 智能错题本</div>
+                <div class="sub-tab" onclick="switchExamTab('memory')">🧠 记忆宫殿</div>
+                <div class="sub-tab" onclick="switchExamTab('mock')">🏟️ 全真模拟</div>
             </div>
-            <button class="gen-btn" onclick="simGenerate('exam-prep')">🎯 生成备考攻略</button>
+
+            <!-- 子面板：备考战略规划 -->
+            <div class="exam-panel" id="exam-panel-strategy" style="display:block;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_strategy：</strong>输入目标考试、当前基础、剩余时间、目标分数 → 输出备考战略地图</p>
+                <div class="form-grid">
+                    <div class="form-group"><label>考试名称</label><input type="text" placeholder="职教高考 / 职业技能等级考试"></div>
+                    <div class="form-group"><label>当前基础</label><select><option>零基础</option><option selected>有一定基础</option><option>基础扎实</option></select></div>
+                    <div class="form-group"><label>剩余时间</label><select><option>1个月</option><option selected>3个月</option><option>6个月</option><option>1年</option></select></div>
+                    <div class="form-group"><label>目标分数</label><input type="text" placeholder="如：380/500"></div>
+                </div>
+            </div>
+
+            <!-- 子面板：高频考点精讲 -->
+            <div class="exam-panel" id="exam-panel-topics" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_topics：</strong>输入科目、薄弱章节 → 基于十年真题数据输出高频考点</p>
+                <div class="form-grid">
+                    <div class="form-group"><label>科目</label><input type="text" placeholder="如：烹饪原料学"></div>
+                    <div class="form-group"><label>薄弱章节</label><input type="text" placeholder="如：食材鉴别/加工工艺"></div>
+                </div>
+            </div>
+
+            <!-- 子面板：模拟试卷生成 -->
+            <div class="exam-panel" id="exam-panel-paper" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_paper：</strong>输入考试类型、题量、难度 → AI高仿真预测卷</p>
+                <div class="form-grid">
+                    <div class="form-group"><label>考试类型</label><select><option>职业技能等级考试</option><option>职教高考</option></select></div>
+                    <div class="form-group"><label>题量</label><select><option>50题</option><option selected>100题</option><option>150题</option></select></div>
+                    <div class="form-group"><label>难度</label><select><option>基础</option><option selected>中等</option><option>困难</option></select></div>
+                </div>
+            </div>
+
+            <!-- 子面板：智能错题本 -->
+            <div class="exam-panel" id="exam-panel-wrongbook" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_wrongbook：</strong>自动收录错题，分析错因，推送同类题</p>
+                <div class="form-grid single">
+                    <div class="form-group"><label>错题描述或截图</label><textarea placeholder="粘贴或描述你的错题..."></textarea></div>
+                </div>
+            </div>
+
+            <!-- 子面板：记忆宫殿训练 -->
+            <div class="exam-panel" id="exam-panel-memory" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_memory：</strong>运用记忆宫殿法 + 艾宾浩斯遗忘曲线生成复习计划</p>
+                <div class="form-grid">
+                    <div class="form-group"><label>记忆科目</label><input type="text" placeholder="如：烹饪营养学"></div>
+                    <div class="form-group"><label>记忆周期</label><select><option>7天</option><option selected>30天</option><option>90天</option></select></div>
+                </div>
+            </div>
+
+            <!-- 子面板：全真模拟考试 -->
+            <div class="exam-panel" id="exam-panel-mock" style="display:none;">
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;"><strong>ep_mock：</strong>严格按考试时间、AI智能监考</p>
+                <div class="form-grid">
+                    <div class="form-group"><label>考试类型</label><select><option>职业技能等级考试</option><option selected>职教高考</option></select></div>
+                    <div class="form-group"><label>考试时长</label><select><option>60分钟</option><option selected>120分钟</option><option>180分钟</option></select></div>
+                </div>
+            </div>
+
+            <button class="gen-btn" onclick="simGenerate('exam-prep')">🎯 生成备考方案</button>
             <div class="result-area" id="result-exam-prep"></div>
         </div>
     </div>
@@ -580,10 +642,19 @@
 function toggleModule(id) {
     const card = document.getElementById(id);
     card.classList.toggle('expanded');
-    // 滚动到卡片
     if (card.classList.contains('expanded')) {
         setTimeout(() => card.scrollIntoView({behavior:'smooth',block:'center'}), 200);
     }
+}
+
+// ===== Exam sub-tab switch =====
+function switchExamTab(tab) {
+    document.querySelectorAll('#exam-sub-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.exam-panel').forEach(p => p.style.display = 'none');
+    const tabEl = document.querySelector(`#exam-sub-tabs .sub-tab:nth-child(${{strategy:1,topics:2,paper:3,wrongbook:4,memory:5,mock:6}[tab]})`);
+    if (tabEl) tabEl.classList.add('active');
+    const panel = document.getElementById('exam-panel-' + tab);
+    if (panel) panel.style.display = 'block';
 }
 
 // ===== Edu selector =====
