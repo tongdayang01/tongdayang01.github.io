@@ -58,7 +58,24 @@
             .case-visual{height:180px;}
             .comparison{padding:24px 16px;}
             .comp-table{font-size:0.82rem;}
+            .miniapp-content{flex-direction:column;}
+            .miniapp-img{max-width:100%;}
+            .miniapp-data{grid-template-columns:1fr;}
         }
+        .miniapp-showcase { background:white; border-radius:16px; padding:40px; margin:48px 0; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .miniapp-showcase h2 { font-size:1.4rem; color:var(--primary); margin-bottom:12px; text-align:center; }
+        .miniapp-showcase .sub { text-align:center; color:#718096; font-size:0.95rem; margin-bottom:32px; }
+        .miniapp-content { display:flex; gap:40px; align-items:center; flex-wrap:wrap; }
+        .miniapp-img { flex:1; min-width:280px; max-width:420px; }
+        .miniapp-img img { width:100%; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.12); border:1px solid #e2e8f0; }
+        .miniapp-info { flex:1; min-width:280px; }
+        .miniapp-info h3 { color:var(--primary); font-size:1.1rem; margin-bottom:16px; }
+        .miniapp-info p { color:#4a5568; font-size:0.95rem; line-height:1.85; margin-bottom:12px; }
+        .miniapp-data { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
+        .miniapp-data-item { background:#f8f9fa; border-radius:10px; padding:16px; text-align:center; }
+        .miniapp-data-item .num { font-size:1.5rem; font-weight:800; color:var(--primary); display:block; }
+        .miniapp-data-item .lbl { font-size:0.78rem; color:#718096; margin-top:4px; }
+        .miniapp-note { background:#fefce8; border-left:4px solid var(--gold); padding:12px 16px; border-radius:0 8px 8px 0; margin-top:16px; font-size:0.88rem; color:#92400e; }
     </style>
 </head>
 <body>
@@ -167,6 +184,38 @@
                     <span class="case-tag">免试升学</span>
                 </div>
                 <a href="#" class="case-btn" onclick="event.preventDefault();alert('详细教案文档即将开放下载');">📄 查看完整教案</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 小程序实战展示 -->
+    <div class="miniapp-showcase">
+        <h2>📱 "宁职创原"小程序 —— 三种治理课堂落地的数字引擎</h2>
+        <p class="sub">"四真三化五链三场"不是PPT理论，是真实运行、每日服务师生的数字产品</p>
+        <div class="miniapp-content">
+            <div class="miniapp-img">
+                <img src="assets/ningzhi-app-screenshot.jpg" alt="宁职创原小程序实战界面" loading="lazy" />
+            </div>
+            <div class="miniapp-info">
+                <h3>🔬 值餐 VALU —— 从洗菜工到掌勺师傅的数字化成长</h3>
+                <p>健康餐饮 · 烹饪专业 · 营养配餐 · 技能变现。学生通过小程序接单、完成真实餐饮服务，从"值"到"创"，每一步都有数据记录。</p>
+                <div class="miniapp-data">
+                    <div class="miniapp-data-item"><span class="num">23</span><span class="lbl">今日预约</span></div>
+                    <div class="miniapp-data-item"><span class="num">96%</span><span class="lbl">客户满意度</span></div>
+                    <div class="miniapp-data-item"><span class="num">8k+</span><span class="lbl">累计创收(元)</span></div>
+                </div>
+
+                <h3 style="margin-top:24px;">🌿 悦舍 YU·SPA —— 年服务2000+人次的真实产业现场</h3>
+                <p>身心悦校 · 中医美容 · 中医康复 · 深度疗愈。明目药约 / 2大核心 / 8个选项 / 3个疗程 —— 真实客户、真实评价、真实收益，让学生在校期间就积累了临床经验。</p>
+                <div class="miniapp-data">
+                    <div class="miniapp-data-item"><span class="num">2000+</span><span class="lbl">年服务人次</span></div>
+                    <div class="miniapp-data-item"><span class="num">94%</span><span class="lbl">客户满意度</span></div>
+                    <div class="miniapp-data-item"><span class="num">4人</span><span class="lbl">世赛银奖</span></div>
+                </div>
+
+                <div class="miniapp-note">
+                    💡 <strong>评审点睛：</strong>该小程序已接入微信生态，包含"明目值造/值库卷轴/我的值造/共创值造"四维成长体系，实现了"学科→产业"教学设计的全流程数字化。学生从"接单"到"交付"到"评价"的完整数据链路，为"真实评价"提供了不可篡改的数字证据。
+                </div>
             </div>
         </div>
     </div>
