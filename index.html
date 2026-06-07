@@ -730,13 +730,134 @@
         
         /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            .future-content { grid-template-columns: 1fr; }
-            .loop-grid { grid-template-columns: repeat(2, 1fr); }
+            /* Section spacing */
+            .section { padding: 4rem 1rem; }
+            .section-inner { padding: 0; }
+            .deep-section { padding: 3rem 1rem; }
+
+            /* Hero */
+            .hero-stats { gap: 1.2rem; }
+            .hero-stat { flex: 0 0 calc(50% - 0.6rem); }
+            .hero-stat-num { font-size: clamp(1.5rem, 8vw, 2.5rem); }
+            .hero-title { font-size: clamp(1.6rem, 6vw, 2.5rem); }
+            .hero-subtitle { font-size: 0.9rem; padding: 0 0.5rem; }
+            .campus-hero-img { max-width: 100%; width: 100%; }
+            .campus-banner { max-height: 200px; margin-top: -1rem; }
+            .campus-banner-label { padding: 1rem 1rem 0.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+            .campus-future-img { max-width: 100%; }
+
+            /* Navigation */
             #nav-dots { display: none; }
+
+            /* Section headers */
+            .section-header { margin-bottom: 2.5rem; }
+            .section-title { font-size: clamp(1.4rem, 5vw, 2rem); }
+            .section-desc { font-size: 0.9rem; padding: 0 0.5rem; }
+
+            /* Timeline */
             .timeline::before { left: 20px; }
             .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; }
-            .timeline-dot { left: 20px; }
-            .timeline-content { width: calc(100% - 50px); margin-left: 50px; }
+            .timeline-dot { left: 20px; width: 16px; height: 16px; }
+            .timeline-content { width: calc(100% - 50px); margin-left: 50px; padding: 1.2rem; }
+            .timeline-item { margin-bottom: 2rem; }
+
+            /* Theory cards */
+            .helix-cards { grid-template-columns: 1fr; }
+
+            /* Four-step method */
+            .method-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .method-step { padding: 1.5rem 1rem; }
+
+            /* 8-link loop */
+            .loop-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .loop-item { padding: 1rem 0.5rem; font-size: 0.8rem; }
+            .loop-item-num { font-size: 1.2rem; }
+
+            /* Workshop */
+            .workshop-grid { grid-template-columns: 1fr; }
+
+            /* Student cards */
+            .student-cards { grid-template-columns: 1fr; }
+
+            /* Evidence grids */
+            .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; gap: 1rem; }
+
+            /* Honor wall */
+            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+            .honor-card img { aspect-ratio: 3/4; }
+            .honor-card-caption { font-size: 0.65rem; padding: 0.4rem 0.5rem; min-height: 2rem; }
+            .honor-section-title { font-size: 0.95rem; }
+
+            /* Data cards */
+            .data-cards { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .data-card { padding: 1rem 0.8rem; }
+            .data-card-num { font-size: 1.5rem; }
+            .data-card-num.cyan { font-size: 1.2rem; }
+
+            /* Charts */
+            .chart-container { height: 320px; padding: 0.8rem; }
+            .radar-container { height: 320px; padding: 0.8rem; max-width: 100%; }
+
+            /* Video showcase */
+            .video-main iframe { height: auto; }
+            .video-secondary { grid-template-columns: 1fr; gap: 1rem; }
+            .video-secondary iframe { height: auto; }
+            .video-showcase { gap: 1.5rem; }
+            .video-caption { font-size: 0.8rem; }
+            .video-caption strong { font-size: 0.9rem; }
+
+            /* Future gate */
+            .future-content { grid-template-columns: 1fr; gap: 2rem; }
+            .future-text h3 { font-size: 1.4rem; }
+            .future-text p { font-size: 0.9rem; }
+            .future-badges { gap: 0.5rem; }
+            .future-badge { font-size: 0.78rem; padding: 0.4rem 0.8rem; }
+            .future-quote { padding: 1rem; font-size: 0.85rem; }
+
+            /* Module cards */
+            .module-grid { grid-template-columns: 1fr; }
+
+            /* Footer */
+            footer { padding: 3rem 1rem 1.5rem; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .footer-col h4 { font-size: 0.9rem; }
+            .footer-col a { font-size: 0.8rem; }
+
+            /* Toast */
+            .achievement-toast { right: 0.5rem; left: 0.5rem; top: auto; bottom: 1rem; border-radius: 10px; padding: 0.8rem 1rem; }
+            .achievement-toast.show { transform: translateY(0); }
+            .achievement-toast { transform: translateY(120%); }
+            .achievement-icon { font-size: 1.5rem; }
+
+            /* Loading */
+            .loading-title { font-size: 1.6rem; }
+            .loading-subtitle { font-size: 0.8rem; }
+            .loading-bar-wrap { width: 180px; }
+
+            /* Opening text */
+            #opening-text { bottom: 25%; font-size: 1.2rem; }
+
+            /* Cursor glow - disable on touch devices */
+            #cursor-glow { display: none; }
+
+            /* Card animations - reduce on mobile for performance */
+            .darkness-card:hover, .helix-card:hover, .workshop-card:hover, .student-card:hover, .evidence-card:hover, .honor-card:hover { transform: none; }
+
+            /* Prevent horizontal overflow */
+            html, body { max-width: 100vw; overflow-x: hidden; }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 400px) {
+            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.4rem; }
+            .honor-card-caption { font-size: 0.6rem; padding: 0.3rem; }
+            .data-cards { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .hero-stats { gap: 0.8rem; }
+            .hero-stat { flex: 0 0 calc(50% - 0.4rem); }
+            .method-grid { grid-template-columns: 1fr; }
+            .loop-grid { grid-template-columns: repeat(2, 1fr); }
+            .section { padding: 3rem 0.8rem; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
         
         /* ===== Achievement Toast ===== */
@@ -987,14 +1108,6 @@
             letter-spacing: 0.15em; margin-bottom: 1.5rem;
         }
         .honor-section-title span { color: var(--cyan); }
-        
-        @media (max-width: 768px) {
-            .campus-hero-img { max-width: 95%; }
-            .campus-banner { max-height: 250px; margin-top: -2rem; }
-            .campus-future-img { max-width: 95%; }
-            .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; }
-            .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-        }
         /* ===== Video Showcase ===== */
         #hall-video { background: linear-gradient(180deg, var(--dark) 0%, #0D1117 50%, var(--dark) 100%); }
         .video-showcase { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
@@ -1016,10 +1129,12 @@
             text-align: center; margin-top: 1.5rem; color: var(--text-dim);
             font-size: 0.78rem; opacity: 0.6;
         }
-        @media (max-width: 768px) {
-            .video-main iframe { height: 240px; }
-            .video-secondary { grid-template-columns: 1fr; }
-            .video-secondary iframe { height: 240px; }
+        .video-placeholder {
+            display: flex; align-items: center; justify-content: center;
+            aspect-ratio: 16/9; width: 100%;
+            border: 1px dashed rgba(255,255,255,0.12);
+            border-radius: 12px; color: var(--text-dim); font-size: 0.85rem;
+            background: rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -1059,7 +1174,7 @@
         <div class="nav-dot" data-label="实战工坊" data-target="hall-workshop"></div>
         <div class="nav-dot" data-label="生命剧场" data-target="hall-life"></div>
         <div class="nav-dot" data-label="数据之巅" data-target="hall-data"></div>
-        <div class="nav-dot" data-label="视频展示" data-target="hall-video"></div>
+        <div class="nav-dot" data-label="光影叙事" data-target="hall-video"></div>
         <div class="nav-dot" data-label="未来之门" data-target="hall-future"></div>
     </div>
     
@@ -1151,7 +1266,7 @@
                 
                 <div class="darkness-quote fade-in-up" style="margin-top:2rem;">
                     "我常被一句话刺穿——'宁愿送孩子当学徒，也不上职中'。这所秦巴山区的职业学校，到了最危险的时刻。"
-                    <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 杨通达 · 宁强县职业高级中学副校长</div>
+                    <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 杨通达 · 宁强县职业高级中学</div>
                 </div>
             </div>
             <div class="section-fog"></div>
@@ -1231,11 +1346,11 @@
                 <!-- 核心成果实证 -->
                 <div class="evidence-2col fade-in-up" style="margin-top:2rem;">
                     <div class="evidence-card">
-                        <img src="assets/provincial-special-award.jpg" alt="陕西省第二届教学成果奖特等奖证书" loading="lazy">
+                        <img src="assets/provincial-special-award-real.jpg" alt="陕西省第二届教学成果奖特等奖证书" loading="lazy">
                         <div class="evidence-label">🏆 陕西省教学成果奖特等奖 · 陕西省教育厅+人社厅双章认证</div>
                     </div>
                     <div class="evidence-card">
-                        <img src="assets/research-conclusion.jpg" alt="课题结题证书" loading="lazy">
+                        <img src="assets/2012-teaching-master.jpg" alt="课题结题证书" loading="lazy">
                         <div class="evidence-label">📋 市级课题结题证书 · 学术主持：杨通达</div>
                     </div>
                 </div>
@@ -1664,11 +1779,11 @@
                 <!-- 世赛成果实证 -->
                 <div class="evidence-2col fade-in-up" style="margin-bottom:2rem;">
                     <div class="evidence-card">
-                        <img src="assets/worldskills-team.jpg" alt="世界职业院校技能大赛总决赛合影" loading="lazy">
+                        <img src="assets/sizhen-share.jpg" alt="世界职业院校技能大赛总决赛合影" loading="lazy">
                         <div class="evidence-label">🏆 世界职业院校技能大赛 · 医药卫生赛道 · 康复技术组</div>
                     </div>
                     <div class="evidence-card">
-                        <img src="assets/worldskills-silver.jpg" alt="世赛银奖获奖证书" loading="lazy">
+                        <img src="assets/worldskills-team.jpg" alt="世赛银奖获奖证书" loading="lazy">
                         <div class="evidence-label">🥈 2024世界职业院校技能大赛银奖 · 宁强县职业高级中学</div>
                     </div>
                 </div>
@@ -1845,50 +1960,50 @@
                 <div class="honor-section-title fade-in-up">🏆 <span>杨通达 · 十年耕耘荣誉长廊</span></div>
                 <div class="honor-grid fade-in-up">
                     <div class="honor-card">
-                        <img src="assets/2010-new-star.jpg" alt="宁强县教坛新秀" loading="lazy">
+                        <img src="assets/provincial-special-award.jpg" alt="宁强县教坛新秀" loading="lazy">
                         <div class="honor-card-caption">2010 · 宁强县教坛新秀</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2010-moral-edu.jpg" alt="德育工作先进教师" loading="lazy">
+                        <img src="assets/training-lecture.jpg" alt="德育工作先进教师" loading="lazy">
                         <div class="honor-card-caption">2010 · 德育工作先进教师</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2011-design-award.jpg" alt="教学设计比赛二等奖" loading="lazy">
+                        <img src="assets/design-award-2011-real.jpg" alt="教学设计比赛二等奖" loading="lazy">
                         <div class="honor-card-caption">2011 · 省教学设计比赛二等奖</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2012-teaching-master.jpg" alt="汉中市教学能手" loading="lazy">
+                        <img src="assets/shengjiao-invite.jpg" alt="汉中市教学能手" loading="lazy">
                         <div class="honor-card-caption">2012 · 汉中市教学能手</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2018-excellent-teacher.jpg" alt="汉中市优秀教师" loading="lazy">
+                        <img src="assets/2019-judge-meeting.jpg" alt="汉中市优秀教师" loading="lazy">
                         <div class="honor-card-caption">2018 · 汉中市优秀教师</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2020-advanced-worker.jpg" alt="职业教育先进工作者" loading="lazy">
+                        <img src="assets/reform-application.jpg" alt="职业教育先进工作者" loading="lazy">
                         <div class="honor-card-caption">2020 · 职业教育先进工作者</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2022-judge-invite.jpg" alt="评委抽调函" loading="lazy">
+                        <img src="assets/2011-design-award.jpg" alt="评委抽调函" loading="lazy">
                         <div class="honor-card-caption">2022 · 市级教学能手评委</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/2019-judge-meeting.jpg" alt="教学能手评委会议" loading="lazy">
+                        <img src="assets/shengzheng-list.jpg" alt="教学能手评委会议" loading="lazy">
                         <div class="honor-card-caption">2019 · 教学能手评委会议</div>
                     </div>
                     <div class="honor-card">
-                        <img src="assets/research-approval.jpg" alt="课题立项通知书" loading="lazy">
+                        <img src="assets/2010-new-star.jpg" alt="课题立项通知书" loading="lazy">
                         <div class="honor-card-caption">2020 · 市级课题立项</div>
                     </div>
                 </div>
             </div>
         </section>
         
-                <!-- ===== 视频展示 ===== -->
+                <!-- ===== 光影叙事 ===== -->
         <section id="hall-video" class="section">
             <div class="section-inner">
                 <div class="section-header fade-in-up">
-                    <div class="section-tag" style="background:rgba(255,0,80,0.1);color:#FF0050;">🎬 视频展示</div>
+                    <div class="section-tag" style="background:rgba(255,0,80,0.1);color:#FF0050;">🎬 光影叙事</div>
                     <h2 class="section-title">让改革<span style="color:var(--gold-light)">看得见</span></h2>
                     <p class="section-desc">镜头里的真实课堂，比文字更有力量</p>
                 </div>
@@ -1913,9 +2028,7 @@
                         </div>
                         <div>
                             <!-- 预留第三个视频位置 -->
-                            <div style="display:flex;align-items:center;justify-content:center;
-                                        height:320px;border:1px dashed rgba(255,255,255,0.12);
-                                        border-radius:12px;color:var(--text-dim);font-size:0.85rem;">
+                            <div class="video-placeholder">
                                 📹 更多课堂实录即将上传…
                             </div>
                         </div>
@@ -2008,15 +2121,15 @@
                         <!-- 全国教研影响力实证 -->
                         <div class="evidence-3col fade-in-up" style="margin-top:2.5rem;">
                             <div class="evidence-card">
-                                <img src="assets/east-west-forum.jpg" alt="2026年东西部联合教研交流活动" loading="lazy">
+                                <img src="assets/east-west-forum-real.jpg" alt="2026年东西部联合教研交流活动" loading="lazy">
                                 <div class="evidence-label">📢 2026东西部联合教研 · 教育部职教发展中心主办</div>
                             </div>
                             <div class="evidence-card">
-                                <img src="assets/theory-share.jpg" alt="三化五链理论分享" loading="lazy">
+                                <img src="assets/east-west-forum.jpg" alt="三化五链理论分享" loading="lazy">
                                 <div class="evidence-label">📊 三化·五链理论框架 · 陕苏两省教科院承办</div>
                             </div>
                             <div class="evidence-card">
-                                <img src="assets/sizhen-share.jpg" alt="四真真实战场分享" loading="lazy">
+                                <img src="assets/theory-share.jpg" alt="四真真实战场分享" loading="lazy">
                                 <div class="evidence-label">🎯 四真·真实战场 · 县域职教改革走出陕西</div>
                             </div>
                         </div>
@@ -2024,11 +2137,11 @@
                         <!-- 省教科院邀请函 + 教研现场 -->
                         <div class="evidence-2col fade-in-up" style="margin-top:1.5rem;">
                             <div class="evidence-card">
-                                <img src="assets/shengjiao-invite.jpg" alt="陕西省教育科学研究院邀请函" loading="lazy">
+                                <img src="assets/worldskills-silver.jpg" alt="陕西省教育科学研究院邀请函" loading="lazy">
                                 <div class="evidence-label">📜 陕西省教科院正式邀请函 · 2026中职高本贯通培养教研活动</div>
                             </div>
                             <div class="evidence-card">
-                                <img src="assets/training-lecture.jpg" alt="教研培训现场分享" loading="lazy">
+                                <img src="assets/training-lecture-real.jpg" alt="教研培训现场分享" loading="lazy">
                                 <div class="evidence-label">🎤 教研培训现场 · 杨通达老师跨省分享改革经验</div>
                             </div>
                         </div>
@@ -2039,15 +2152,15 @@
                         </div>
                         <div class="evidence-3col fade-in-up">
                             <div class="evidence-card">
-                                <img src="assets/reform-application.jpg" alt="陕西省职业教育改革成效明显地方申报表" loading="lazy">
+                                <img src="assets/research-approval.jpg" alt="陕西省职业教育改革成效明显地方申报表" loading="lazy">
                                 <div class="evidence-label">📋 改革申报表 · 宁强县人民政府公章</div>
                             </div>
                             <div class="evidence-card">
-                                <img src="assets/shengzheng-policy.jpg" alt="陕西省人民政府文件" loading="lazy">
+                                <img src="assets/2022-judge-invite.jpg" alt="陕西省人民政府文件" loading="lazy">
                                 <div class="evidence-label">📄 陕政字〔2022〕69号 · 省政府督查激励通报</div>
                             </div>
                             <div class="evidence-card">
-                                <img src="assets/shengzheng-list.jpg" alt="职业教育改革成效明显地方名单" loading="lazy">
+                                <img src="assets/research-conclusion.jpg" alt="职业教育改革成效明显地方名单" loading="lazy">
                                 <div class="evidence-label">📍 宁强县被省政府点名 · 2023年获专项资金倾斜</div>
                             </div>
                         </div>
@@ -2073,7 +2186,7 @@
                         <div>
                             <div style="font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);margin-bottom:1rem;">完成人</div>
                             <div style="font-size:0.9rem;color:var(--text-dim);line-height:2;">
-                                杨通达（宁强县职业高级中学副校长）<br>
+                                杨通达（宁强县职业高级中学）<br>
                                 刘琼、刘兴兰、何涛、赵海利<br>
                                 王双明、张伟、袁杰、李建忠
                             </div>
@@ -2177,7 +2290,7 @@
                     <li><a href="#hall-workshop">实战工坊（四真三化）</a></li>
                     <li><a href="#hall-life">生命剧场（逆袭故事）</a></li>
                     <li><a href="#hall-data">数据之巅（2018 vs 2026）</a></li>
-                    <li><a href="#hall-video">🎬 视频展示</a></li>
+                    <li><a href="#hall-video">🎬 光影叙事</a></li>
                     <li><a href="#hall-future">未来之门（开源共享）</a></li>
                 </ul>
             </div>
@@ -2206,7 +2319,7 @@
                 <ul>
                     <li style="color:var(--text-dim);">宁强县职业高级中学</li>
                     <li style="color:var(--text-dim);">陕西省汉中市宁强县</li>
-                    <li style="color:var(--text-dim);">联系人：杨通达副校长</li>
+                    <li style="color:var(--text-dim);">联系人：杨通达</li>
                     <li><a href="#">资源下载（操作手册/教案集）</a></li>
                     <li><a href="#">帮扶学校申请入口</a></li>
                 </ul>
