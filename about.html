@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 — 宁强县职业高级中学 | 国家教学成果奖</title>
+    <meta name="description" content="完成人团队、完成单位、联系方式 — 县域中职'产业·课堂双螺旋'育人实践">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A96E; --gold-light: #E8D5A3; --gold-dark: #8B7340;
+            --blue: #3B7DD8; --blue-light: #6BA5E7; --cyan: #00D4AA; --red: #E74C3C;
+            --dark: #020815; --dark2: #0A1628; --dark3: #111F3A;
+            --text: #E8E8E8; --text-dim: #8A8A9A;
+            --glass: rgba(255,255,255,0.04); --glass-border: rgba(255,255,255,0.08);
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            font-family:'Noto Sans SC',-apple-system,sans-serif;
+            background:var(--dark);color:var(--text);
+            overflow-x:hidden;line-height:1.8;
+        }
+        body::before{
+            content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+            opacity:0.03;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Top Nav */
+        #top-nav{
+            position:fixed;top:0;left:0;right:0;z-index:10002;
+            background:rgba(2,8,21,0.82);backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(201,169,110,0.12);height:54px;
+            display:flex;align-items:center;
+        }
+        .nav-inner{
+            max-width:1300px;width:100%;margin:0 auto;
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0 1.5rem;
+        }
+        .nav-brand{
+            font-family:'Noto Serif SC',serif;font-size:1rem;font-weight:700;
+            color:var(--gold-light);text-decoration:none;white-space:nowrap;
+        }
+        .nav-links{display:flex;align-items:center;gap:0.15rem;overflow-x:auto}
+        .nav-links::-webkit-scrollbar{display:none}
+        .nav-links a{
+            color:rgba(255,255,255,0.6);text-decoration:none;
+            font-size:0.76rem;padding:0.38rem 0.65rem;
+            border-radius:6px;white-space:nowrap;transition:all 0.3s ease;
+            font-weight:500;letter-spacing:0.03em;
+        }
+        .nav-links a:hover,.nav-links a.active{color:var(--gold-light);background:rgba(201,169,110,0.1)}
+        .nav-links a.primary-link{color:var(--gold);border:1px solid rgba(201,169,110,0.25);background:rgba(201,169,110,0.06)}
+        .nav-mobile-toggle{display:none;background:none;border:none;color:var(--gold-light);font-size:1.4rem;cursor:pointer}
+
+        /* Hero */
+        .page-hero{
+            min-height:45vh;display:flex;align-items:center;justify-content:center;
+            text-align:center;padding:8rem 2rem 4rem;
+            background:linear-gradient(180deg,var(--dark2) 0%,var(--dark) 100%);
+            position:relative;
+        }
+        .page-hero::after{
+            content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
+            background:linear-gradient(to top,var(--dark),transparent);
+        }
+        .hero-badge{
+            display:inline-block;padding:0.5rem 1.5rem;border-radius:50px;
+            border:1px solid rgba(201,169,110,0.3);
+            background:rgba(201,169,110,0.06);
+            color:var(--gold-light);font-size:0.85rem;letter-spacing:0.2em;
+            margin-bottom:1.5rem;
+        }
+        .page-hero h1{
+            font-family:'Noto Serif SC',serif;
+            font-size:clamp(2rem,5vw,3rem);font-weight:900;
+            color:var(--gold-light);letter-spacing:0.08em;
+        }
+        .page-hero .subtitle{
+            font-size:1rem;color:var(--text-dim);margin-top:0.8rem;
+            max-width:600px;margin-left:auto;margin-right:auto;
+        }
+
+        /* Content */
+        .container{max-width:1100px;margin:0 auto;padding:0 2rem}
+        .section-block{padding:4rem 0}
+        .section-title{
+            font-family:'Noto Serif SC',serif;
+            font-size:1.6rem;font-weight:700;color:var(--gold-light);
+            margin-bottom:2rem;text-align:center;letter-spacing:0.06em;
+        }
+        .section-title::after{
+            content:'';display:block;width:60px;height:2px;
+            background:linear-gradient(90deg,transparent,var(--gold),transparent);
+            margin:0.8rem auto 0;
+        }
+
+        /* Lead Profile */
+        .lead-card{
+            background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);
+            border-radius:16px;padding:2.5rem;display:flex;gap:2rem;
+            transition:all 0.4s ease;position:relative;overflow:hidden;
+        }
+        .lead-card::before{
+            content:'';position:absolute;top:0;left:0;right:0;height:4px;
+            background:linear-gradient(90deg,var(--gold),var(--cyan));
+        }
+        .lead-avatar{
+            width:100px;height:100px;border-radius:50%;
+            background:linear-gradient(135deg,rgba(201,169,110,0.2),rgba(201,169,110,0.05));
+            border:2px solid rgba(201,169,110,0.3);
+            display:flex;align-items:center;justify-content:center;
+            font-size:2.5rem;flex-shrink:0;
+        }
+        .lead-info{flex:1}
+        .lead-name{
+            font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;
+            color:var(--gold-light);margin-bottom:0.3rem;
+        }
+        .lead-title{
+            font-size:0.9rem;color:var(--cyan);margin-bottom:1rem;
+        }
+        .lead-detail{
+            font-size:0.9rem;color:var(--text-dim);line-height:2;
+        }
+        .lead-detail strong{color:var(--text)}
+
+        /* Timeline */
+        .career-timeline{position:relative;padding-left:2rem}
+        .career-timeline::before{
+            content:'';position:absolute;left:8px;top:0;bottom:0;
+            width:2px;background:linear-gradient(180deg,var(--gold),var(--cyan),var(--blue));
+        }
+        .career-item{position:relative;margin-bottom:1.5rem;padding-left:1.5rem}
+        .career-item::before{
+            content:'';position:absolute;left:-2rem;top:0.5rem;
+            width:12px;height:12px;border-radius:50%;
+            background:var(--gold);border:2px solid var(--dark);
+            box-shadow:0 0 8px rgba(201,169,110,0.4);
+        }
+        .career-year{
+            font-size:0.8rem;color:var(--gold-light);font-weight:700;margin-bottom:0.2rem;
+        }
+        .career-desc{font-size:0.9rem;color:var(--text-dim);line-height:1.7}
+
+        /* Team Grid */
+        .team-grid{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;
+        }
+        .team-card{
+            background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);
+            border-radius:14px;padding:2rem;text-align:center;
+            transition:all 0.4s ease;
+        }
+        .team-card:hover{
+            transform:translateY(-4px);
+            border-color:rgba(201,169,110,0.3);
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
+        }
+        .team-avatar{
+            width:64px;height:64px;border-radius:50%;
+            background:linear-gradient(135deg,rgba(59,125,216,0.15),rgba(59,125,216,0.05));
+            border:2px solid rgba(59,125,216,0.2);
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.8rem;margin:0 auto 1rem;
+        }
+        .team-name{
+            font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;
+            color:var(--text);margin-bottom:0.3rem;
+        }
+        .team-role{
+            font-size:0.82rem;color:var(--gold-light);margin-bottom:0.8rem;
+        }
+        .team-contrib{
+            font-size:0.82rem;color:var(--text-dim);line-height:1.6;
+        }
+
+        /* Unit Cards */
+        .unit-grid{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;
+        }
+        .unit-card{
+            background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);
+            border-radius:12px;padding:1.8rem;
+            transition:all 0.3s ease;
+        }
+        .unit-card:hover{border-color:rgba(201,169,110,0.25)}
+        .unit-card.primary{border-color:rgba(201,169,110,0.2);background:rgba(201,169,110,0.04)}
+        .unit-name{
+            font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;
+            color:var(--gold-light);margin-bottom:0.6rem;
+        }
+        .unit-desc{font-size:0.85rem;color:var(--text-dim);line-height:1.7}
+
+        /* Contact */
+        .contact-grid{
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;
+        }
+        .contact-card{
+            background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);
+            border-radius:14px;padding:1.8rem;text-align:center;
+            transition:all 0.3s ease;
+        }
+        .contact-card:hover{border-color:rgba(201,169,110,0.3)}
+        .contact-icon{font-size:2rem;margin-bottom:0.8rem}
+        .contact-label{font-size:0.85rem;color:var(--text-dim);margin-bottom:0.3rem}
+        .contact-value{font-size:1rem;color:var(--gold-light);font-weight:600}
+
+        /* Footer */
+        .page-footer{
+            background:rgba(0,0,0,0.3);border-top:1px solid var(--glass-border);
+            padding:2.5rem 2rem;text-align:center;
+        }
+        .page-footer p{font-size:0.85rem;color:var(--text-dim);line-height:2}
+
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .nav-mobile-toggle{display:block}
+            .nav-inner{padding:0 1rem}
+            #top-nav{height:50px}
+            .page-hero{padding:7rem 1.5rem 3rem;min-height:35vh}
+            .page-hero h1{font-size:1.7rem}
+            .lead-card{flex-direction:column;align-items:center;text-align:center;padding:1.5rem}
+            .container{padding:0 1.5rem}
+            .section-block{padding:2.5rem 0}
+            .team-grid{grid-template-columns:1fr}
+            .unit-grid{grid-template-columns:1fr}
+            .contact-grid{grid-template-columns:1fr}
+            .career-timeline{padding-left:1.5rem}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav id="top-nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">🏫 宁强职中<span style="font-size:0.7rem;font-weight:400;color:var(--text-dim);margin-left:0.3rem">| 教学成果奖</span></a>
+        <div class="nav-links">
+            <a href="index.html">🏠 首页</a>
+            <a href="index.html#hall-darkness">📋 成果概览</a>
+            <a href="index.html#hall-theory">🧬 理论创新</a>
+            <a href="index.html#hall-workshop">🔧 实践体系</a>
+            <a href="index.html#hall-life">📊 成效证据</a>
+            <a href="index.html#hall-future">🌐 推广辐射</a>
+            <a href="generator.html" class="primary-link">🤖 开源共享</a>
+            <a href="about.html" class="active">👥 关于我们</a>
+        </div>
+        <button class="nav-mobile-toggle" onclick="document.getElementById('mobile-drawer').classList.toggle('open');this.textContent=this.textContent==='☰'?'✕':'☰'" aria-label="菜单">☰</button>
+    </div>
+</nav>
+<div id="mobile-drawer" style="display:none;position:fixed;top:50px;left:0;right:0;bottom:0;z-index:10001;background:rgba(2,8,21,0.97);backdrop-filter:blur(20px);flex-direction:column;padding:1.5rem;gap:0.5rem;overflow-y:auto">
+    <a href="index.html" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">🏠 首页</a>
+    <a href="index.html#hall-darkness" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">📋 成果概览</a>
+    <a href="index.html#hall-theory" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">🧬 理论创新</a>
+    <a href="index.html#hall-workshop" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">🔧 实践体系</a>
+    <a href="index.html#hall-life" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">📊 成效证据</a>
+    <a href="index.html#hall-future" style="color:rgba(255,255,255,0.7);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">🌐 推广辐射</a>
+    <a href="generator.html" style="color:var(--gold);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif;border-bottom:1px solid rgba(255,255,255,0.05)">🤖 开源共享</a>
+    <a href="about.html" style="color:var(--gold-light);text-decoration:none;font-size:1rem;padding:0.8rem 1rem;border-radius:8px;font-family:'Noto Serif SC',serif">👥 关于我们</a>
+</div>
+
+<!-- Hero -->
+<section class="page-hero">
+    <div style="position:relative;z-index:2">
+        <div class="hero-badge">COMPLETION TEAM</div>
+        <h1>关于我们</h1>
+        <p class="subtitle">十六年深耕，九人团队，五校协同<br>秦巴山区职业教育改革的探索者与践行者</p>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- ===== 完成人 ===== -->
+    <div class="section-block">
+        <div class="section-title">完成人</div>
+
+        <!-- 主持人 -->
+        <div class="lead-card" style="margin-bottom:2.5rem">
+            <div class="lead-avatar">👨‍🏫</div>
+            <div class="lead-info">
+                <div class="lead-name">杨通达</div>
+                <div class="lead-title">项目主持人 · 宁强县职业高级中学副校长</div>
+                <div class="lead-detail">
+                    <strong>角色：</strong>项目总设计、理论体系构建者、AI平台主要开发者<br>
+                    <strong>贡献：</strong>提出"四真三化五链三场"理论框架，主导"1+8+N"课堂模式改革，开发宁职创原AI平台（5900行代码），主持申报陕西省教学成果奖特等奖2项<br>
+                    <strong>荣誉：</strong>陕西省教学名师 · 陕西省优秀教师 · 汉中市学科带头人 · 全国职业院校技能大赛优秀指导教师<br>
+                    <strong>研究方向：</strong>职业教育课程改革、产教融合、AI+教育、县域职教发展
+                </div>
+            </div>
+        </div>
+
+        <!-- 职业生涯 -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid var(--glass-border);border-radius:14px;padding:2rem;margin-bottom:2rem">
+            <h3 style="font-family:'Noto Serif SC',serif;font-size:1.2rem;font-weight:700;color:var(--gold-light);margin-bottom:1.5rem;text-align:center">📜 杨通达 · 职业生涯关键节点</h3>
+            <div class="career-timeline">
+                <div class="career-item">
+                    <div class="career-year">2010年</div>
+                    <div class="career-desc">入职宁强县职业高级中学，开始探索"赋能型行动学习法"</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2014年</div>
+                    <div class="career-desc">提出"从学科拼盘到产业战场"改革命题，启动首轮课堂教学改革</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2016年</div>
+                    <div class="career-desc">形成"1+8+N"高效课堂模式，获市级优秀课题结题</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2019年</div>
+                    <div class="career-desc">获陕西省第二届中等职业教育教学成果奖特等奖</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2020年</div>
+                    <div class="career-desc">提出"四真三化五链三场"完整理论体系，"值餐工坊"正式运营</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2022年</div>
+                    <div class="career-desc">获陕西省第五届教学成果奖特等奖；"悦舍工坊"在勉县职教中心复制推广</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2024年</div>
+                    <div class="career-desc">指导学生获世界职业院校技能大赛总决赛银奖</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2025年</div>
+                    <div class="career-desc">"四真三化五链三场"省级课题优良结题；开发宁职创原AI平台上线</div>
+                </div>
+                <div class="career-item">
+                    <div class="career-year">2026年</div>
+                    <div class="career-desc">受陕西省教科院邀请参加中职高本贯通培养教研活动；跨省分享改革经验；申报国家级教学成果奖</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 团队其他成员 -->
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">👩‍🏫</div>
+                <div class="team-name">刘琼</div>
+                <div class="team-role">核心成员 · 教学改革实施</div>
+                <div class="team-contrib">"1+8+N"课堂模式一线实践者，烹饪专业课改负责人，值餐工坊运营指导</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍💼</div>
+                <div class="team-name">刘兴兰</div>
+                <div class="team-role">核心成员 · 课程体系设计</div>
+                <div class="team-contrib">负责专业课程体系重构，制定岗位能力标准，跨学科协同教学设计</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍💻</div>
+                <div class="team-name">何涛</div>
+                <div class="team-role">核心成员 · 信息化平台</div>
+                <div class="team-contrib">信息化教学平台搭建，AI系统协同开发，数据采集与分析</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍🔬</div>
+                <div class="team-name">赵海利</div>
+                <div class="team-role">核心成员 · 实践基地建设</div>
+                <div class="team-contrib">产教融合实训基地规划，"三场"空间设计，校企合作对接</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍🏫</div>
+                <div class="team-name">王双明</div>
+                <div class="team-role">核心成员 · 师资培训</div>
+                <div class="team-contrib">教师"四真"理念培训，文化课产品化改造指导，教学评价体系建设</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍🔧</div>
+                <div class="team-name">张伟</div>
+                <div class="team-role">核心成员 · 技能竞赛</div>
+                <div class="team-contrib">世赛训练体系搭建，技能竞赛标准对接，学生技能水平提升</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👩‍🎓</div>
+                <div class="team-name">袁杰</div>
+                <div class="team-role">核心成员 · 推广辐射</div>
+                <div class="team-contrib">6校联盟协调，成果推广培训，跨校经验交流组织</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍💼</div>
+                <div class="team-name">李建忠</div>
+                <div class="team-role">核心成员 · 质量保障</div>
+                <div class="team-contrib">五位一体评价体系运营，教学质量监控，成果数据采集与验证</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 完成单位 ===== -->
+    <div class="section-block">
+        <div class="section-title">完成单位</div>
+        <div class="unit-grid">
+            <div class="unit-card primary">
+                <div class="unit-name">🏫 宁强县职业高级中学</div>
+                <div class="unit-desc">
+                    <strong>主持单位</strong><br>
+                    秦巴山区国家级重点中等职业学校，在校生2200余人。2014年启动改革至今12年，从"三无"困境到"四真三化五链三场"体系成型。拥有值餐工坊、悦舍工坊两大产教融合实体，获省级教学成果奖特等奖2项、世赛银奖1项。
+                </div>
+            </div>
+            <div class="unit-card">
+                <div class="unit-name">🏫 南郑区职业教育中心</div>
+                <div class="unit-desc">
+                    <strong>协同单位</strong><br>
+                    首批推广学校，烹饪专业复制"值餐工坊"模式，就业率从62%提升至97%。验证了方案的跨校可复制性。
+                </div>
+            </div>
+            <div class="unit-card">
+                <div class="unit-name">🏫 汉中第一职业中等职业学校</div>
+                <div class="unit-desc">
+                    <strong>协同单位</strong><br>
+                    参与"1+8+N"课堂模式试点，课堂参与度显著提升，为城市职校应用提供了实践样本。
+                </div>
+            </div>
+            <div class="unit-card">
+                <div class="unit-name">🏫 勉县职业教育中心</div>
+                <div class="unit-desc">
+                    <strong>协同单位</strong><br>
+                    复制"悦舍工坊"中医美容模式，学生起薪增加1800元，成为跨专业推广的成功案例。
+                </div>
+            </div>
+            <div class="unit-card">
+                <div class="unit-name">🏫 陕西财经职业技术学院</div>
+                <div class="unit-desc">
+                    <strong>协同单位</strong><br>
+                    提供高等教育视角的理论验证与学术支撑，参与评价体系设计与数据分析，推动中高职衔接贯通培养。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 联系方式 ===== -->
+    <div class="section-block" style="padding-bottom:4rem">
+        <div class="section-title">联系方式</div>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <div class="contact-label">学校地址</div>
+                <div class="contact-value">陕西省汉中市宁强县汉源街道</div>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📞</div>
+                <div class="contact-label">联系电话</div>
+                <div class="contact-value">0916-422****</div>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <div class="contact-label">电子邮箱</div>
+                <div class="contact-value">nqzx@****.edu.cn</div>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">🌐</div>
+                <div class="contact-label">官方网站</div>
+                <div class="contact-value">tongdayang01.github.io</div>
+            </div>
+        </div>
+
+        <!-- 实践检验说明 -->
+        <div style="margin-top:3rem;padding:2rem;background:rgba(201,169,110,0.04);border:1px solid rgba(201,169,110,0.15);border-radius:14px;text-align:center">
+            <p style="font-family:'Noto Serif SC',serif;font-size:1rem;color:var(--gold-light);margin-bottom:0.8rem">
+                📋 实践检验期说明
+            </p>
+            <p style="font-size:0.9rem;color:var(--text-dim);line-height:1.8">
+                <strong style="color:var(--text)">实践检验期：</strong>2010年3月至2026年，共16年深耕，满足国家级教学成果奖特等奖"实践检验不少于6年"的要求。<br>
+                <strong style="color:var(--text)">推荐单位：</strong>陕西省教育厅 · 陕西省人力资源和社会保障厅<br>
+                <strong style="color:var(--text)">申报等级：</strong>国家级教学成果奖 · 特等奖<br>
+                <strong style="color:var(--text)">成果名称：</strong>让每个孩子都值钱——县域中职"产业·课堂双螺旋"育人的实践与探索
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="page-footer">
+    <p>宁强县职业高级中学 &copy; 2010-2026</p>
+    <p>陕西省汉中市宁强县 · 秦巴山区县域职业教育改革示范基地</p>
+    <p style="margin-top:1rem"><a href="index.html" style="color:var(--gold-light);text-decoration:none">返回首页</a></p>
+</footer>
+
+<script>
+// Mobile drawer toggle
+document.getElementById('mobile-drawer').addEventListener('click', function(e){
+    if(e.target.tagName === 'A') {
+        this.classList.remove('open');
+        document.querySelector('.nav-mobile-toggle').textContent = '☰';
+    }
+});
+</script>
+
+</body>
+</html>

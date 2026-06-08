@@ -1278,10 +1278,110 @@
             border-radius: 12px; color: var(--text-dim); font-size: 0.85rem;
             background: rgba(0,0,0,0.3);
         }
+        /* ===== Top Navigation Bar (8-column) ===== */
+        #top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 10002;
+            background: rgba(2,8,21,0.82);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201,169,110,0.12);
+            height: 54px; display: flex; align-items: center;
+            transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+        }
+        #top-nav.hidden { transform: translateY(-100%); }
+        #top-nav.scrolled { background: rgba(2,8,21,0.96); box-shadow: 0 2px 24px rgba(0,0,0,0.5); border-bottom-color: rgba(201,169,110,0.2); }
+        .nav-inner {
+            max-width: 1300px; width: 100%; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+        .nav-brand {
+            font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 700;
+            color: var(--gold-light); text-decoration: none; white-space: nowrap;
+            display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;
+        }
+        .nav-brand span { font-size: 0.7rem; font-weight: 400; color: var(--text-dim); }
+        .nav-links {
+            display: flex; align-items: center; gap: 0.15rem;
+            overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links a {
+            color: rgba(255,255,255,0.6); text-decoration: none;
+            font-size: 0.76rem; padding: 0.38rem 0.65rem;
+            border-radius: 6px; white-space: nowrap;
+            transition: all 0.3s ease; font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold-light); background: rgba(201,169,110,0.1);
+        }
+        .nav-links a.primary-link {
+            color: var(--gold); border: 1px solid rgba(201,169,110,0.25);
+            background: rgba(201,169,110,0.06);
+        }
+        .nav-links a.primary-link:hover {
+            background: rgba(201,169,110,0.15); border-color: var(--gold);
+        }
+        .nav-mobile-toggle {
+            display: none; background: none; border: none;
+            color: var(--gold-light); font-size: 1.4rem; cursor: pointer;
+            padding: 0.3rem; line-height: 1;
+        }
+        /* Mobile Nav Drawer */
+        .nav-mobile-drawer {
+            display: none; position: fixed; top: 54px; left: 0; right: 0; bottom: 0;
+            z-index: 10001; background: rgba(2,8,21,0.97);
+            backdrop-filter: blur(20px); flex-direction: column;
+            padding: 1.5rem; gap: 0.5rem; overflow-y: auto;
+        }
+        .nav-mobile-drawer.open { display: flex; }
+        .nav-mobile-drawer a {
+            color: rgba(255,255,255,0.7); text-decoration: none;
+            font-size: 1rem; padding: 0.8rem 1rem; border-radius: 8px;
+            font-family: 'Noto Serif SC', serif; font-weight: 500;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-mobile-drawer a:hover { color: var(--gold-light); background: rgba(201,169,110,0.08); }
+        .nav-mobile-drawer a.primary-link { color: var(--gold); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-mobile-toggle { display: block; }
+            .nav-inner { padding: 0 1rem; }
+            #top-nav { height: 50px; }
+            .nav-mobile-drawer { top: 50px; }
+        }
     </style>
 </head>
 <body>
     
+    <!-- Top Navigation Bar (8-column) -->
+    <nav id="top-nav">
+        <div class="nav-inner">
+            <a href="#hero-section" class="nav-brand">🏫 宁强职中<span>| 教学成果奖</span></a>
+            <div class="nav-links" id="nav-links">
+                <a href="#hero-section" class="active" data-nav="0">🏠 首页</a>
+                <a href="#hall-darkness" data-nav="1">📋 成果概览</a>
+                <a href="#hall-theory" data-nav="2">🧬 理论创新</a>
+                <a href="#hall-workshop" data-nav="3">🔧 实践体系</a>
+                <a href="#hall-life" data-nav="4">📊 成效证据</a>
+                <a href="#hall-future" data-nav="5">🌐 推广辐射</a>
+                <a href="generator.html" data-nav="6" class="primary-link">🤖 开源共享</a>
+                <a href="about.html" data-nav="7">👥 关于我们</a>
+            </div>
+            <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="菜单">☰</button>
+        </div>
+    </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="#hero-section">🏠 首页 · 数据看板</a>
+        <a href="#hall-darkness">📋 成果概览 · 申报书/总结报告</a>
+        <a href="#hall-theory">🧬 理论创新 · 双螺旋模型</a>
+        <a href="#hall-workshop">🔧 实践体系 · 四真三化五链三场</a>
+        <a href="#hall-life">📊 成效证据 · 数据仪表盘</a>
+        <a href="#hall-future">🌐 推广辐射 · 6校地图</a>
+        <a href="generator.html" class="primary-link">🤖 开源共享 · AI工单生成器</a>
+        <a href="about.html">👥 关于我们 · 完成人/单位</a>
+    </div>
+
     <!-- Loading Screen -->
     <div id="loading-screen">
         <canvas class="loading-particle-canvas" id="loading-canvas"></canvas>
@@ -1308,16 +1408,14 @@
     <!-- Cursor Glow -->
     <div id="cursor-glow"></div>
     
-    <!-- Navigation Dots -->
+    <!-- Navigation Dots (updated for 8-column) -->
     <div id="nav-dots">
-        <div class="nav-dot active" data-label="入口·投名状" data-target="hero-section"></div>
-        <div class="nav-dot" data-label="黑暗之谷" data-target="hall-darkness"></div>
-        <div class="nav-dot" data-label="理论之光" data-target="hall-theory"></div>
-        <div class="nav-dot" data-label="实战工坊" data-target="hall-workshop"></div>
-        <div class="nav-dot" data-label="生命剧场" data-target="hall-life"></div>
-        <div class="nav-dot" data-label="数据之巅" data-target="hall-data"></div>
-        <div class="nav-dot" data-label="光影叙事" data-target="hall-video"></div>
-        <div class="nav-dot" data-label="未来之门" data-target="hall-future"></div>
+        <div class="nav-dot active" data-label="首页·数据看板" data-target="hero-section"></div>
+        <div class="nav-dot" data-label="成果概览" data-target="hall-darkness"></div>
+        <div class="nav-dot" data-label="理论创新" data-target="hall-theory"></div>
+        <div class="nav-dot" data-label="实践体系" data-target="hall-workshop"></div>
+        <div class="nav-dot" data-label="成效证据" data-target="hall-life"></div>
+        <div class="nav-dot" data-label="推广辐射" data-target="hall-future"></div>
     </div>
     
     <!-- ===== Scroll Container ===== -->
@@ -1409,6 +1507,31 @@
                 <div class="darkness-quote fade-in-up" style="margin-top:2rem;">
                     "我常被一句话刺穿——'宁愿送孩子当学徒，也不上职中'。这所秦巴山区的职业学校，到了最危险的时刻。"
                     <div style="margin-top:0.8rem;font-size:0.85rem;color:var(--gold-light);">—— 杨通达 · 宁强县职业高级中学</div>
+                </div>
+
+                <!-- 成果概览：申报书+总结报告下载 -->
+                <div class="fade-in-up" style="margin-top:3rem;padding:2rem;background:rgba(201,169,110,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:16px;text-align:center">
+                    <div style="font-family:'Noto Serif SC',serif;font-size:1.3rem;font-weight:700;color:var(--gold-light);margin-bottom:1rem;">
+                        📋 成果概览 · 核心文件
+                    </div>
+                    <p style="font-size:0.9rem;color:var(--text-dim);margin-bottom:1.8rem;max-width:600px;margin-left:auto;margin-right:auto">
+                        以下为国家级教学成果奖申报全套材料，含申报书、总结报告、理论论文、操作手册等
+                    </p>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.8rem;justify-content:center">
+                        <a href="#" onclick="alert('请联系杨通达获取正式版PDF：tongdayang01@163.com')" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:var(--gold-light);text-decoration:none;font-size:0.88rem;transition:all 0.3s ease">
+                            📄 申报书全文
+                        </a>
+                        <a href="#" onclick="alert('请联系杨通达获取正式版PDF：tongdayang01@163.com')" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:rgba(59,125,216,0.1);border:1px solid rgba(59,125,216,0.3);border-radius:8px;color:var(--blue-light);text-decoration:none;font-size:0.88rem;transition:all 0.3s ease">
+                            📊 总结报告
+                        </a>
+                        <a href="#" onclick="alert('请联系杨通达获取正式版PDF：tongdayang01@163.com')" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);border-radius:8px;color:var(--cyan);text-decoration:none;font-size:0.88rem;transition:all 0.3s ease">
+                            📝 理论论文
+                        </a>
+                        <a href="#" onclick="alert('请联系杨通达获取正式版PDF：tongdayang01@163.com')" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;background:rgba(255,105,180,0.1);border:1px solid rgba(255,105,180,0.3);border-radius:8px;color:#FF69B4;text-decoration:none;font-size:0.88rem;transition:all 0.3s ease">
+                            📘 操作手册
+                        </a>
+                    </div>
+                    <p style="margin-top:1.2rem;font-size:0.75rem;color:var(--text-dim);opacity:0.6">* 正式PDF版本可联系项目组获取</p>
                 </div>
             </div>
             <div class="section-fog"></div>
@@ -2891,7 +3014,7 @@
         function updateActiveHall() {
             const halls = [
                 'hero-section','hall-darkness','hall-theory',
-                'hall-workshop','hall-life',('hall-data','hall-video','hall-future')
+                'hall-workshop','hall-life','hall-data','hall-future'
             ];
             let detected = 0;
             for (let i = halls.length-1; i >= 0; i--) {
@@ -3037,14 +3160,15 @@
 
             const SECTION_IDS = [
                 'hero-section','hall-darkness','hall-theory',
-                'hall-workshop','hall-life',('hall-data','hall-video','hall-future')
+                'hall-workshop','hall-life','hall-future'
             ];
             SECTION_IDS.forEach((id, idx) => {
                 const el = document.getElementById(id);
                 if (!el) return;
                 ScrollTrigger.create({
                     trigger: el, start: 'top center', end: 'bottom center',
-                    onEnter: () => setActiveDot(idx), onEnterBack: () => setActiveDot(idx)
+                    onEnter: () => { setActiveDot(idx); updateNavActive(idx); },
+                    onEnterBack: () => { setActiveDot(idx); updateNavActive(idx); }
                 });
             });
         }
@@ -3273,6 +3397,78 @@
             setTimeout(() => t.classList.remove('show'), 4200);
         }
         window.addEventListener('scroll', checkAch);
+
+        /* =====================================================
+           9. Top Nav Bar - Mobile Toggle + Scroll Hide/Show + Active Tracking
+           ===================================================== */
+        function initTopNav() {
+            const topNav = document.getElementById('top-nav');
+            const mobileToggle = document.getElementById('nav-mobile-toggle');
+            const mobileDrawer = document.getElementById('nav-mobile-drawer');
+            let lastScrollY = window.scrollY;
+            let scrollTimeout;
+
+            // Mobile toggle
+            if (mobileToggle && mobileDrawer) {
+                mobileToggle.addEventListener('click', () => {
+                    const isOpen = mobileDrawer.classList.contains('open');
+                    mobileDrawer.classList.toggle('open');
+                    mobileToggle.textContent = isOpen ? '☰' : '✕';
+                });
+                // Close drawer when a link is clicked
+                mobileDrawer.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileDrawer.classList.remove('open');
+                        mobileToggle.textContent = '☰';
+                    });
+                });
+            }
+
+            // Scroll-based hide/show + scrolled class
+            window.addEventListener('scroll', () => {
+                if (!topNav) return;
+                const currentScrollY = window.scrollY;
+                if (currentScrollY > 80) {
+                    topNav.classList.add('scrolled');
+                } else {
+                    topNav.classList.remove('scrolled');
+                }
+                if (currentScrollY > lastScrollY && currentScrollY > 300) {
+                    topNav.classList.add('hidden');
+                } else {
+                    topNav.classList.remove('hidden');
+                }
+                lastScrollY = currentScrollY;
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => topNav.classList.remove('hidden'), 2000);
+            });
+        }
+
+        // Update top nav active state
+        function updateNavActive(idx) {
+            const navLinks = document.querySelectorAll('#nav-links a[data-nav]');
+            navLinks.forEach((link, i) => {
+                link.classList.toggle('active', parseInt(link.getAttribute('data-nav')) === idx);
+            });
+        }
+
+        // Nav link click handlers
+        document.querySelectorAll('#nav-links a[data-nav]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const idx = parseInt(link.getAttribute('data-nav'));
+                const sections = ['hero-section','hall-darkness','hall-theory','hall-workshop','hall-life','hall-future'];
+                const targetId = sections[idx];
+                if (targetId) {
+                    e.preventDefault();
+                    const el = document.getElementById(targetId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+                setActiveDot(idx);
+                updateNavActive(idx);
+            });
+        });
+
+        initTopNav();
 
     })();
         
