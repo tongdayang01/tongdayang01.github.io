@@ -860,7 +860,7 @@
             .honor-section-title { font-size: 0.95rem; margin-bottom: 1.2rem; }
             .honor-grid { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
             .honor-card { border-radius: 10px; overflow: hidden; }
-            .honor-card img { aspect-ratio: 3/4; width: 100%; object-fit: cover; }
+            .honor-card img { width: 100%; height: auto; object-fit: contain; background: rgba(0,0,0,0.2); }
             .honor-card-caption { font-size: 0.63rem; padding: 0.4rem 0.5rem; min-height: 2.2rem; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
 
             /* === Data Cards === */
@@ -1212,15 +1212,16 @@
         
         /* Honor Wall Grid */
         .honor-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem; margin: 2rem 0;
         }
         .honor-card {
-            border-radius: 10px; overflow: hidden;
+            border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.05);
             background: rgba(10,15,30,0.6);
             transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                         border-color 0.4s ease, box-shadow 0.4s ease;
+            padding: 8px;  /* 给图片更多空间，确保完整显示 */
         }
         .honor-card:hover {
             transform: translateY(-4px) scale(1.015);
@@ -1228,9 +1229,11 @@
             box-shadow: 0 12px 40px rgba(0,0,0,0.5);
         }
         .honor-card img {
-            width: 100%; display: block; aspect-ratio: 3/4;
-            object-fit: cover; filter: brightness(0.9) saturate(1.05);
+            width: 100%; height: auto; display: block;
+            object-fit: contain;  /* 确保图片完整显示，不裁剪 */
+            filter: brightness(0.9) saturate(1.05);
             transition: filter 0.5s ease;
+            background: rgba(0,0,0,0.2);  /* 图片不完整时的背景色 */
         }
         .honor-card:hover img { filter: brightness(1) saturate(1.08); }
         .honor-card-caption {
