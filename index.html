@@ -854,6 +854,7 @@
             .evidence-2col, .evidence-3col, .evidence-4col { grid-template-columns: 1fr; gap: 1.2rem; }
             .evidence-card { border-radius: 14px; overflow: hidden; }
             .evidence-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+            .evidence-card.scholarship-card img { aspect-ratio: 2/1; object-fit: contain; background: #fff; filter: none; padding: 0.3rem; }
             .evidence-label { font-size: 0.75rem; padding: 0.65rem 0.8rem; line-height: 1.5; }
 
             /* === Honor Wall === */
@@ -1210,6 +1211,33 @@
         }
         .evidence-card:hover .evidence-label { color: var(--gold-light); }
         
+        /* Scholarship certificate cards — horizontal display for expert review */
+        .evidence-card.scholarship-card {
+            background: #fff;
+            border-color: rgba(0,0,0,0.1);
+        }
+        .evidence-card.scholarship-card img {
+            aspect-ratio: 3/2;
+            object-fit: contain;
+            background: #fff;
+            padding: 0.5rem;
+            filter: none;
+        }
+        .evidence-card.scholarship-card:hover img {
+            transform: scale(1.02);
+            filter: none;
+        }
+        .evidence-card.scholarship-card .ev-label {
+            background: #fff;
+            color: #333;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        .evidence-card.scholarship-card .ev-label strong {
+            color: #8B1A2B;
+        }
+        .evidence-card.scholarship-card:hover .ev-label { color: #333; }
+        .evidence-card.scholarship-card:hover .ev-label strong { color: #C41E3A; }
+        
         /* Honor Wall Grid */
         .honor-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1349,6 +1377,95 @@
             .nav-inner { padding: 0 1rem; }
             #top-nav { height: 50px; }
             .nav-mobile-drawer { top: 50px; }
+        }
+        /* ===== Evidence Gallery (证据陈列馆) ===== */
+        .evidence-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+            padding: 1.5rem 0;
+        }
+        .evidence-card {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(201,169,110,0.12);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .evidence-card:hover {
+            border-color: rgba(201,169,110,0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(201,169,110,0.08);
+        }
+        .evidence-card img {
+            width: 100%; height: 200px;
+            object-fit: contain;
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem;
+            display: block;
+        }
+        .evidence-card .ev-label {
+            padding: 0.6rem 0.9rem;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            line-height: 1.4;
+        }
+        .evidence-card .ev-label strong {
+            color: var(--gold-light);
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.82rem;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        .evidence-badge {
+            position: absolute; top: 0.6rem; right: 0.6rem;
+            padding: 0.2rem 0.55rem; border-radius: 4px;
+            font-size: 0.65rem; font-weight: 600;
+            z-index: 2;
+        }
+        .badge-national { background: rgba(220,38,38,0.85); color: #fff; }
+        .badge-provincial { background: rgba(201,169,110,0.85); color: #020815; }
+        .badge-municipal { background: rgba(59,125,216,0.85); color: #fff; }
+        .badge-world { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #020815; }
+        .evidence-section-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--gold-light);
+            margin: 2rem 0 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(201,169,110,0.15);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        /* Lightbox modal */
+        .ev-lightbox {
+            display: none; position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 10010; background: rgba(2,8,21,0.95);
+            justify-content: center; align-items: center;
+            flex-direction: column; padding: 2rem;
+        }
+        .ev-lightbox.open { display: flex; }
+        .ev-lightbox img {
+            max-width: 90%; max-height: 80%;
+            border-radius: 8px; box-shadow: 0 0 60px rgba(201,169,110,0.15);
+        }
+        .ev-lightbox .ev-close {
+            position: absolute; top: 1.5rem; right: 2rem;
+            font-size: 2rem; color: var(--gold-light);
+            background: none; border: none; cursor: pointer;
+        }
+        .ev-lightbox .ev-caption {
+            margin-top: 1rem; color: var(--text-dim);
+            font-size: 0.9rem; max-width: 600px; text-align: center;
+        }
+        @media (max-width: 768px) {
+            .evidence-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.7rem; }
+            .evidence-card img { height: 150px; }
+            .evidence-card .ev-label { font-size: 0.7rem; }
         }
     </style>
 </head>
@@ -1703,6 +1820,21 @@
                         <div class="loop-item"><span class="loop-item-num">8</span>评价激励</div>
                     </div>
                 </div>
+                
+                <!-- 理论创新·课题证据陈列 -->
+                <div class="evidence-section-title fade-in-up">🔬 理论创新 · 省级课题证据</div>
+                <div class="evidence-gallery fade-in-up">
+                    <div class="evidence-card" onclick="openLightbox('assets/research-project-approval.jpg','陕西省十四五教育科学规划2024年度课题立项证书——中职学校以学生为中心的赋能型行动学习课堂教学模式探索与实践（SGH24Y1741），主持人：杨通达')">
+                        <img src="assets/research-project-approval.jpg" alt="省级课题立项证书" loading="lazy">
+                        <div class="ev-label"><strong>省级课题立项</strong>SGH24Y1741 · 赋能型行动学习</div>
+                        <span class="evidence-badge badge-provincial">省级</span>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/research-project-conclusion.jpg','陕西省教育科学规划领导小组办公室结题证书——鉴定等级：良好（2026年4月13日），主持人：杨通达')">
+                        <img src="assets/research-project-conclusion.jpg" alt="省级课题结题证书" loading="lazy">
+                        <div class="ev-label"><strong>省级课题结题·鉴定良好</strong>SGH24Y1741 · 2024立项→2026结题</div>
+                        <span class="evidence-badge badge-provincial">省级</span>
+                    </div>
+                </div>
             </div>
             <div class="section-fog"></div>
         </section>
@@ -2028,6 +2160,25 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- 实践体系·证据陈列 -->
+                <div class="evidence-section-title fade-in-up">📸 实践体系 · 证据陈列</div>
+                <div class="evidence-gallery fade-in-up">
+                    <div class="evidence-card" onclick="openLightbox('assets/training-lecture-full.jpg','「从学科拼盘到产业战场」大型培训讲座——四真三化五链理论全国输出')">
+                        <img src="assets/training-lecture-full.jpg" alt="四真三化五链培训讲座" loading="lazy">
+                        <div class="ev-label"><strong>四真三化五链培训讲座</strong>座无虚席 · 理论全国输出</div>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/provincial-production-edu-project.jpg','省教育厅产教融合实践中心+校企合作典型生产实践项目双立项')">
+                        <img src="assets/provincial-production-edu-project.jpg" alt="省厅产教融合立项名单" loading="lazy">
+                        <div class="ev-label"><strong>省厅产教融合双立项</strong>实践中心+校企合作项目</div>
+                        <span class="evidence-badge badge-provincial">省级</span>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/tianhan-classroom-opening.jpg','2026汉中市天汉好课堂优质课交流展示活动开幕式——杨通达发言')">
+                        <img src="assets/tianhan-classroom-opening.jpg" alt="天汉好课堂开幕式" loading="lazy">
+                        <div class="ev-label"><strong>天汉好课堂开幕式</strong>市级优质课交流展示</div>
+                        <span class="evidence-badge badge-municipal">市级</span>
+                    </div>
+                </div>
             </div>
             <div class="section-fog"></div>
         </section>
@@ -2148,6 +2299,40 @@
                         <div class="student-story">
                             "世界职业技术大赛银奖，获国家奖学金6000元，免试升入陕西工业职业技术大学。"
                         </div>
+                    </div>
+                </div>
+                
+                <!-- 成效证据·学生成长陈列馆 -->
+                <div class="evidence-section-title fade-in-up">🏆 成效证据 · 学生成长陈列馆</div>
+                <div class="evidence-gallery fade-in-up">
+                    <div class="evidence-card" onclick="openLightbox('assets/worldskills-silver-2024.jpg','2024年世界职业院校技能大赛总决赛银奖——孟婷瑶、赵佳明、郑燕、陈一佳，指导教师：杨通达、袁琪')">
+                        <img src="assets/worldskills-silver-2024.jpg" alt="世界职业技能大赛银奖证书" loading="lazy">
+                        <div class="ev-label"><strong>世界职业院校技能大赛🥈银奖</strong>孟婷瑶等4人 · 世界级荣誉</div>
+                        <span class="evidence-badge badge-world">世界级</span>
+                    </div>
+                    <div class="evidence-card scholarship-card" onclick="openLightbox('assets/scholarship-haoyan.jpg','郑燕同学——2023-2024学年度国家奖学金荣誉证书（教育部+人社部双章）')">
+                        <img src="assets/scholarship-haoyan.jpg" alt="郑燕国家奖学金证书" loading="lazy">
+                        <div class="ev-label"><strong>郑燕·国家奖学金</strong>教育部+人社部双章认证</div>
+                        <span class="evidence-badge badge-national">国家级</span>
+                    </div>
+                    <div class="evidence-card scholarship-card" onclick="openLightbox('assets/scholarship-chenyijia.jpg','陈一佳同学——2023-2024学年度国家奖学金荣誉证书（教育部+人社部双章）')">
+                        <img src="assets/scholarship-chenyijia.jpg" alt="陈一佳国家奖学金证书" loading="lazy">
+                        <div class="ev-label"><strong>陈一佳·国家奖学金</strong>教育部+人社部双章认证</div>
+                        <span class="evidence-badge badge-national">国家级</span>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/zhao-jiaming-exam.jpg','赵佳明——陕西工业职业技术学院单独考试招生准考证（机械制造及自动化专业·三校生升学）')">
+                        <img src="assets/zhao-jiaming-exam.jpg" alt="赵佳明升学准考证" loading="lazy">
+                        <div class="ev-label"><strong>赵佳明·陕工院升学</strong>机械制造及自动化 · 三校生逆袭</div>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/provincial-skills-group-photo.jpg','2025年陕西省职业院校技能大赛（康复技术赛项）——宁强县职业高级中学承办，全省参赛选手+裁判大合影')">
+                        <img src="assets/provincial-skills-group-photo.jpg" alt="省级技能大赛承办合影" loading="lazy">
+                        <div class="ev-label"><strong>省级技能大赛承办</strong>宁强职中主办 · 康复技术赛项</div>
+                        <span class="evidence-badge badge-provincial">省级</span>
+                    </div>
+                    <div class="evidence-card" onclick="openLightbox('assets/rehab-skills-closing.jpg','2025年省级康复技术赛项闭幕式——杨通达以省级裁判/专家身份出席')">
+                        <img src="assets/rehab-skills-closing.jpg" alt="康复技术赛项闭幕式" loading="lazy">
+                        <div class="ev-label"><strong>康复技术赛项闭幕式</strong>杨通达担任省级裁判专家</div>
+                        <span class="evidence-badge badge-provincial">省级</span>
                     </div>
                 </div>
             </div>
@@ -2427,6 +2612,61 @@
                             <div class="evidence-card">
                                 <img src="assets/research-conclusion.jpg" alt="职业教育改革成效明显地方名单" loading="lazy">
                                 <div class="evidence-label">📍 宁强县被省政府点名 · 2023年获专项资金倾斜</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 推广辐射·杨通达省级专家身份陈列 -->
+                        <div class="evidence-section-title fade-in-up" style="margin-top:1rem;">📜 推广辐射 · 省级/国家级专家身份凭证</div>
+                        <div class="evidence-gallery fade-in-up">
+                            <div class="evidence-card" onclick="openLightbox('assets/provincial-expert-shuangda-biao.jpg','陕西省教育厅办公室红头文件——聘请杨通达为2023年陕西省中职学校双达标省级复核专家')">
+                                <img src="assets/provincial-expert-shuangda-biao.jpg" alt="省厅双达标专家通知" loading="lazy">
+                                <div class="ev-label"><strong>省厅双达标复核专家</strong>陕西省教育厅红头文件抽调</div>
+                                <span class="evidence-badge badge-provincial">省级公文</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/provincial-expert-inspection.jpg','陕西省教育厅办公室红头文件——抽调杨通达为2023年陕西省职业学校办学情况综合抽查复核专家')">
+                                <img src="assets/provincial-expert-inspection.jpg" alt="省厅办学情况复核专家通知" loading="lazy">
+                                <div class="ev-label"><strong>省厅办学情况复核专家</strong>省教育厅红头文件抽调（第2次）</div>
+                                <span class="evidence-badge badge-provincial">省级公文</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/hanzhong-edu-dispatch-letter.jpg','汉中市教育局红头抽调函——抽调杨通达担任2024年汉中市教师教学能力岗位竞赛评委')">
+                                <img src="assets/hanzhong-edu-dispatch-letter.jpg" alt="市教育局抽调函" loading="lazy">
+                                <div class="ev-label"><strong>市教育局红头抽调函</strong>担任市级教学竞赛评委</div>
+                                <span class="evidence-badge badge-municipal">市级公文</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/hanzhong-du-xue-cert.jpg','第六届汉中市督学聘书——杨通达被汉中市人民政府教育督导委员会办公室聘为市级督学（2024-2027）')">
+                                <img src="assets/hanzhong-du-xue-cert.jpg" alt="第六届汉中市督学聘书" loading="lazy">
+                                <div class="ev-label"><strong>第六届汉中市督学</strong>市政府教育督导委聘任</div>
+                                <span class="evidence-badge badge-municipal">市级督学</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/caet-member-card.jpg','中国教育技术协会（CAET）个人会员证——杨通达，有效期至2028年')">
+                                <img src="assets/caet-member-card.jpg" alt="中国教育技术协会会员证" loading="lazy">
+                                <div class="ev-label"><strong>中国教育技术协会会员</strong>教育部主管·全国一级学会</div>
+                                <span class="evidence-badge badge-national">国家级</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/finance-edu-group-director.jpg','陕西财经职教集团常务理事聘书——杨通达（聘期三年）')">
+                                <img src="assets/finance-edu-group-director.jpg" alt="陕西财经职教集团常务理事" loading="lazy">
+                                <div class="ev-label"><strong>陕西财经职教集团常务理事</strong>省级职教平台核心成员</div>
+                                <span class="evidence-badge badge-provincial">省级</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 推广辐射·市级评审聘书陈列 -->
+                        <div class="evidence-section-title fade-in-up">📋 推广辐射 · 市级评审聘书</div>
+                        <div class="evidence-gallery fade-in-up">
+                            <div class="evidence-card" onclick="openLightbox('assets/tianhan-judge-cert-1.jpg','汉中市2024年天汉好课堂优质课交流展示活动——杨通达被聘为评委（汉中市教研室）')">
+                                <img src="assets/tianhan-judge-cert-1.jpg" alt="天汉好课堂评委聘书" loading="lazy">
+                                <div class="ev-label"><strong>天汉好课堂评委</strong>汉中市教研室聘任</div>
+                                <span class="evidence-badge badge-municipal">市级</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/skills-contest-judge-cert.jpg','2024年汉中市职业院校技能大赛——杨通达被聘为教师教学能力比赛评审专家（汉中市教育局）')">
+                                <img src="assets/skills-contest-judge-cert.jpg" alt="技能大赛评审专家聘书" loading="lazy">
+                                <div class="ev-label"><strong>技能大赛评审专家</strong>汉中市教育局聘任</div>
+                                <span class="evidence-badge badge-municipal">市级</span>
+                            </div>
+                            <div class="evidence-card" onclick="openLightbox('assets/provincial-online-course-notice.jpg','陕西省教育厅官网——2023年职业教育国家在线精品课程拟推荐名单公示（宁强职中入选）')">
+                                <img src="assets/provincial-online-course-notice.jpg" alt="省厅精品课程公示" loading="lazy">
+                                <div class="ev-label"><strong>国家精品课程推荐</strong>省教育厅官网公示 · 21284次浏览</div>
+                                <span class="evidence-badge badge-provincial">省级</span>
                             </div>
                         </div>
                         
@@ -3469,6 +3709,30 @@
         });
 
         initTopNav();
+
+        /* =====================================================
+           10. Evidence Lightbox (证据陈列馆灯箱)
+           ===================================================== */
+        function openLightbox(src, caption) {
+            let lb = document.getElementById('ev-lightbox');
+            if (!lb) {
+                lb = document.createElement('div');
+                lb.id = 'ev-lightbox';
+                lb.className = 'ev-lightbox';
+                lb.innerHTML = '<button class="ev-close" onclick="closeLightbox()">&times;</button><img id="ev-lb-img" src="" alt=""><div class="ev-caption" id="ev-lb-caption"></div>';
+                document.body.appendChild(lb);
+                lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+            }
+            document.getElementById('ev-lb-img').src = src;
+            document.getElementById('ev-lb-caption').textContent = caption;
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            const lb = document.getElementById('ev-lightbox');
+            if (lb) { lb.classList.remove('open'); document.body.style.overflow = ''; }
+        }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 
     })();
         
