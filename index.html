@@ -136,28 +136,85 @@
             50% { filter: brightness(1.3); }
         }
         
-        /* ===== Opening Animation Canvas ===== */
-        #opening-canvas {
-            position: fixed; inset: 0; z-index: 9000;
-            background: var(--dark);
+        /* ===== Warm Welcome Overlay ===== */
+        #welcome-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: radial-gradient(ellipse at center, #0D1B2A 0%, #020815 70%);
             display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        #opening-canvas.hidden { display: none !important; }
-        #opening-text {
-            position: absolute; bottom: 15%;
+        #welcome-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .welcome-particles {
+            position: absolute; inset: 0; overflow: hidden;
+        }
+        .welcome-particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #C9A96E;
+            border-radius: 50%;
+            animation: floatUp var(--dur) ease-in infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+        .welcome-content {
+            position: relative; z-index: 2; text-align: center;
+            animation: welcomeReveal 1.2s ease forwards;
+        }
+        @keyframes welcomeReveal {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-greeting {
             font-family: 'Noto Serif SC', serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 700;
-            color: var(--gold-light);
-            opacity: 0; letter-spacing: 0.15em;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #C9A96E; letter-spacing: 0.25em;
+            margin-bottom: 0.8rem;
+            animation: welcomeReveal 1s ease 0.2s both;
         }
-        
-        /* ===== Three.js Canvas (persistent background) ===== */
-        #three-canvas {
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -1; pointer-events: none;
-            opacity: 0.6;
+        .welcome-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            font-weight: 900; color: #FFFFFF;
+            letter-spacing: 0.08em; margin-bottom: 1.2rem;
+            text-shadow: 0 0 60px rgba(201,169,110,0.4);
+            animation: welcomeReveal 1s ease 0.5s both;
+        }
+        .welcome-divider {
+            margin: 1rem 0; color: #C9A96E; font-size: 1.5rem;
+            animation: welcomeReveal 1s ease 0.8s both;
+        }
+        .welcome-subtitle {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            font-weight: 700; color: #E8D5A3; letter-spacing: 0.1em;
+            margin-bottom: 0.8rem;
+            animation: welcomeReveal 1s ease 1.0s both;
+        }
+        .welcome-desc {
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            color: rgba(255,255,255,0.55); letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            animation: welcomeReveal 1s ease 1.2s both;
+        }
+        .welcome-school {
+            font-size: 0.9rem; color: rgba(255,255,255,0.35);
+            letter-spacing: 0.06em; margin-bottom: 2rem;
+            animation: welcomeReveal 1s ease 1.4s both;
+        }
+        .welcome-hint {
+            font-size: 0.8rem; color: rgba(255,255,255,0.25);
+            letter-spacing: 0.1em;
+            animation: welcomeReveal 1s ease 1.8s both, pulseHint 2s ease-in-out 2.5s infinite;
+        }
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.5; }
         }
         
         /* ===== Scroll Container ===== */
@@ -1505,25 +1562,19 @@
         <a href="about.html">👥 关于我们 · 完成人/单位</a>
     </div>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <canvas class="loading-particle-canvas" id="loading-canvas"></canvas>
-        <div class="loading-text">
-            <div class="loading-title">让每个孩子都值钱</div>
-            <div class="loading-subtitle">县域中职"产业·课堂双螺旋"育人实践</div>
-            <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+    <!-- Warm Welcome Overlay -->
+    <div id="welcome-overlay">
+        <div class="welcome-particles" id="welcome-particles"></div>
+        <div class="welcome-content">
+            <div class="welcome-greeting">热烈欢迎</div>
+            <div class="welcome-title">国家教学成果奖评审专家</div>
+            <div class="welcome-divider"><span>✦</span></div>
+            <div class="welcome-subtitle">从"厌学"到"创值"</div>
+            <div class="welcome-desc">产业·课堂双螺旋赋能县域中职育人的探索与实践</div>
+            <div class="welcome-school">宁强县职业高级中学 · 杨通达团队</div>
+            <div class="welcome-hint">点击任意位置进入</div>
         </div>
     </div>
-    
-    <!-- Opening Animation Canvas -->
-    <div id="opening-canvas" style="cursor:pointer;" title="点击跳过">
-        <canvas id="opening-three-canvas" style="width:100%;height:100%"></canvas>
-        <div id="opening-text"></div>
-        <div style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.3);font-size:0.8rem;letter-spacing:0.1em;">点击任意位置跳过</div>
-    </div>
-    
-    <!-- Three.js Persistent Background -->
-    <canvas id="three-canvas"></canvas>
     
     <!-- Scroll Progress Bar -->
     <div id="progress-bar"></div>
@@ -1547,31 +1598,33 @@
         <!-- ===== HERO / Hall 0 ===== -->
         <section id="hero-section" class="section">
             <div class="hero-content">
-                <div class="hero-badge">国家职业教育教学成果奖 · 特等奖申报</div>
+                <div class="hero-badge">🏆 国家职业教育教学成果奖 · 特等奖申报</div>
                 <h1 class="hero-title">
-                    让每个孩子都<span class="highlight">值钱</span><br>
-                    <span style="font-size:0.55em;font-weight:400;color:var(--text-dim)">县域中职"产业·课堂双螺旋"育人的实践与探索</span>
+                    从<span class="highlight">"厌学"</span>到<span class="highlight">"创值"</span>
                 </h1>
+                <p class="hero-subtitle" style="font-size:1.1rem;color:var(--gold-light);margin-bottom:0.3rem;">
+                    产业·课堂双螺旋赋能县域中职育人的探索与实践
+                </p>
                 <p class="hero-subtitle">
-                    从"厌学"到"会学"，从"学科拼盘"到"产业战场"<br>
-                    一所秦巴山区中职学校的十二年改革长征
+                    十二年深耕 · 三阶迭代 · 四真三化五链三场<br>
+                    一所秦巴山区中职学校为中国职教贡献的"创值"范式
                 </p>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <div class="hero-stat-num" data-count="12">0</div>
-                        <div class="hero-stat-label">改革年限（年）</div>
+                        <div class="hero-stat-num" data-count="12">12</div>
+                        <div class="hero-stat-label">改革年限</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-num" data-count="2200">0</div>
-                        <div class="hero-stat-label">在校生规模（人）</div>
+                        <div class="hero-stat-num" data-count="2153">2153</div>
+                        <div class="hero-stat-label">在校生规模</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-num" data-count="150">0</div>
-                        <div class="hero-stat-label">年均本科上线（人）</div>
+                        <div class="hero-stat-num" data-count="152">152</div>
+                        <div class="hero-stat-label">年均本科上线</div>
                     </div>
                     <div class="hero-stat">
-                        <div class="hero-stat-num" data-count="6">0</div>
-                        <div class="hero-stat-label">帮扶学校（所）</div>
+                        <div class="hero-stat-num" data-count="86">86</div>
+                        <div class="hero-stat-label">企业抢聘率%</div>
                     </div>
                 </div>
             </div>
@@ -2892,41 +2945,48 @@
         /* =====================================================
            1. Loading Screen
            ===================================================== */
-        const loadingScreen  = document.getElementById('loading-screen');
-        const loadingBar     = document.getElementById('loading-bar');
-        const openingCanvas = document.getElementById('opening-canvas');
-        const openingThree  = document.getElementById('opening-three-canvas');
-        const openingText   = document.getElementById('opening-text');
-
-        let loadPct = 0;
-        const loadTimer = setInterval(() => {
-            loadPct = Math.min(100, loadPct + Math.random() * 14 + 4);
-            loadingBar.style.width = loadPct + '%';
-            if (loadPct >= 100) {
-                clearInterval(loadTimer);
-                setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                    startOpening();
-                }, 700);
-            }
-        }, 180);
-
-        /* =====================================================
-           2. Opening Animation  (3.5 s cinematic)
-           ===================================================== */
-        let openingActive = true;
+        const welcomeOverlay = document.getElementById('welcome-overlay');
         let contentInited = false;
 
-        function initContent() {
-            if (contentInited) return;
-            contentInited = true;
+        // Generate golden floating particles
+        (function initParticles() {
+            const container = document.getElementById('welcome-particles');
+            for (let i = 0; i < 60; i++) {
+                const p = document.createElement('div');
+                p.className = 'welcome-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.setProperty('--dur', (6 + Math.random() * 10) + 's');
+                p.style.setProperty('--delay', Math.random() * 8 + 's');
+                p.style.width = (1 + Math.random() * 4) + 'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+
+        // Click to dismiss welcome overlay
+        welcomeOverlay.addEventListener('click', () => {
+            welcomeOverlay.classList.add('hidden');
+            if (!contentInited) { contentInited = true; initAllContent(); }
+        });
+
+        // Also auto-dismiss after 5 seconds
+        setTimeout(() => {
+            if (!welcomeOverlay.classList.contains('hidden')) {
+                welcomeOverlay.classList.add('hidden');
+                if (!contentInited) { contentInited = true; initAllContent(); }
+            }
+        }, 5000);
+
+        /* =====================================================
+           2. Content Initialization
+           ===================================================== */
+        function initAllContent() {
             initMainScene();
             initScrollAnimations();
             initECharts();
             initCountUp();
             initMouseInteraction();
-            
-            // Safety fallback: ensure all content visible after 6s
+
             setTimeout(() => {
                 document.querySelectorAll('.fade-in-up').forEach(el => {
                     if (parseFloat(getComputedStyle(el).opacity) < 0.5 || el.style.opacity === '0') {
@@ -2935,107 +2995,6 @@
                     }
                 });
             }, 6000);
-        }
-
-        function skipOpening() {
-            if (openingCanvas.classList.contains('hidden')) return;
-            openingActive = false;
-            openingCanvas.classList.add('hidden');
-            initContent();
-        }
-        openingCanvas.addEventListener('click', skipOpening);
-
-        function startOpening() {
-            openingCanvas.classList.remove('hidden');
-            openingActive = true;
-            const scene   = new THREE.Scene();
-            scene.background = new THREE.Color(0x020815);
-            const camera  = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
-            camera.position.set(0, 0, 6);
-            const renderer = new THREE.WebGLRenderer({ canvas: openingThree, antialias: true, alpha: true });
-            renderer.setSize(innerWidth, innerHeight);
-            renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-
-            const PCNT = 2500;
-            const posArr  = new Float32Array(PCNT * 3);
-            const colArr  = new Float32Array(PCNT * 3);
-            const vels   = [];
-            for (let i = 0; i < PCNT; i++) {
-                posArr[i*3] = 0; posArr[i*3+1] = 0; posArr[i*3+2] = 0;
-                const g = Math.random() > 0.45;
-                colArr[i*3]   = g ? 0.79 : 0.0;
-                colArr[i*3+1] = g ? 0.66 : 0.83;
-                colArr[i*3+2] = g ? 0.43 : 0.67;
-                vels.push({ x: (Math.random()-0.5)*0.12, y: (Math.random()-0.5)*0.12, z: (Math.random()-0.5)*0.12 });
-            }
-            const geo = new THREE.BufferGeometry();
-            geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
-            geo.setAttribute('color',    new THREE.BufferAttribute(colArr, 3));
-
-            // opening uses simple material (no shader) for performance
-            const mat = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 1.0, blending: THREE.AdditiveBlending, depthWrite: false });
-            const pts = new THREE.Points(geo, mat);
-            scene.add(pts);
-
-            // helix formation targets
-            const helixTgts = [];
-            for (let i = 0; i < 600; i++) {
-                const t = (i / 600) * Math.PI * 10;
-                const r = 1.8;
-                helixTgts.push({ x: Math.cos(t)*r, y: (i/600)*7-3.5, z: Math.sin(t)*r });
-                helixTgts.push({ x: Math.cos(t+Math.PI)*r, y: (i/600)*7-3.5, z: Math.sin(t+Math.PI)*r });
-            }
-
-            let elapsed = 0;
-            const DURATION = 3.8;
-            const startCamPos = { x: 0, y: 0, z: 6 };
-            const endCamPos   = { x: 0, y: -2.5, z: 4 };
-
-            (function tick() {
-                if (!openingActive) { renderer.dispose(); return; }
-                elapsed += 0.016;
-                const p = Math.min(elapsed / DURATION, 1);
-                const e = 1 - Math.pow(1 - p, 3);  // ease-out cubic
-
-                const arr = pts.geometry.attributes.position.array;
-                for (let i = 0; i < PCNT; i++) {
-                    if (p > 0.25 && i < helixTgts.length) {
-                        const t = helixTgts[i % helixTgts.length];
-                        arr[i*3]   += (t.x - arr[i*3])   * 0.06;
-                        arr[i*3+1] += (t.y - arr[i*3+1]) * 0.06;
-                        arr[i*3+2] += (t.z - arr[i*3+2]) * 0.06;
-                    } else {
-                        arr[i*3]   += vels[i].x;
-                        arr[i*3+1] += vels[i].y;
-                        arr[i*3+2] += vels[i].z;
-                        vels[i].x *= 1.018; vels[i].y *= 1.018; vels[i].z *= 1.018;
-                    }
-                }
-                pts.geometry.attributes.position.needsUpdate = true;
-
-                // smooth camera path
-                camera.position.x = startCamPos.x + (endCamPos.x - startCamPos.x) * e;
-                camera.position.y = startCamPos.y + (endCamPos.y - startCamPos.y) * e;
-                camera.position.z = startCamPos.z + (endCamPos.z - startCamPos.z) * e;
-                camera.lookAt(0, 0, 0);
-                renderer.render(scene, camera);
-
-                if (!openingActive || (p >= 1 && elapsed >= DURATION + 1.2)) {
-                    if (openingActive) {
-                        openingActive = false;
-                        openingText.style.opacity = '1';
-                        openingText.style.transition = 'opacity 1.6s ease';
-                        openingText.textContent = '从"学科拼盘"到"产业战场"';
-                        setTimeout(() => {
-                            openingCanvas.classList.add('hidden');
-                            initContent();
-                        }, 2200);
-                    }
-                    renderer.dispose();
-                } else {
-                    requestAnimationFrame(tick);
-                }
-            }());
         }
 
         /* =====================================================
