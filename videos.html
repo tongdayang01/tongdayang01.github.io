@@ -4,63 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频展示 —— 宁强方案</title>
+    <meta name="description" content="国家级教学成果奖特等奖申报视频 - 9分30秒完整版 + 分镜脚本">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        :root { --primary:#1a365d; --accent:#c9a96e; --gold:#f6c343; --bg:#f8f9fa; --text:#2d3748; }
-        body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
+        :root { --primary:#0B2A4A; --accent:#C4A962; --gold:#F6C343; --bg:#F5F3EE; --text:#2C2C2C; --dim:#666; --white:#fff; }
+        body { font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
         a { color:var(--primary); text-decoration:none; }
-        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; }
-        .navbar-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
-        .brand { color:white; font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+
+        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width:1300px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.1rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
         .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-        .nav-links { display:flex; gap:8px; list-style:none; }
-        .nav-links a { color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:0.95rem; transition:all 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(201,169,110,0.3); }
-        .main { max-width:1200px; margin:0 auto; padding:40px 24px; }
-        .page-header { text-align:center; margin-bottom:48px; padding:48px 0 0; }
+        .nav-links { display:flex; gap:4px; list-style:none; flex-wrap:wrap; }
+        .nav-links a { color:rgba(255,255,255,0.85); padding:6px 13px; border-radius:8px; font-size:0.88rem; transition:all 0.3s; white-space:nowrap; }
+        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(196,169,98,0.3); }
+
+        .main { max-width:1200px; margin:0 auto; padding:48px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; }
         .page-header .tag { display:inline-block; background:linear-gradient(135deg,#e8d5a8,#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
-        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:16px; }
-        .page-header p { color:#718096; font-size:1.05rem; max-width:640px; margin:0 auto; }
+        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:12px; }
+        .page-header p { color:var(--dim); font-size:1.05rem; max-width:700px; margin:0 auto; }
 
-        .video-hero { background:linear-gradient(135deg,var(--primary),#0f2444); border-radius:20px; padding:48px; color:white; margin-bottom:40px; text-align:center; }
-        .video-hero h2 { font-size:1.5rem; margin-bottom:16px; }
-        .video-hero p { opacity:0.8; max-width:700px; margin:0 auto; line-height:1.9; }
+        /* Video Hero */
+        .video-hero { background:linear-gradient(135deg,var(--primary),#061525); border-radius:20px; padding:40px; color:white; margin-bottom:32px; text-align:center; }
+        .video-hero h2 { font-size:1.4rem; margin-bottom:12px; }
+        .video-hero .meta { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; color:rgba(255,255,255,0.7); font-size:0.9rem; }
+        .video-hero .meta span { background:rgba(255,255,255,0.1); padding:4px 14px; border-radius:50px; }
 
-        .video-featured { position:relative; border-radius:16px; overflow:hidden; margin-bottom:48px; background:black; }
-        .video-player { width:100%; aspect-ratio:16/9; background:linear-gradient(135deg,var(--primary),#0f2444); display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer; }
-        .video-player .play-big { width:100px; height:100px; background:rgba(201,169,110,0.95); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--primary); box-shadow:0 8px 40px rgba(0,0,0,0.4); transition:all 0.3s; }
-        .video-player:hover .play-big { transform:scale(1.1); background:rgba(246,195,67,0.95); }
-        .video-player .overlay { position:absolute; bottom:32px; left:32px; right:32px; color:white; }
-        .video-player .overlay h3 { font-size:1.4rem; margin-bottom:8px; }
-        .video-player .overlay .duration { font-size:0.9rem; opacity:0.7; display:inline-block; background:rgba(0,0,0,0.5); padding:4px 12px; border-radius:50px; }
+        /* Video Player */
+        .video-container { position:relative; border-radius:16px; overflow:hidden; margin-bottom:48px; background:#000; box-shadow:0 8px 40px rgba(0,0,0,0.3); }
+        .video-container video { width:100%; display:block; }
+        .video-placeholder { width:100%; aspect-ratio:3840/1640; max-height:600px; background:linear-gradient(135deg,#0B2A4A 0%,#061525 50%,#0B2A4A 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; color:white; }
+        .video-placeholder .icon { font-size:4rem; opacity:0.9; }
+        .video-placeholder p { opacity:0.7; font-size:0.95rem; text-align:center; padding:0 40px; }
+        .video-placeholder .note { background:rgba(255,255,255,0.08); padding:10px 24px; border-radius:8px; font-size:0.85rem; }
+        .video-download { text-align:center; margin:16px 0 40px; }
+        .video-download a { display:inline-block; padding:12px 32px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; font-size:1rem; transition:all 0.3s; }
+        .video-download a:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(196,169,98,0.4); }
 
-        .video-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px; margin-bottom:48px; }
-        .video-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08); transition:all 0.3s; }
-        .video-card:hover { transform:translateY(-4px); box-shadow:0 12px 48px rgba(0,0,0,0.13); }
-        .video-thumb { height:200px; display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer; }
-        .video-thumb .play-btn { width:56px; height:56px; background:rgba(255,255,255,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:var(--primary); transition:all 0.3s; }
-        .video-thumb:hover .play-btn { transform:scale(1.1); background:white; }
-        .video-thumb .dur { position:absolute; bottom:10px; right:10px; background:rgba(0,0,0,0.7); color:white; padding:4px 10px; border-radius:4px; font-size:0.78rem; }
-        .video-info { padding:20px 24px 24px; }
-        .video-info h3 { font-size:1.05rem; color:var(--primary); margin-bottom:8px; }
-        .video-info p { font-size:0.9rem; color:#718096; line-height:1.7; }
+        /* Segment Timeline */
+        .timeline { margin-bottom:48px; }
+        .timeline h2 { font-size:1.3rem; color:var(--primary); margin-bottom:20px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
+        .seg-card { background:var(--white); border-radius:14px; padding:24px 28px; margin-bottom:14px; box-shadow:0 2px 16px rgba(0,0,0,0.06); border-left:5px solid var(--accent); display:grid; grid-template-columns:140px 1fr; gap:20px; align-items:start; transition:all 0.3s; }
+        .seg-card:hover { box-shadow:0 4px 24px rgba(0,0,0,0.1); transform:translateX(4px); }
+        .seg-card .time { font-weight:800; color:var(--primary); font-size:0.95rem; background:var(--bg); padding:8px 14px; border-radius:8px; text-align:center; }
+        .seg-card .content h3 { font-size:1.05rem; color:var(--primary); margin-bottom:6px; }
+        .seg-card .content p { font-size:0.9rem; color:var(--dim); line-height:1.7; }
+        .seg-card .content .tone { display:inline-block; font-size:0.78rem; background:#e8f0fe; color:var(--primary); padding:2px 10px; border-radius:50px; margin-top:4px; }
 
-        .script-section { background:white; border-radius:16px; padding:48px; margin-bottom:48px; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
-        .script-section h2 { font-size:1.4rem; color:var(--primary); margin-bottom:24px; padding-bottom:16px; border-bottom:3px solid var(--accent); display:inline-block; }
-        .script-section h3 { font-size:1.1rem; color:var(--primary); margin:20px 0 10px; }
-        .script-section p { margin-bottom:12px; line-height:1.9; }
-        .script-act { background:var(--bg); border-radius:12px; padding:24px; margin-bottom:16px; border-left:4px solid var(--accent); }
-        .script-act h4 { color:var(--primary); margin-bottom:8px; font-size:1rem; }
-        .script-act .time { display:inline-block; background:var(--accent-light); color:var(--primary); padding:2px 10px; border-radius:50px; font-size:0.8rem; font-weight:600; margin-bottom:8px; }
-        .script-act p { font-size:0.93rem; color:#718096; }
+        /* Full Script */
+        .script-full { background:var(--white); border-radius:16px; padding:40px; box-shadow:0 4px 24px rgba(0,0,0,0.08); margin-bottom:48px; }
+        .script-full h2 { font-size:1.3rem; color:var(--primary); margin-bottom:24px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
+        .script-block { background:var(--bg); border-radius:12px; padding:22px; margin-bottom:14px; border-left:4px solid var(--accent); }
+        .script-block .timecode { display:inline-block; background:var(--accent); color:var(--primary); padding:3px 14px; border-radius:50px; font-size:0.82rem; font-weight:700; margin-bottom:8px; }
+        .script-block h4 { color:var(--primary); margin-bottom:6px; font-size:1rem; }
+        .script-block p { font-size:0.92rem; color:var(--dim); line-height:1.9; }
 
-        .footer { background:#0f172a; color:rgba(255,255,255,0.6); padding:40px 0; text-align:center; font-size:0.9rem; }
+        .footer { background:#0B2A4A; color:rgba(255,255,255,0.6); padding:36px 0; text-align:center; font-size:0.9rem; }
         .footer a { color:#e8d5a8; }
 
         @media(max-width:768px){
             .nav-links{display:none;}
-            .video-hero{padding:32px 20px;}
-            .script-section{padding:28px 20px;}
+            .seg-card{grid-template-columns:1fr; gap:8px;}
+            .script-full{padding:24px 16px;}
+            .video-placeholder{aspect-ratio:16/9;}
         }
     </style>
 </head>
@@ -68,24 +75,22 @@
 
 <nav class="navbar">
     <div class="navbar-inner">
-        <a href="index.html" class="brand">
-            <span class="brand-icon">🎓</span>
-            <span>宁强方案</span>
-        </a>
+        <a href="index.html" class="brand"><span class="brand-icon">🎓</span><span>宁强方案</span></a>
         <ul class="nav-links">
             <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">成果概况</a></li>
             <li><a href="theory.html">理论框架</a></li>
-            <li><a href="cases.html">典型案例</a></li>
-            <li><a href="worldskills.html">世赛服务</a></li>
-            <li><a href="promotion.html">职称跃升</a></li>
-            <li><a href="curriculum.html">课程设计</a></li>
+            <li><a href="architecture.html">系统架构</a></li>
+            <li><a href="curriculum.html">课程改革</a></li>
             <li><a href="generator.html">AI系统</a></li>
-            <li><a href="cultural-courses.html">文化基础课</a></li>
-            <li><a href="zhican.html">值餐</a></li>
-            <li><a href="yushe.html">悦舍</a></li>
-            <li><a href="platform.html">平台生态</a></li>
-            <li><a href="architecture.html">技术架构</a></li>
-            <li><a href="stories.html">成长故事</a></li>
+            <li><a href="zhican.html">值餐工坊</a></li>
+            <li><a href="yushe.html">悦舍理疗</a></li>
+            <li><a href="cultural-courses.html">文化课融合</a></li>
+            <li><a href="worldskills.html">赛教融合</a></li>
+            <li><a href="cases.html">推广案例</a></li>
+            <li><a href="stories.html">学生故事</a></li>
+            <li><a href="summary.html">总结报告</a></li>
+            <li><a href="speech.html">主题演讲</a></li>
             <li><a href="videos.html" class="active">视频</a></li>
         </ul>
     </div>
@@ -94,137 +99,219 @@
 <div class="main">
     <div class="page-header">
         <span class="tag">🎬 视频展示</span>
-        <h1>镜头里的改革现场</h1>
-        <p>9分30秒申报视频 + 5集微短剧《梯子》+ 课堂教学实录</p>
+        <h1>申报视频与教学影像</h1>
+        <p>9分30秒国家级教学成果奖申报视频 · 4K电影级制作 · 完整分镜脚本</p>
     </div>
 
-    <!-- HERO video -->
+    <!-- Video Hero -->
     <div class="video-hero">
-        <h2>🎥 申报视频《端出去》</h2>
-        <p>从一块豆腐开始的教学改革叙事——李兴军、赵佳明团队真实出镜<br>四真三化五链三场，让每一个县域中职学生"端得出去"</p>
-    </div>
-
-    <!-- Featured Video -->
-    <div class="video-featured">
-        <div class="video-player" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-            <div class="play-big">▶</div>
-            <div class="overlay">
-                <h3>🎥 《端出去》—— 2026年国家教学成果奖申报视频</h3>
-                <span class="duration">⏱ 9分30秒 | 🎬 6幕 | 28+分镜</span>
-            </div>
+        <h2>🎥 《从"厌学"到"创值"——点亮1600个县域中职的那盏灯》</h2>
+        <div class="meta">
+            <span>⏱ 9分30秒</span><span>🎬 7段叙事</span><span>📐 4K·2.35:1</span><span>🎵 原创配乐</span><span>🎙 男中音旁白</span>
         </div>
     </div>
 
-    <div class="video-grid">
-        <!-- Micro-series 1 -->
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#1a365d,#2d5a27);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">8-12分钟/集</span>
-            </div>
-            <div class="video-info">
-                <h3>🎬 微短剧《梯子》第1集</h3>
-                <p>困在笼子里的娃娃——宁强职中2014年：厌学率90%+，学生说"我可能真的没用"</p>
+    <!-- Video Player -->
+    <div class="video-container">
+        <!-- 替换下方src为实际视频URL后即可播放 -->
+        <video controls poster="assets/video-poster.jpg" preload="metadata" style="width:100%;display:block;">
+            <source src="assets/申报视频_9分30秒.mp4" type="video/mp4">
+            <source src="https://your-cdn.com/video.mp4" type="video/mp4">
+        </video>
+        <div class="video-placeholder" id="videoFallback">
+            <div class="icon">🎬</div>
+            <p>4K电影级申报视频（3840×1640 / 2.35:1宽银幕）</p>
+            <p style="font-size:0.85rem;opacity:0.6;">视频文件上传后自动替换为播放器</p>
+            <div class="note">📁 视频文件路径：E:/video_project/output/宁强职中_国家级教学成果奖申报_9分30秒.mp4</div>
+        </div>
+    </div>
+    <div class="video-download">
+        <a href="assets/申报视频_9分30秒.mp4" download>⬇ 下载完整视频（2.4GB / 4K）</a>
+    </div>
+
+    <!-- 7-Segment Timeline -->
+    <div class="timeline">
+        <h2>📐 视频分段结构（7段叙事）</h2>
+
+        <div class="seg-card" style="border-left-color:#4A6FA5;">
+            <div class="time">00:00-00:45<br><small>序章·深渊</small></div>
+            <div class="content">
+                <h3>第一段：「宁愿送孩子当学徒，也不上职中」</h3>
+                <p>黑屏手写毛笔字渐显→秦巴山区晨雾校门→空荡教室→学生趴桌→教师孤独背影。2018年基线数据：厌学得分89分，70%孩子自认"没用"，课堂参与度35%，教师年流失率22%。</p>
+                <span class="tone">🎵 大提琴低音·慢板60拍 | 🎙 语气：沉重、低沉</span>
             </div>
         </div>
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#2d5a27,#1a365d);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">8-12分钟/集</span>
-            </div>
-            <div class="video-info">
-                <h3>🎬 微短剧《梯子》第2集</h3>
-                <p>一块豆腐把教室撬开——值餐工坊的诞生：第一份真实订单，第一个"高峰体验"</p>
-            </div>
-        </div>
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#2d5a27,#4a1942);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">8-12分钟/集</span>
-            </div>
-            <div class="video-info">
-                <h3>🎬 微短剧《梯子》第3集</h3>
-                <p>从一个人会教到一套体系——"四真三化五链三场"理论的形成与教师团队的蜕变</p>
+
+        <div class="seg-card" style="border-left-color:#C4A962;">
+            <div class="time">00:45-01:45<br><small>改革原点</small></div>
+            <div class="content">
+                <h3>第二段：斩断三把旧尺子</h3>
+                <p>三屏数据可视化（红色厌学曲线+趴桌比例+离职表格）→教育部1号文件叠化。锚定第一性原理：产品才是职教尊严唯一的投名状。斩断旧尺子：从"教完了吗"到"抢不抢"；从"教书匠"到"产品经理"；从"试卷打分"到"市场检验"。</p>
+                <span class="tone">🎵 弦乐渐强 | 🎙 语气：有力、决断</span>
             </div>
         </div>
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#4a1942,#1a365d);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">8-12分钟/集</span>
-            </div>
-            <div class="video-info">
-                <h3>🎬 微短剧《梯子》第4集</h3>
-                <p>走出宁强——勉县职教中心的复制奇迹 + 世赛银奖团队的免试升学之路</p>
-            </div>
-        </div>
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#4a1942,#2d5a27);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">8-12分钟/集</span>
-            </div>
-            <div class="video-info">
-                <h3>🎬 微短剧《梯子》第5集</h3>
-                <p>把天花板变成地板——李兴军（全省第98名）+"人人出彩"的持续迭代</p>
+
+        <div class="seg-card" style="border-left-color:#E8A840;">
+            <div class="time">01:45-03:15<br><small>微光</small></div>
+            <div class="content">
+                <h3>第三段：值餐工坊——从亏损到盈利</h3>
+                <p>食堂一角改造→首月净亏8000元→铁律：客户好评率＜60%立即停摆→三个月扭亏为盈→郑燕第一次看到客户好评时红着眼睛说："我第一次觉得自己有用。"</p>
+                <span class="tone">🎵 钢琴+弦乐·中速渐强 | 🎙 语气：温暖、感动</span>
             </div>
         </div>
-        <div class="video-card">
-            <div class="video-thumb" style="background:linear-gradient(135deg,#1a365d,#4a1942);" onclick="alert('视频播放需接入阿里云VOD服务后启用')">
-                <div class="play-btn">▶</div>
-                <span class="dur">45分钟/节</span>
+
+        <div class="seg-card" style="border-left-color:#D4A017;">
+            <div class="time">03:15-05:00<br><small>燎原·生长</small></div>
+            <div class="content">
+                <h3>第四段：产业·课堂双螺旋 + 四真三化五链三场</h3>
+                <p>金色双螺旋动画→八环节闭环快剪（导思议展评检用结）→四真三化五链三场3D动画逐一呈现。"天麻红烧肉"产品包串联十门文化课。学生交出的不是试卷，是一个能卖的产品包。知识，在真实的产品上生长。</p>
+                <span class="tone">🎵 铜管+定音鼓·快板渐强 | 🎙 语气：激昂、宏大</span>
             </div>
-            <div class="video-info">
-                <h3>📹 课堂教学实录精选</h3>
-                <p>值餐工坊·锅塌豆腐（文化课融合）+ 悦舍·愈身堂（康复技术真实服务）+ 文旅工坊·面点创业</p>
+        </div>
+
+        <div class="seg-card" style="border-left-color:#1E90FF;">
+            <div class="time">05:00-06:15<br><small>燎原·数据</small></div>
+            <div class="content">
+                <h3>第五段：数据爆发——三个不等式</h3>
+                <p>厌学89→18，参与度35%→92%，起薪2200→5800，抢聘率3%→86%→九名学生面孔依次闪过→世赛领奖台银牌闪耀→本科红榜152个名字滚动。不等式1：资源匮乏≠不能改革。不等式2：学生厌学≠学生不行。不等式3：县域中职≠低薪注定。</p>
+                <span class="tone">🎵 电子合成器+打击乐·快速重拍 | 🎙 语气：有力、冲击</span>
+            </div>
+        </div>
+
+        <div class="seg-card" style="border-left-color:#2ECC71;">
+            <div class="time">06:15-07:30<br><small>燎原·推广</small></div>
+            <div class="content">
+                <h3>第六段：中国地图点亮——22校8省100%落地</h3>
+                <p>中国地图从陕西原点放射光波→22个亮点依次点亮→平行蒙太奇：陇南小吃工坊/凌源课堂讨论/商洛校长翻开源手册/长沙校园市集/石泉教师培训。19所学校从未见过杨通达本人，照着开源手册独立复制成功。230页操作手册+800余套工单全部开源。</p>
+                <span class="tone">🎵 弦乐+木管·中板舒展 | 🎙 语气：开阔、自豪</span>
+            </div>
+        </div>
+
+        <div class="seg-card" style="border-left-color:#E74C3C;">
+            <div class="time">07:30-09:30<br><small>星河+承诺</small></div>
+            <div class="content">
+                <h3>第七段：九个孩子·九盏灯 → 开源承诺</h3>
+                <p>毕业生创业餐馆/理疗店/直播间→企业抢人现场→家长笑容→九个孩子慢镜头汇聚→千万盏灯汇成星河。黑屏白字逐行浮现：我们证明了——不需要等待政策倾斜，不需要依赖产业基础，不需要借助外部企业。全部奖金注入"西部县域中职开源计划"。我们把灯点亮了，让更多人看到光。</p>
+                <span class="tone">🎵 钢琴独奏→管弦乐全奏·广板渐弱留白 | 🎙 语气：温暖、坚定</span>
             </div>
         </div>
     </div>
 
-    <!-- Script Summary -->
-    <div class="script-section">
-        <h2>📝 《端出去》视频脚本（6幕·9分30秒·28+分镜）</h2>
-        <p>以下为视频脚本核心分镜摘要，完整版详见申报材料附件4。</p>
+    <!-- Full Script -->
+    <div class="script-full">
+        <h2>📝 完整旁白脚本（约1,280字）</h2>
 
-        <div class="script-act">
-            <span class="time">00:00 - 01:20 | 第一幕：困境</span>
-            <h4>"一个被'判了死刑'的学校"</h4>
-            <p>宁强职中2014年全景：校门紧闭、教室空荡、学生趴桌睡觉。在校生不足400人，厌学率90%+。校长站在空荡荡的操场上："怎么办？我们没有企业愿意来，没有政府专项资金，但我们有几百个等着被放弃的娃娃。"</p>
+        <div class="script-block">
+            <span class="timecode">00:00-00:45</span>
+            <h4>序章·深渊</h4>
+            <p>"宁愿送孩子当学徒，也不上职中。"这句话，像烧红的钉子，钉在每个县域职教人的脊梁上。这里不是一所学校。这里是全国1600个县域中职的缩影。2018年，宁强县——秦巴山区深处原国家级贫困县的唯一一所职业高中，在校生不足400人，厌学得分89分，70%的孩子觉得自己"没用"。课堂参与度只有35%，教师年流失率22%。毕业生岗位适应期6.2个月，企业抢着要的比例，只有3%。这不是学生不行。是"不被需要"杀死了他们的光。</p>
         </div>
-        <div class="script-act">
-            <span class="time">01:20 - 02:50 | 第二幕：破冰</span>
-            <h4>"一块豆腐，把教室撬开了"</h4>
-            <p>值餐工坊的诞生。李兴军第一次接到12份锅塌豆腐订单时从迷茫到聚焦的眼神。"宁强的香菇、天麻——谁说县域没有产业？我们把产业请进课堂。"</p>
+
+        <div class="script-block">
+            <span class="timecode">00:45-01:45</span>
+            <h4>改革原点</h4>
+            <p>2026年，教育部发布一号文件，明确提出职业教育要"以产定教、以产引教、以产改教、以产促教"，要"系统重构教育教学底层逻辑"。而我们的改革，从2014年就开始了。我们死死锚定职业教育的第一性原理：职业教育不是让学生背多少知识点，而是手上能造出什么被市场认可的产品。产品，才是职教尊严唯一的投名状。于是，我们斩断三把旧尺子——从"教完了吗"到"抢不抢"；从"教书匠"到"产品经理"；从"试卷打分"到"市场检验"。企业抢不抢、起薪高不高、客户认不认——这才是教学质量唯一的度量衡。</p>
         </div>
-        <div class="script-act">
-            <span class="time">02:50 - 04:40 | 第三幕：重构</span>
-            <h4>"从一个人会教，到一套体系让所有人能教"</h4>
-            <p>课堂生态对比——传统课堂"老师讲、学生睡" VS "四真三化"课堂"学生做、客户评"。导·学·展·评四环节在多个专业开花。"不只有烹饪，康复技术1:1复制了同样的奇迹。"</p>
+
+        <div class="script-block">
+            <span class="timecode">01:45-03:15</span>
+            <h4>微光·值餐工坊</h4>
+            <p>2018年秋天，我们做了第一件"出格"的事：把食堂一角改造成值餐工坊，让学生给老师做午餐。第一个月，净亏8000元。但我们没有退回去。我们建立了一条铁律——客户好评率低于60%，产品线立即停摆。不是惩罚，是让学生第一次听见市场的回声。三个月后，工坊扭亏为盈。一个叫郑燕的女孩，在第一次看到客户好评时，红着眼睛说："我第一次觉得自己有用。"那一刻，我们确信：这条路，走对了。</p>
         </div>
-        <div class="script-act">
-            <span class="time">04:40 - 07:20 | 第四幕：突破</span>
-            <h4>"技能大赛金牌，就是最好的大学录取通知书"</h4>
-            <p>赵佳明、陈一佳、郑燕、孟婷瑶四人站在世赛领奖台，热泪盈眶。陕西省中职首枚世赛奖牌、陕南零突破。赵佳明、郑燕、孟婷瑶三人手持陕西工业职业技术大学录取通知书站在大学校门前。</p>
+
+        <div class="script-block">
+            <span class="timecode">03:15-05:00</span>
+            <h4>双螺旋·四真三化五链三场</h4>
+            <p>我们用十二年，四次推倒重来，生长出"产业·课堂双螺旋"。九字方针，刻在每个教师的心里：产业出题、课堂解题、市场验题。八环节闭环——导、思、议、展、评、检、用、结。支撑这一切的，是一套可复制、可落地的操作系统——"四真三化五链三场"。一个"天麻红烧肉"产品包，串联十门文化课——语文写故事、数学算成本、英语制菜单、思政融情怀……学生交出的不是试卷，是一个能卖的产品包。知识，在真实的产品上生长。</p>
         </div>
-        <div class="script-act">
-            <span class="time">07:20 - 08:40 | 第五幕：复制</span>
-            <h4>"花最少的钱，做最彻底的改革"</h4>
-            <p>勉县职教中心引入后无新增投入，活力指数从40%升至85%。学生在"融创者市集"卖出第一款面点："老师，我第一次觉得我做的面点是甜的。"</p>
+
+        <div class="script-block">
+            <span class="timecode">05:00-06:15</span>
+            <h4>数据爆发·三个不等式</h4>
+            <p>十二年，我们用三个不等式，向世界证明：第一，资源匮乏≠不能改革。零财政增量投入，2万元启动资金，首年自负盈亏。复制成本仅2万元/校。第二，学生厌学≠学生不行。厌学得分暴跌80%，课堂参与度飙升至92%。赵佳明、郑燕、孟婷瑶——三位曾被贴上"问题学生"标签的孩子，站在世界技能大赛领奖台上，胸前挂着陕南中职历史上第一枚银牌。第三，县域中职≠低薪注定。毕业生起薪5800元，是全国县域平均的1.81倍，比当地公务员高20%。企业抢聘率从3%飙升至86%。</p>
         </div>
-        <div class="script-act">
-            <span class="time">08:40 - 09:30 | 第六幕：宣言</span>
-            <h4>"证明职业教育可以比普通高中更有吸引力"</h4>
-            <p>从不足400人到2153人——学生们一张张自信的笑脸。李兴军捧着本科录取通知书站在灶台前。"不是每个孩子都要考第一，但每个孩子都值得一条通往未来的路。而这条路，就在这里。"</p>
+
+        <div class="script-block">
+            <span class="timecode">06:15-07:30</span>
+            <h4>燎原·推广</h4>
+            <p>这套从泥土里长出的方法论，不是宁强的专利。22所种子校，8个省份，6类极端场景——全部落地，100%成功。最快4周完成课堂转型，平均9.2周。19所学校，从未见过杨通达本人，照着开源手册独立复制成功。我们把十二年所有的教训、经验、模板、SOP——230页操作手册，800余套工单，全部开源。零专利壁垒，零授权费用。</p>
+        </div>
+
+        <div class="script-block">
+            <span class="timecode">07:30-09:30</span>
+            <h4>星河·承诺</h4>
+            <p>毕业生本地就业率从12%跃升至68%，每年为县域留下300多名技能人才。学生创办微型企业12家，带动80人就业，年产值300万元。九个孩子，九盏灯。他们曾是被遗忘的人，如今是自己的光。教育，不是灌满一桶水，而是点燃一把火。我们证明了：不需要等待政策倾斜，不需要依赖产业基础，不需要借助外部企业。靠教育人自己的智慧和韧性，就能走出一条"低成本、高产出、可复制"的职教改革之路。这条路，已经为全国1600个县域中职点亮了一盏灯。现在，所有资料开源。本成果若获特等奖，全部奖金注入"西部县域中职开源计划"，专项帮扶10所最困难县域中职零成本启动改革。我们把灯点亮了。让更多人，看到光。</p>
+        </div>
+    </div>
+
+    <!-- Cultural Performance Video Section -->
+    <div class="script-full" style="margin-top:48px;">
+        <h2>🎭 学校情景舞台剧 · 文化馆展演</h2>
+        <p style="color:var(--dim);margin-bottom:24px;">宁强县职业高级中学师生原创情景舞台剧（0:00-19:00），在陕西省全民学习活动周上作为唯一情境再现项目展示，获市政府及省教育厅主要负责人高度肯定。</p>
+
+        <div class="video-container" style="margin-bottom:24px;">
+            <video controls preload="metadata" style="width:100%;display:block;border-radius:12px;">
+                <source src="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-download">
+            <a href="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" download>⬇ 情景舞台剧（480p / 46MB）</a>
+            <a href="assets/videos/文化馆_情景舞台剧_720p.mp4" download style="margin-left:12px;background:var(--primary);color:white;">⬇ 高清版（720p / 162MB）</a>
+        </div>
+
+        <div class="script-block" style="margin-top:24px;">
+            <span class="timecode">🎬 0:00-19:00</span>
+            <h4>全省全民学习活动周 · 唯一情境再现项目</h4>
+            <p>本情景舞台剧由宁强职中师生自编自演，以舞台艺术形式生动呈现"从厌学到创值"的改革历程。剧目通过学生真实成长故事改编，展现了值餐工坊、悦舍理疗、融创市集三大实战平台的育人场景，是学校技能培养成果的艺术化表达。2025年在全省全民学习活动周上作为职业教育板块<strong>唯一的情境再现项目</strong>进行展示，获得与会省市领导的高度评价。</p>
+        </div>
+    </div>
+
+    <!-- President Speech Section -->
+    <div class="script-full" style="margin-top:32px;">
+        <h2>🎙 陕西开放大学校长讲话 · 成果推介</h2>
+        <p style="color:var(--dim);margin-bottom:24px;">文化馆活动中陕西开放大学校长对本成果的专题讲话（19:00起），高度肯定了宁强职中的改革成效和示范价值。</p>
+
+        <div class="video-container" style="margin-bottom:24px;">
+            <video controls preload="metadata" style="width:100%;display:block;border-radius:12px;">
+                <source src="assets/videos/文化馆_校长讲话_19min起_480p.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-download">
+            <a href="assets/videos/文化馆_校长讲话_19min起_480p.mp4" download>⬇ 下载校长讲话片段（480p / 11MB）</a>
+        </div>
+
+        <div class="script-block" style="margin-top:24px;">
+            <span class="timecode">🎙 19:00起</span>
+            <h4>第三方权威评价 · 省级专家认可</h4>
+            <p>陕西开放大学校长在文化馆活动中对宁强职中"产业·课堂双螺旋"育人模式给予高度评价，充分肯定了学校在县域中职改革中的示范引领作用。该讲话作为第三方权威评价，是本成果社会影响力的重要佐证。</p>
         </div>
     </div>
 
     <div style="text-align:center; margin:48px 0 64px;">
-        <a href="stories.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem;">📖 阅读学生成长故事 →</a>
+        <a href="summary.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">📖 阅读成果总结报告 →</a>
+        <a href="speech.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--primary),#1a3a5c); color:white; border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">🎙 主题演讲全文 →</a>
     </div>
 </div>
 
 <div class="footer">
-    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
-    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="theory.html">理论框架</a> · <a href="generator.html">工单生成器</a></p>
+    <p>© 2026 宁强县职业高级中学 · 产业·课堂双螺旋教学成果团队</p>
+    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="summary.html">总结报告</a> · <a href="speech.html">主题演讲</a></p>
 </div>
 
+<script>
+// Hide placeholder if video loads successfully
+document.addEventListener('DOMContentLoaded', function() {
+    var video = document.querySelector('video');
+    var placeholder = document.getElementById('videoFallback');
+    if (video && placeholder) {
+        video.addEventListener('loadeddata', function() {
+            placeholder.style.display = 'none';
+        });
+        video.addEventListener('error', function() {
+            placeholder.style.display = 'flex';
+        });
+    }
+});
+</script>
 </body>
 </html>
