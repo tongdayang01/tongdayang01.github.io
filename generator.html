@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>课点操作系统(K-OS) · AI教学设计生成器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#0B2A4A;--g:#C4A962;--bg:#F5F3EE;--t:#2C2C2C;--d:#666;--w:#fff;--blue:#1e3a5f;--green:#059669;--amber:#d97706;--purple:#7c3aed;--red:#e53e3e}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--t);background:var(--bg);line-height:1.7}
+.navbar{background:var(--p);padding:0 24px;position:sticky;top:0;z-index:100}
+.ni{max-width:1300px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between}
+.brand{color:white;font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px;text-decoration:none}
+.bi{width:34px;height:34px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.nl{display:flex;gap:4px;list-style:none;flex-wrap:wrap}
+.nl a{color:rgba(255,255,255,.85);padding:5px 11px;border-radius:6px;font-size:.82rem;transition:.3s;white-space:nowrap;text-decoration:none}
+.nl a:hover,.nl a.active{color:white;background:rgba(196,169,98,.3)}
+
+.main{max-width:900px;margin:0 auto;padding:32px 20px 80px}
+
+/* Tags */
+.fw-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0 24px}
+.fw-tag{padding:6px 14px;border-radius:50px;font-weight:700;font-size:.8rem}
+.fw-tag.sz{background:#dbeafe;color:#1e40af}
+.fw-tag.sh{background:#d1fae5;color:#065f46}
+.fw-tag.wl{background:#fef3c7;color:#92400e}
+.fw-tag.sc{background:#ede9fe;color:#5b21b6}
+
+/* Cards */
+.card{background:var(--w);border-radius:14px;padding:20px 24px;margin:14px 0;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.card h3{font-size:1rem;color:var(--p);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .sub{font-size:.82rem;color:var(--d);margin-bottom:14px}
+.card.gm{border-left:4px solid var(--red)}
+.card.course{border-left:4px solid var(--green)}
+.card.culture{border-left:4px solid var(--purple)}
+.card.product{border-left:4px solid var(--amber)}
+
+/* Inputs */
+label{display:block;font-size:.8rem;font-weight:600;color:var(--p);margin:8px 0 4px}
+label .req{color:var(--red)}
+input,textarea,select{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;font-family:inherit;transition:all .3s;background:#fafbfc}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,58,95,.08);background:white}
+textarea{resize:vertical;min-height:60px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+
+/* Buttons */
+.btn{display:inline-block;padding:10px 22px;border-radius:50px;font-weight:700;font-size:.88rem;color:white;border:none;cursor:pointer;transition:all .3s;text-decoration:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-red{background:var(--red)}
+.btn-green{background:var(--green)}
+.btn-blue{background:var(--blue)}
+.btn-purple{background:var(--purple)}
+.btn-amber{background:var(--amber)}
+.btn-gray{background:#64748b}
+.btn-outline{background:white;color:var(--blue);border:2px solid var(--blue)}
+
+/* Result */
+.result-box{background:linear-gradient(135deg,#fefcf5,#fef9e7);border:1px solid #e8d5a8;border-radius:12px;padding:20px 24px;margin:16px 0;display:none}
+.result-box.show{display:block}
+.result-box .gov-header{background:#cc0000;color:white;text-align:center;padding:12px 20px;border-radius:8px 8px 0 0;font-weight:700;font-size:1rem;margin:-20px -24px 16px}
+.result-box .gov-line{border-bottom:2px solid #cc0000;margin:0 -24px 14px}
+.result-box .gov-body{font-size:.88rem;line-height:2;max-height:50vh;overflow-y:auto;padding:4px 0}
+.result-box .gov-body h4{color:var(--red);font-size:.95rem;margin:10px 0 4px}
+.result-box .gov-body h5{color:var(--p);font-size:.88rem;margin:8px 0 3px}
+.result-box .gov-body p{margin:4px 0;text-indent:2em}
+.result-box .gov-body table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.82rem}
+.result-box .gov-body td,.result-box .gov-body th{border:1px solid #999;padding:6px 10px;text-align:center}
+.result-box .gov-body th{background:#f0f0f0}
+.result-box .gov-footer{text-align:right;color:#999;font-size:.82rem;margin-top:14px;padding-top:10px;border-top:1px solid #e8e8e8}
+.result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid #e8d5a8}
+
+/* Loading */
+.loading{display:none;align-items:center;gap:10px;padding:14px 18px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;margin:10px 0;color:var(--blue);font-weight:600;font-size:.88rem}
+.loading.show{display:flex}
+.spinner{width:20px;height:20px;border:3px solid #bfdbfe;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Toast */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--p);color:white;padding:12px 28px;border-radius:50px;font-weight:700;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{display:block;animation:fadeInDown .3s}
+@keyframes fadeInDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;background:#e2e8f0;color:var(--d);transition:all .2s}
+.tab.active{background:var(--blue);color:white}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+footer{text-align:center;padding:40px 0;color:var(--d);font-size:.85rem}
+footer a{color:var(--g)}
+@media(max-width:768px){.nl{display:none}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="navbar"><div class="ni">
+<a href="index.html" class="brand"><span class="bi">AI</span><span>宁强方案</span></a>
+<ul class="nl">
+<li><a href="index.html">首页</a></li><li><a href="theory.html">理论框架</a></li><li><a href="architecture.html">系统架构</a></li>
+<li><a href="generator.html" class="active">AI系统</a></li><li><a href="summary.html">总结报告</a></li><li><a href="speech.html">主题演讲</a></li><li><a href="videos.html">视频</a></li>
+</ul></div></nav>
+
+<div class="main">
+
+<div style="text-align:center;margin-bottom:24px">
+<span style="display:inline-block;background:linear-gradient(135deg,#e8d5a8,#fef3c7);color:var(--p);padding:6px 18px;border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:8px">K-OS · 课点操作系统</span>
+<h1 style="font-size:1.8rem;color:var(--p);font-weight:800;margin-bottom:6px">四真三化五链三场 · AI教学设计生成器</h1>
+<p style="color:var(--d);font-size:.9rem">输入三项信息 → 5分钟自动生成完整教学设计 → 复制/下载Word</p>
+</div>
+
+<div class="fw-tags">
+<span class="fw-tag sz">四真：真环境·真项目·真任务·真评价</span>
+<span class="fw-tag sh">三化：教学项目化·项目实战化·实战产品化</span>
+<span class="fw-tag wl">五链：人才链·专业链·课程链·师资链·产业链</span>
+<span class="fw-tag sc">三场：认知场·转化场·实战场</span>
+</div>
+
+<!-- Tabs for different generation modes -->
+<div class="tabs">
+<div class="tab active" onclick="switchTab('school')">学校顶层设计</div>
+<div class="tab" onclick="switchTab('product')">爆款产品设计</div>
+<div class="tab" onclick="switchTab('course')">专业课设计</div>
+<div class="tab" onclick="switchTab('culture')">文化课设计</div>
+</div>
+
+<!-- ===== TAB 1: School ===== -->
+<div id="tab-school" class="tab-content active">
+<div class="card gm">
+<h3>1. 学校基本信息</h3>
+<div class="row">
+<div><label>学校名称</label><input id="schoolName" value="宁强县职业高级中学"></div>
+<div><label>年级</label><input id="grade" value="25级"></div>
+<div><label>教育层次</label><select id="eduLevel"><option>中职</option><option>高职</option><option>职教本科</option></select></div>
+</div>
+<div class="row">
+<div><label>重点专业 <span class="req">*</span></label><input id="major" value="烹饪工艺与营养"></div>
+<div><label>核心课程/产品 <span class="req">*</span></label><input id="course" value="热菜制作·中式面点·凉菜制作"></div>
+</div>
+<label>对接产业/企业</label><input id="enterprise" value="宁强餐饮协会·汉中面皮协会">
+<label>协同产品/项目 <span class="req">*</span>（所有课程围绕此产品协同推进）</label><input id="coreProduct" value="锅塌豆腐系列组合套餐" style="font-weight:700;border-color:var(--g);background:#fffbeb">
+<label>总经理提示词/额外要求</label><textarea id="gmPrompt" placeholder="例如：重点围绕锅塌豆腐营养搭配，16周教学周期，融入地方特色..."></textarea>
+<button class="btn btn-red" onclick="generate('gm')" id="btn-gm">生成总经理统一规划方案</button>
+<div class="loading" id="loading-gm"><div class="spinner"></div><span id="loading-text-gm">AI正在分析产业需求、拆解课点、生成方案...</span></div>
+<div class="result-box" id="result-gm"><div class="result-body"></div><div class="result-actions"></div></div>
+</div>
+</div>
+
+<!-- ===== TAB 2: Product ===== -->
+<div id="tab-product" class="tab-content">
+<div class="card product">
+<h3>2.1 爆款产品/典型工作任务设计</h3>
+<div class="row">
+<div><label>专业/方向</label><input id="prodMajor" value="烹饪工艺与营养"></div>
+<div><label>对接产业</label><input id="prodEnterprise" value="宁强餐饮协会"></div>
+</div>
+<label>定制需求/关键词</label><textarea id="prodCustomReq" placeholder="输入定制需求、重点方向、关键词..."></textarea>
+<button class="btn btn-amber" onclick="generate('product')" id="btn-product">生成爆款产品清单（5大产品矩阵）</button>
+<div class="loading" id="loading-product"><div class="spinner"></div><span>AI正在基于产业需求生成产品矩阵...</span></div>
+<div class="result-box" id="result-product"><div class="result-body"></div><div class="result-actions"></div></div>
+</div>
+</div>
+
+<!-- ===== TAB 3: Professional Course ===== -->
+<div id="tab-course" class="tab-content">
+<div class="card course">
+<h3>2.2 专业技能课教学设计</h3>
+<p class="sub">你不只是教书的，你是产品的第一责任人——输入信息，一键出顶级方案</p>
+<div class="row">
+<div><label>学科/课程名称 <span class="req">*</span></label><input id="cdName" value="热菜制作技术"></div>
+<div><label>适用专业 <span class="req">*</span></label><input id="cdMajor" value="烹饪工艺与营养"></div>
+<div><label>课时数</label><input id="cdHours" value="36课时"></div>
+</div>
+<div class="row">
+<div><label>课标/教学标准</label><input id="cdTextbook" value="中职专业教学标准(2024版)"></div>
+<div><label>教材名称</label><input id="cdTextbookName" value="烹饪营养与配餐"></div>
+<div><label>编著/版本</label><input id="cdTextbookAuthor" value="高教社2024版"></div>
+</div>
+<div class="row">
+<div><label>典型工作任务 <span class="req">*</span></label><input id="cdTask" value="锅塌豆腐系列组合套餐"></div>
+<div><label>对接企业</label><input id="cdEnterprise" value="宁强餐饮协会"></div>
+</div>
+<label>设计要求/关键词</label><textarea id="pmCustomReq" placeholder="侧重实操、融入地方特色、项目驱动..."></textarea>
+<button class="btn btn-green" onclick="generate('course')" id="btn-course">生成专业技能课教学设计</button>
+<div class="loading" id="loading-course"><div class="spinner"></div><span>AI正在融合课标+教材+协同产品，生成统一进度教学设计...</span></div>
+<div class="result-box" id="result-course"><div class="result-body"></div><div class="result-actions"></div></div>
+</div>
+</div>
+
+<!-- ===== TAB 4: Culture Course ===== -->
+<div id="tab-culture" class="tab-content">
+<div class="card culture">
+<h3>2.3 文化基础课教学设计</h3>
+<p class="sub">每门课都是造产品的一双手——逐课时设计，协同推进</p>
+<label>选择重点学科</label>
+<div class="fw-tags" style="justify-content:flex-start" id="cultureSubjects">
+<span class="fw-tag sz" onclick="toggleSubject(this)" data-subj="语文">语文</span>
+<span class="fw-tag" style="background:#d1fae5;color:#065f46" onclick="toggleSubject(this)" data-subj="数学">数学</span>
+<span class="fw-tag" style="background:#fef3c7;color:#92400e" onclick="toggleSubject(this)" data-subj="英语">英语</span>
+<span class="fw-tag sc" onclick="toggleSubject(this)" data-subj="思想政治">思想政治</span>
+<span class="fw-tag" style="background:#fce7f3;color:#9d174d" onclick="toggleSubject(this)" data-subj="历史">历史</span>
+<span class="fw-tag" style="background:#e0f2fe;color:#0369a1" onclick="toggleSubject(this)" data-subj="信息技术">信息技术</span>
+<span class="fw-tag" style="background:#d1fae5;color:#065f46" onclick="toggleSubject(this)" data-subj="体育">体育与健康</span>
+<span class="fw-tag" style="background:#ede9fe;color:#5b21b6" onclick="toggleSubject(this)" data-subj="艺术">艺术</span>
+</div>
+<label>文化课科目（必填） <span class="req">*</span></label><input id="clCourse" value="语文、数学、英语" placeholder="如：语文、数学、英语、信息技术">
+<div class="row">
+<div><label>教材版本</label><input id="clTextbook" value="高教版(2024)"></div>
+<div><label>对接专业</label><input id="clMajor" value="烹饪工艺与营养"></div>
+<div><label>周次/课时</label><input id="clWeeks" value="第3周 第1课时"></div>
+</div>
+<label>需求关键词</label><textarea id="clCustomReq" placeholder="输入需求关键词、重点方向..."></textarea>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+<button class="btn btn-purple" onclick="generate('culture_lesson')">单课时设计</button>
+<button class="btn" style="background:#6d28d9" onclick="generate('culture_week')">周度进度计划</button>
+<button class="btn btn-purple" onclick="generate('culture_detail')">生成详细教学设计</button>
+<button class="btn" style="background:#6d28d9" onclick="generate('culture_custom')">关键词定制设计</button>
+</div>
+<div class="loading" id="loading-culture"><div class="spinner"></div><span id="loading-text-culture">AI正在融合课标+教材+协同产品，生成逐课时文化课方案...</span></div>
+<div class="result-box" id="result-culture"><div class="result-body"></div><div class="result-actions"></div></div>
+</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<footer>
+<p>2026 宁强县职业高级中学 · 课点操作系统(K-OS)智能转化平台</p>
+<p style="margin-top:6px"><a href="index.html">返回首页</a> · <a href="summary.html">总结报告</a></p>
+</footer>
+</div>
+
+<script>
+// Tabs
+function switchTab(name){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-'+name).classList.add('active');
+}
+
+// Subject toggle
+let selectedSubjects=[];
+function toggleSubject(el){
+    el.classList.toggle('active');
+    let s=el.dataset.subj;
+    if(el.classList.contains('active')){el.style.outline='3px solid #7c3aed';el.style.outlineOffset='1px';selectedSubjects.push(s)}
+    else{el.style.outline='none';selectedSubjects=selectedSubjects.filter(x=>x!==s)}
+    document.getElementById('clCourse').value=selectedSubjects.join('、')||'语文、数学、英语';
+}
+
+// Toast
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// Thinking messages
+const thinkMsgs={
+    gm:['正在分析县域产业链结构...','正在拆解岗位能力课点(态度点+知识点+技能点)...','正在生成总经理统一规划方案...','正在制定时间进度与任务分解...','正在构建协同框架...','即将完成，请稍候...'],
+    product:['正在扫描产业需求数据...','正在匹配爆款产品矩阵...','正在生成5大产品方向...','正在撰写产品详细蓝图...','即将完成...'],
+    course:['正在解析课程标准和教材...','正在拆解典型工作任务课点...','正在生成八环节教学设计...','正在制定评价标准和工单...','即将完成...'],
+    culture:['正在分析协同产品与课程关联...','正在拆解文化课课点映射...','正在生成逐课时教学设计...','正在制定文化课融合方案...','即将完成...'],
+};
+
+// Generation function
+function generate(type){
+    let loadingId='loading-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture');
+    let resultId='result-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture');
+    let loading=document.getElementById(loadingId);
+    let result=document.getElementById(resultId);
+    let btnId='btn-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture');
+
+    // Validate
+    if(type==='gm'&&!document.getElementById('coreProduct').value){toast('请先输入协同产品/项目');return}
+    if(type==='course'&&!document.getElementById('cdName').value){toast('请输入课程名称');return}
+    if(type.startsWith('culture')&&!document.getElementById('clCourse').value){toast('请选择或输入文化课科目');return}
+
+    // Show loading
+    loading.classList.add('show');
+    result.classList.remove('show');
+    let btn=document.getElementById(btnId)||document.getElementById('btn-'+type);
+    if(btn){btn.disabled=true;btn.style.opacity='0.5'}
+
+    // Simulate thinking
+    let msgs=thinkMsgs[type.startsWith('culture')?'culture':type]||thinkMsgs.gm;
+    let i=0;
+    let textEl=loading.querySelector('span');
+    let interval=setInterval(()=>{if(textEl)textEl.textContent=msgs[i%msgs.length];i++;},1200);
+
+    // Generate result after delay
+    setTimeout(()=>{
+        clearInterval(interval);
+        loading.classList.remove('show');
+        if(btn){btn.disabled=false;btn.style.opacity='1'}
+        let content=buildResult(type);
+        result.querySelector('.result-body').innerHTML=content;
+        result.querySelector('.result-actions').innerHTML=buildActions(type);
+        result.classList.add('show');
+        result.scrollIntoView({behavior:'smooth',block:'center'});
+        toast('方案生成完成！');
+    },2800+Math.random()*2000);
+}
+
+function buildResult(type){
+    let school=document.getElementById('schoolName').value||'宁强县职业高级中学';
+    let major=document.getElementById('major').value||'烹饪工艺与营养';
+    let grade=document.getElementById('grade').value||'25级';
+    let core=document.getElementById('coreProduct').value||'锅塌豆腐系列组合套餐';
+    let date=new Date().toLocaleDateString('zh-CN');
+    let govHeader='<div class="gov-header">四真·三化·五链·三场 产教融合系统设计方案</div><div class="gov-line"></div>';
+
+    if(type==='gm'){
+        return govHeader+
+        '<h4>总经理统一规划方案</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | '+major+'</p>'+
+        '<h5>一、项目总览</h5><p>协同产品：<strong>'+core+'</strong>。本项目以'+core+'为核心载体，串联'+major+'专业全部课程，实现"一个产品、十门课程、全链融合"的教学体系重构。教学周期16周，分4个阶段推进。</p>'+
+        '<h5>二、时间进度与任务分解</h5><table><tr><th>阶段</th><th>周次</th><th>核心任务</th><th>产出</th></tr><tr><td>基础期</td><td>1-4周</td><td>原料鉴别+刀工基础+食品安全</td><td>刀工考核工单</td></tr><tr><td>成长期</td><td>5-8周</td><td>锅塌技法+调味配比+营养搭配</td><td>锅塌豆腐标准产品</td></tr><tr><td>成熟期</td><td>9-12周</td><td>创新研发+成本核算+文化故事</td><td>创新产品包</td></tr><tr><td>实战期</td><td>13-16周</td><td>值餐工坊实战+客户评价+路演</td><td>市场检验报告</td></tr></table>'+
+        '<h5>三、协同框架</h5><p>专业课（热菜制作）提供技术标准→文化课（语文/数学/英语/思政）提供产品赋能→企业导师提供产业标准→产品经理统筹全流程→学生代表反馈学习体验。总经理方案为后续所有生成提供统一约束。</p>'+
+        '<h5>四、四真落地要点</h5><p><strong>真环境：</strong>值餐工坊标准化灶台，企业一线配置。<strong>真项目：</strong>'+core+'从研发到销售全流程。<strong>真任务：</strong>拆解为27份岗位能力清单。<strong>真评价：</strong>教师25%+企业25%+客户30%+互评10%+自评10%。</p>';
+    }
+
+    if(type==='product'){
+        let ent=document.getElementById('prodEnterprise').value||'宁强餐饮协会';
+        return govHeader+
+        '<h4>爆款产品/典型工作任务清单</h4><p style="color:#999;font-size:.8rem">'+date+' | '+major+' | 对接：'+ent+'</p>'+
+        '<h5>5大产品矩阵</h5><table><tr><th>序号</th><th>产品名称</th><th>核心技能点</th><th>对接产业</th><th>难度</th></tr>'+
+        '<tr><td>1</td><td>锅塌豆腐经典版</td><td>刀工·火候·调味·摆盘</td><td>'+ent+'</td><td>★★</td></tr>'+
+        '<tr><td>2</td><td>锅塌豆腐营养升级版</td><td>营养配比·减油减盐·标签设计</td><td>康养机构</td><td>★★★</td></tr>'+
+        '<tr><td>3</td><td>锅塌豆腐创新融合版</td><td>中西融合·创意摆盘·成本控制</td><td>高端餐饮</td><td>★★★★</td></tr>'+
+        '<tr><td>4</td><td>锅塌豆腐系列组合套餐</td><td>套餐设计·供应链管理·营销策划</td><td>连锁餐饮</td><td>★★★★</td></tr>'+
+        '<tr><td>5</td><td>锅塌豆腐标准化SOP</td><td>流程标准化·品控·培训手册</td><td>中央厨房</td><td>★★★</td></tr>'+
+        '</table><h5>CCP质控要点</h5><p>原料验收(CCP1): 豆腐温度≤4°C,大豆蛋白≥8%。烹饪温度(CCP2): 中心温度≥75°C,持续≥15秒。保温配送(CCP3): ≥60°C,存放≤2小时。</p>';
+    }
+
+    if(type==='course'){
+        let cname=document.getElementById('cdName').value||'热菜制作技术';
+        let hours=document.getElementById('cdHours').value||'36课时';
+        let task=document.getElementById('cdTask').value||core;
+        return govHeader+
+        '<h4>专业技能课教学设计</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | '+major+' | '+cname+' | '+hours+'</p>'+
+        '<h5>【教学目标】</h5><p>（一）知识目标：掌握'+task+'的核心工艺流程、原料特性与营养搭配原理。（二）技能目标：独立完成'+task+'的全流程制作，刀工合格率≥90%，火候控制准确率≥85%。（三）态度目标：培养食品安全意识、工匠精神与客户服务意识。</p>'+
+        '<h5>【八环节教学设计】（第1课时示例）</h5><table><tr><th>环节</th><th>时长</th><th>教师活动</th><th>学生活动</th><th>课点达成</th></tr>'+
+        '<tr><td>导</td><td>5min</td><td>播放锅塌豆腐纪录片，创设职业情境</td><td>观察、记录关键工艺点</td><td>态度点激活</td></tr>'+
+        '<tr><td>思</td><td>12min</td><td>发布工单，引导自主探究</td><td>独立研究锅塌技法原理</td><td>知识点建构</td></tr>'+
+        '<tr><td>议</td><td>8min</td><td>组织分组讨论</td><td>小组研讨最佳操作方案</td><td>技能点协作</td></tr>'+
+        '<tr><td>展</td><td>8min</td><td>追问深化，精准点拨</td><td>上台展示研究成果</td><td>态度点外化</td></tr>'+
+        '<tr><td>评</td><td>5min</td><td>多元评价（过程40%+成果40%+素质20%）</td><td>自评+互评+接受客户评价</td><td>综合检验</td></tr>'+
+        '<tr><td>检</td><td>3min</td><td>即时检测关键知识点</td><td>扫码答题，查漏补缺</td><td>知识巩固</td></tr>'+
+        '<tr><td>用</td><td>课后</td><td>分层布置实战任务</td><td>交付'+task+'作品</td><td>技能迁移</td></tr>'+
+        '<tr><td>结</td><td>3min</td><td>结构化总结</td><td>复盘反思，沉淀经验</td><td>结构化沉淀</td></tr>'+
+        '</table><h5>【评价标准】</h5><p>教师评价(25%)：工艺标准达成度。企业评价(25%)：产品市场竞争力。客户评价(30%)：好评率≥60%产品线上线。团队互评(10%)：协作贡献度。学生自评(10%)：自我成长度。</p>';
+    }
+
+    if(type.startsWith('culture')){
+        let subj=document.getElementById('clCourse').value||'语文、数学、英语';
+        let week=document.getElementById('clWeeks').value||'第3周 第1课时';
+        return govHeader+
+        '<h4>文化基础课教学设计</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | 学科：'+subj+' | '+week+' | 协同产品：'+core+'</p>'+
+        '<h5>【课程定位】每门课都是造产品的一双手</h5>'+
+        '<p><strong>语文：</strong>撰写'+core+'产品故事与品牌文案，用文字传递手艺的温度。</p>'+
+        '<p><strong>数学：</strong>核算'+core+'的食材成本、调料配比、产品定价与利润分析。</p>'+
+        '<p><strong>英语：</strong>制作'+core+'英文菜单与出口宣传文案。</p>'+
+        '<p><strong>思政：</strong>将工匠精神、食品安全意识融入'+core+'的每一次操作。</p>'+
+        '<p><strong>信息技术：</strong>拍摄'+core+'制作过程短视频，设计宣传海报与路演PPT。</p>'+
+        '<p><strong>营养学：</strong>设计'+core+'营养标签，制定减油减盐健康方案。</p>'+
+        '<h5>【'+week+' 教学设计】</h5><table><tr><th>学科</th><th>教学主题</th><th>与'+core+'的关联</th><th>产出成果</th></tr>'+
+        '<tr><td>语文</td><td>产品故事写作</td><td>为'+core+'撰写品牌故事</td><td>品牌故事文稿</td></tr>'+
+        '<tr><td>数学</td><td>成本核算与定价</td><td>计算'+core+'各项成本</td><td>成本核算表</td></tr>'+
+        '<tr><td>英语</td><td>英文菜单制作</td><td>翻译'+core+'食谱</td><td>英文菜单卡片</td></tr>'+
+        '<tr><td>思政</td><td>工匠精神专题</td><td>讨论'+core+'背后的匠心</td><td>心得体会</td></tr>'+
+        '</table><h5>【评价方式】</h5><p>不考试卷，只考作品。学生交付'+core+'完整产品包：品牌故事+成本表+外文菜单+营养标签+宣传海报+路演PPT。</p>';
+    }
+    return '';
+}
+
+function buildActions(type){
+    return '<button class="btn btn-outline" onclick="copyResult(\''+type+'\')">复制内容</button> '+
+    '<button class="btn btn-blue" onclick="downloadWord(\''+type+'\')">下载Word文档</button> '+
+    '<button class="btn btn-gray" onclick="printResult(\''+type+'\')">打印</button>';
+}
+
+function getResultContent(type){
+    let id='result-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture');
+    return document.getElementById(id).querySelector('.result-body').innerText;
+}
+
+function copyResult(type){
+    let text=getResultContent(type);
+    navigator.clipboard.writeText(text).then(()=>toast('已复制到剪贴板！'));
+}
+
+function downloadWord(type){
+    let text=getResultContent(type);
+    let blob=new Blob(['<html><head><meta charset="UTF-8"><style>body{font-family:SimSun;line-height:2;padding:40px}h4{color:#cc0000}h5{color:#0B2A4A}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:6px;text-align:center}p{text-indent:2em}</style></head><body>'+document.getElementById('result-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture')).querySelector('.result-body').innerHTML+'</body></html>'],{type:'application/msword'});
+    let url=URL.createObjectURL(blob);
+    let a=document.createElement('a');a.href=url;a.download='教学设计_'+(type)+'_'+new Date().toISOString().slice(0,10)+'.doc';
+    a.click();URL.revokeObjectURL(url);toast('Word文档下载中...');
+}
+
+function printResult(type){
+    let id='result-'+type.replace('culture_lesson','culture').replace('culture_week','culture').replace('culture_detail','culture').replace('culture_custom','culture');
+    let content=document.getElementById(id).querySelector('.result-body').innerHTML;
+    let w=window.open('','_blank');w.document.write('<html><head><meta charset="UTF-8"><style>body{font-family:SimSun;line-height:2;padding:40px;max-width:800px;margin:0 auto}h4{color:#cc0000}h5{color:#0B2A4A}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:6px}p{text-indent:2em}.gov-header{background:#cc0000;color:white;text-align:center;padding:12px;font-weight:700}.gov-line{border-bottom:2px solid #cc0000}</style></head><body>'+content+'</body></html>');
+    w.document.close();setTimeout(()=>w.print(),500);
+}
+
+// Pre-select some subjects
+document.querySelectorAll('#cultureSubjects span').forEach((el,i)=>{if(i<6){el.click()}});
+</script>
+</body>
+</html>
