@@ -1591,6 +1591,12 @@ body { background: var(--cream); }
 .btn-red { background: var(--rich-red); }
 .btn-blue { background: var(--deep-navy); }
 
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184,134,11,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(184,134,11,0); }
+}
+
 </style>
 </head>
 <body>
@@ -1606,7 +1612,7 @@ body { background: var(--cream); }
                 <a href="#hall-workshop" data-nav="3">🔧 实践体系</a>
                 <a href="#hall-life" data-nav="4">📊 成效证据</a>
                 <a href="#hall-future" data-nav="5">🌐 推广辐射</a>
-                <a href="generator.html" data-nav="6" class="primary-link">🤖 开源共享</a>
+                <a href="generator.html" data-nav="6" class="primary-link" style="background:#b8860b;color:#fff!important;font-weight:900;border-radius:4px;padding:6px 14px!important;animation:pulse 2s infinite">🤖 AI一键生成教学设计</a>
                 <a href="summary.html">📄 总结报告</a>
                 <a href="speech.html">🎙 主题演讲</a>
                 <a href="videos.html">🎬 视频</a>
