@@ -300,16 +300,41 @@ function generate(type){
 }
 
 function buildResult(type){
-    let school=document.getElementById('schoolName').value||'宁强县职业高级中学';
-    let major=document.getElementById('major').value||'烹饪工艺与营养';
-    let grade=document.getElementById('grade').value||'25级';
-    let core=document.getElementById('coreProduct').value||'锅塌豆腐系列组合套餐';
+    // ===== DYNAMIC INPUT READING - every field is read and used =====
+    let school=document.getElementById('schoolName')?.value||'宁强县职业高级中学';
+    let major=document.getElementById('major')?.value||'烹饪工艺与营养';
+    let grade=document.getElementById('grade')?.value||'25级';
+    let eduLevel=document.getElementById('eduLevel')?.value||'中职';
+    let core=document.getElementById('coreProduct')?.value||'锅塌豆腐系列组合套餐';
+    let enterprise=document.getElementById('enterprise')?.value||'宁强餐饮协会';
+    let gmPrompt=document.getElementById('gmPrompt')?.value||'';
+    let prodCustom=document.getElementById('prodCustomReq')?.value||'';
+    let cdName=document.getElementById('cdName')?.value||'热菜制作技术';
+    let cdMajor=document.getElementById('cdMajor')?.value||major;
+    let cdHours=document.getElementById('cdHours')?.value||'36课时';
+    let cdTextbook=document.getElementById('cdTextbook')?.value||'中职专业教学标准(2024版)';
+    let cdTextbookName=document.getElementById('cdTextbookName')?.value||'烹饪营养与配餐';
+    let cdTextbookAuthor=document.getElementById('cdTextbookAuthor')?.value||'高教社2024版';
+    let cdTask=document.getElementById('cdTask')?.value||core;
+    let cdEnterprise=document.getElementById('cdEnterprise')?.value||enterprise;
+    let clSubject=document.getElementById('clSubject')?.value||'';
+    let clCourse=document.getElementById('clCourse')?.value||'语文、数学、英语';
+    let clTextbook=document.getElementById('clTextbook')?.value||'高教版(2024)';
+    let clMajor=document.getElementById('clMajor')?.value||major;
+    let clWeeks=document.getElementById('clWeeks')?.value||'第3周 第1课时';
+    let clCustom=document.getElementById('clCustomReq')?.value||'';
+    let prodMajor=document.getElementById('prodMajor')?.value||major;
+    let prodEnterprise=document.getElementById('prodEnterprise')?.value||enterprise;
     let date=new Date().toLocaleDateString('zh-CN');
     let govHeader='<div class="gov-header">四真·三化·五链·三场 产教融合系统设计方案</div><div class="gov-line"></div>';
+    let govMeta=`<p style="color:#999;font-size:.8rem">${date} | ${school} | ${major} | ${grade} | ${eduLevel}</p>`;
+    let customBlock=(p,l)=>{return p?`<div style="background:#fffbeb;border-left:4px solid #d97706;padding:12px 16px;margin:10px 0;border-radius:4px"><strong>${l||'定制要求'}：</strong>${p}</div>`:'';};
+    
 
     if(type==='gm'){
         return govHeader+
-        '<h4>总经理统一规划方案</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | '+major+'</p>'+
+        '<h4>总经理统一规划方案</h4>'+govMeta+
+        customBlock(gmPrompt,'总经理定制要求')+
         '<h5>一、项目总览</h5><p>协同产品：<strong>'+core+'</strong>。本项目以'+core+'为核心载体，串联'+major+'专业全部课程，实现"一个产品、十门课程、全链融合"的教学体系重构。教学周期16周，分4个阶段推进。</p>'+
         '<h5>二、时间进度与任务分解</h5><table><tr><th>阶段</th><th>周次</th><th>核心任务</th><th>产出</th></tr><tr><td>基础期</td><td>1-4周</td><td>原料鉴别+刀工基础+食品安全</td><td>刀工考核工单</td></tr><tr><td>成长期</td><td>5-8周</td><td>锅塌技法+调味配比+营养搭配</td><td>锅塌豆腐标准产品</td></tr><tr><td>成熟期</td><td>9-12周</td><td>创新研发+成本核算+文化故事</td><td>创新产品包</td></tr><tr><td>实战期</td><td>13-16周</td><td>值餐工坊实战+客户评价+路演</td><td>市场检验报告</td></tr></table>'+
         '<h5>三、协同框架</h5><p>专业课（热菜制作）提供技术标准→文化课（语文/数学/英语/思政）提供产品赋能→企业导师提供产业标准→产品经理统筹全流程→学生代表反馈学习体验。总经理方案为后续所有生成提供统一约束。</p>'+
@@ -317,9 +342,10 @@ function buildResult(type){
     }
 
     if(type==='product'){
-        let ent=document.getElementById('prodEnterprise').value||'宁强餐饮协会';
         return govHeader+
-        '<h4>爆款产品/典型工作任务清单</h4><p style="color:#999;font-size:.8rem">'+date+' | '+major+' | 对接：'+ent+'</p>'+
+        '<h4>爆款产品/典型工作任务清单</h4>'+govMeta.replace(major,prodMajor)+
+        '<p style="color:#555;font-size:.9rem">对接产业：<strong>'+prodEnterprise+'</strong> | 协同产品：<strong>'+core+'</strong></p>'+
+        customBlock(prodCustom,'产品定制需求')+
         '<h5>5大产品矩阵</h5><table><tr><th>序号</th><th>产品名称</th><th>核心技能点</th><th>对接产业</th><th>难度</th></tr>'+
         '<tr><td>1</td><td>锅塌豆腐经典版</td><td>刀工·火候·调味·摆盘</td><td>'+ent+'</td><td>★★</td></tr>'+
         '<tr><td>2</td><td>锅塌豆腐营养升级版</td><td>营养配比·减油减盐·标签设计</td><td>康养机构</td><td>★★★</td></tr>'+
@@ -330,11 +356,10 @@ function buildResult(type){
     }
 
     if(type==='course'){
-        let cname=document.getElementById('cdName').value||'热菜制作技术';
-        let hours=document.getElementById('cdHours').value||'36课时';
-        let task=document.getElementById('cdTask').value||core;
         return govHeader+
-        '<h4>专业技能课教学设计</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | '+major+' | '+cname+' | '+hours+'</p>'+
+        '<h4>专业技能课教学设计</h4>'+govMeta+
+        '<p style="color:#555;font-size:.9rem">课程：<strong>'+cdName+'</strong> | 教材：<strong>'+cdTextbookName+'</strong>('+cdTextbookAuthor+') | 课时：<strong>'+cdHours+'</strong> | 课标：<strong>'+cdTextbook+'</strong> | 对接企业：<strong>'+cdEnterprise+'</strong></p>'+
+        '<p style="color:#555;font-size:.9rem">典型工作任务：<strong>'+cdTask+'</strong> | 协同产品：<strong>'+core+'</strong></p>'+
         '<h5>【教学目标】</h5><p>（一）知识目标：掌握'+task+'的核心工艺流程、原料特性与营养搭配原理。（二）技能目标：独立完成'+task+'的全流程制作，刀工合格率≥90%，火候控制准确率≥85%。（三）态度目标：培养食品安全意识、工匠精神与客户服务意识。</p>'+
         '<h5>【八环节教学设计】（第1课时示例）</h5><table><tr><th>环节</th><th>时长</th><th>教师活动</th><th>学生活动</th><th>课点达成</th></tr>'+
         '<tr><td>导</td><td>5min</td><td>播放锅塌豆腐纪录片，创设职业情境</td><td>观察、记录关键工艺点</td><td>态度点激活</td></tr>'+
@@ -349,10 +374,11 @@ function buildResult(type){
     }
 
     if(type.startsWith('culture')){
-        let subj=document.getElementById('clCourse').value||'语文、数学、英语';
-        let week=document.getElementById('clWeeks').value||'第3周 第1课时';
         return govHeader+
-        '<h4>文化基础课教学设计</h4><p style="color:#999;font-size:.8rem">'+date+' | '+school+' | 学科：'+subj+' | '+week+' | 协同产品：'+core+'</p>'+
+        '<h4>文化基础课教学设计</h4>'+govMeta+
+        '<p style="color:#555;font-size:.9rem">学科：<strong>'+clCourse+'</strong> | 教材：<strong>'+clTextbook+'</strong> | 对接专业：<strong>'+clMajor+'</strong> | '+clWeeks+'</p>'+
+        '<p style="color:#555;font-size:.9rem">协同产品：<strong>'+core+'</strong></p>'+
+        customBlock(clCustom,'文化课定制需求')+
         '<h5>【课程定位】每门课都是造产品的一双手</h5>'+
         '<p><strong>语文：</strong>撰写'+core+'产品故事与品牌文案，用文字传递手艺的温度。</p>'+
         '<p><strong>数学：</strong>核算'+core+'的食材成本、调料配比、产品定价与利润分析。</p>'+
