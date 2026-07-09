@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>课点操作系统 K-OS | 微信小程序 · 一键生成教学设计</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','SimHei','PingFang SC',sans-serif;background:#F2F4F7;color:#333;line-height:1.6}
+.topbar{background:#003D7A;color:#fff;font-size:12px;padding:6px 0;border-bottom:3px solid #C41230}
+.topbar .inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between}
+.header{background:linear-gradient(180deg,#004D99 0%,#003D7A 100%);color:#fff;padding:28px 0 0}
+.header .inner{max-width:1200px;margin:0 auto;padding:0 20px;text-align:center}
+.header h1{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.header .subtitle{font-size:16px;opacity:.9;font-weight:600;margin-bottom:8px}
+.nav{background:#003D7A;border-bottom:4px solid #C41230;position:sticky;top:0;z-index:100}
+.nav .inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-wrap:wrap}
+.nav a{color:#fff;text-decoration:none;padding:14px 18px;font-size:14px;font-weight:600;transition:background .2s}
+.nav a:hover,.nav a.active{background:#C41230}
+.main{max-width:1200px;margin:0 auto;padding:24px 20px}
+.section{background:#fff;border-radius:8px;padding:28px 32px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.section h2{font-size:22px;color:#003D7A;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #E8ECF2;font-weight:900}
+.section h2::before{content:'';display:inline-block;width:6px;height:22px;background:#C41230;margin-right:10px;vertical-align:middle;border-radius:2px}
+.section h3{font-size:18px;color:#003D7A;margin:16px 0 10px;font-weight:800}
+.section h4{font-size:15px;color:#004D99;margin:10px 0 6px;font-weight:700}
+.section p{font-size:14px;color:#444;line-height:1.9;text-indent:2em;margin-bottom:10px}
+.hero{background:linear-gradient(135deg,#003D7A 0%,#004D99 50%,#C41230 100%);color:#fff;border-radius:12px;padding:40px;margin-bottom:24px;text-align:center}
+.hero h2{font-size:30px;margin-bottom:12px;font-weight:900}
+.hero p{font-size:16px;opacity:.92;line-height:1.8;text-indent:0}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin:16px 0}
+.card{background:#F8FAFD;border:1px solid #DEE4ED;border-radius:8px;padding:20px;transition:all .2s}
+.card:hover{border-color:#C41230;box-shadow:0 4px 16px rgba(196,18,48,.08)}
+.card h4{font-size:16px;color:#003D7A;margin-bottom:8px;font-weight:800}
+.card p{font-size:13px;color:#555;line-height:1.7;text-indent:0}
+.tag{display:inline-block;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:700;margin:4px 2px}
+.t-blue{background:#E6F0FA;color:#003D7A}.t-red{background:#FDEDEC;color:#8B2020}.t-green{background:#E6F5EC;color:#107C41}.t-gold{background:#FFF8EC;color:#7A4D00}.t-purple{background:#F3E8FF;color:#6B21A8}.t-orange{background:#FFF0E6;color:#9A3412}
+.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.data-table th{background:#003D7A;color:#fff;padding:10px 12px;text-align:center;font-weight:700}
+.data-table td{padding:8px 12px;text-align:center;border-bottom:1px solid #E8ECF2}
+.data-table tr:nth-child(even){background:#F8FAFD}
+.code-block{background:#1e293b;color:#e2e8f0;border-radius:6px;padding:16px;margin:12px 0;font-family:'Consolas','Courier New',monospace;font-size:12px;line-height:1.8;overflow-x:auto;white-space:pre-wrap}
+.crop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+.crop-card{background:#fff;border:2px solid #DEE4ED;border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all .2s}
+.crop-card:hover{border-color:#C41230;transform:translateY(-2px)}
+.crop-card .icon{font-size:36px;margin-bottom:8px}
+.crop-card .name{font-size:15px;font-weight:700;color:#003D7A}
+.crop-card .desc{font-size:12px;color:#666;margin-top:4px}
+.preview-box{background:#fff;border:2px solid #cc0000;border-radius:8px;padding:20px;margin:16px 0}
+.preview-box .red-head{text-align:center;color:#cc0000;font-weight:900;font-size:14px;margin-bottom:6px}
+.preview-box .red-line{border-top:2px solid #cc0000;margin:8px 0}
+.preview-box .doc-title{text-align:center;font-size:18px;font-weight:900;color:#000;margin:12px 0}
+.preview-box .doc-date{text-align:center;font-size:11px;color:#999;margin-bottom:16px}
+.footer{background:#003D7A;color:#fff;padding:24px 0 16px;margin-top:24px}
+.footer .inner{max-width:1200px;margin:0 auto;padding:0 20px;text-align:center}
+.footer p{font-size:13px;opacity:.8;line-height:1.8}
+.flow-row{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.flow-step{background:#F0F4FA;border:1px solid #D0D8E8;border-radius:8px;padding:14px 18px;text-align:center;min-width:100px}
+.flow-step .num{font-size:22px;font-weight:900;color:#C41230}
+.flow-step .label{font-size:12px;color:#555;margin-top:4px}
+.flow-arrow{font-size:20px;color:#999}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.stat-box{text-align:center;padding:18px;background:linear-gradient(180deg,#F8FAFD,#fff);border:1px solid #DEE4ED;border-radius:8px}
+.stat-box .val{font-size:36px;font-weight:900;color:#003D7A}
+.stat-box .lbl{font-size:13px;color:#666;margin-top:4px}
+.tabs{display:flex;gap:0;margin:16px 0;border-bottom:2px solid #DEE4ED}
+.tab-btn{padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;color:#666;border-bottom:3px solid transparent;transition:all .2s}
+.tab-btn.active{color:#C41230;border-bottom-color:#C41230}
+.tab-content{display:none;padding:16px 0}
+.tab-content.active{display:block}
+@media(max-width:768px){.crop-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.flow-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+<span>2026年职业教育国家教学成果奖 | 陕西省推荐 | 宁强县职业高级中学</span>
+<span>课点操作系统 K-OS v2.0</span>
+</div></div>
+
+<div class="header"><div class="inner">
+<h1>&#x1F4BB; 课点操作系统（K-OS）</h1>
+<div class="subtitle">微信小程序 · 一键生成教学设计 · 产教融合AI引擎 · 值餐悦舍实战平台</div>
+</div></div>
+
+<div class="nav"><div class="inner">
+<a href="index.html">&#x1F3E0; 首页</a>
+<a href="application.html">申报书</a>
+<a href="summary.html">总结报告</a>
+<a href="evidence.html">佐证材料</a>
+<a href="awards.html">获奖证明</a>
+<a href="promotion.html">推广应用</a>
+<a href="media.html">媒体报道</a>
+<a href="team.html">完成人</a>
+<a href="kos.html" class="active">课点系统 K-OS</a>
+</div></div>
+
+<div class="main">
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+<h2>&#x1F4F1; 微信小程序 · 课点操作系统（K-OS）</h2>
+<p>教师仅需输入专业、课程、学时三项参数，5分钟内自动生成产业情境化教学方案<br>
+覆盖<strong>13种AI生成类型</strong> + <strong>值餐实战平台</strong> + <strong>悦舍养生平台</strong> + <strong>极简助农系统</strong><br>
+<small style="opacity:0.8">&#x1F517; 微信小程序入口：code.coze.cn/p/7625242371097280539</small></p>
+</div>
+
+<!-- ============ 统计数据 ============ -->
+<div class="section">
+<h2>&#x1F4CA; 核心数据</h2>
+<div class="stats-grid">
+<div class="stat-box"><div class="val">13</div><div class="lbl">AI生成类型</div></div>
+<div class="stat-box"><div class="val" style="color:#107C41">9</div><div class="lbl">覆盖专业</div></div>
+<div class="stat-box"><div class="val" style="color:#C41230">90%</div><div class="lbl">备课效率提升</div></div>
+<div class="stat-box"><div class="val" style="color:#6B21A8">19</div><div class="lbl">校零派驻自主运行</div></div>
+</div>
+</div>
+
+<!-- ============ 产教融合AI系统 ============ -->
+<div class="section">
+<h2>&#x1F3ED; 一、产教融合AI系统</h2>
+<p>基于"<strong>四真·三化·五链·三场</strong>"核心理念，将课程标准、产业需求、教学资源三方数据融合为智能算法引擎，教师输入三项参数即可一键生成红头公文格式的教学方案。</p>
+
+<h3>1.1 13种生成类型</h3>
+<div class="card-grid">
+<div class="card"><h4>&#x1F451; 总经理统一规划</h4><p>输入学校、专业、协同产品，生成项目总规划方案。含时间进度、任务分解、协同框架、资源需求。</p><span class="tag t-red">ie_general_manager</span></div>
+<div class="card"><h4>&#x1F468;&#x200D;&#x1F3EB; 按角色生成（5角色）</h4><p>专业课教师/文化课教师/企业导师/产品经理/学生代表，5个角色分别生成专属方案。</p><span class="tag t-blue">ie_role_{id}</span></div>
+<div class="card"><h4>&#x1F680; 一键生成全部角色</h4><p>选择多个角色后一键批量生成所有角色的协同方案，合并为完整文档。</p><span class="tag t-green">ie_custom_design</span></div>
+<div class="card"><h4>&#x1F525; 爆款产品清单</h4><p>基于专业+产业，AI生成5大产品矩阵（核心产品/衍生产品/配套产品），含CCP质控点。</p><span class="tag t-gold">ie_typical_task</span></div>
+<div class="card"><h4>&#x1F4CB; 产品蓝图</h4><p>四真落地蓝图：真环境设计+真项目设计+真任务设计+真评价设计+周度教学计划。</p><span class="tag t-blue">ie_product_blueprint</span></div>
+<div class="card"><h4>&#x1F4C5; 周度计划</h4><p>16周详细教学计划表，每周教学内容/实操任务/考核要点完整呈现。</p><span class="tag t-blue">ie_product_blueprint_week</span></div>
+<div class="card"><h4>&#x1F3AF; 定制爆款设计</h4><p>上传文档+输入关键词，AI生成定制化爆款产品设计与教学方案。</p><span class="tag t-purple">ie_typical_task_custom</span></div>
+<div class="card"><h4>&#x1F4D8; 专业技能课教学设计</h4><p>9个字段输入（课程名/专业/课时/课标/教材/工作任务/企业），生成完整教学设计。</p><span class="tag t-red">ie_course_design</span></div>
+<div class="card"><h4>&#x1F4D6; 文化课单课时设计</h4><p>输入学科/教材/周次/课时，AI生成学科素养目标+教学过程+与专业课融合点。</p><span class="tag t-blue">ie_culture_lesson</span></div>
+<div class="card"><h4>&#x1F4C6; 文化课周度进度</h4><p>18周详细进度计划表，每周内容/目标/与专业课融合点完整呈现。</p><span class="tag t-blue">ie_culture_lesson_week</span></div>
+<div class="card"><h4>&#x1F4DD; 文化课详细设计</h4><p>完整教学过程/板书设计/作业布置/评价方案，可下载为Word文档。</p><span class="tag t-blue">ie_culture_lesson_detail</span></div>
+<div class="card"><h4>&#x1F3AF; 文化课关键词定制</h4><p>输入关键词和需求，AI按定制要求生成文化课教学设计方案。</p><span class="tag t-purple">ie_culture_lesson_custom</span></div>
+<div class="card"><h4>&#x1F33E; 极简助农AI赚钱</h4><p>30秒调研→推荐项目→AI对话指导，4个变现项目（山货/服务/手工/轻兼职）。</p><span class="tag t-green">graduate_requirement</span></div>
+</div>
+
+<h3>1.2 生成流程</h3>
+<div class="flow-row">
+<div class="flow-step"><div class="num">1</div><div class="label">用户填写参数</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">2</div><div class="label">前端POST提交</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">3</div><div class="label">后端构建Prompt</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">4</div><div class="label">调用AI模型</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">5</div><div class="label">返回taskId</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">6</div><div class="label">前端轮询结果</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step"><div class="num">7</div><div class="label">红头公文渲染</div></div>
+</div>
+
+<h3>1.3 红头公文渲染效果</h3>
+<div class="preview-box">
+<div class="red-head">四真·三化·五链·三场<br>产教融合系统设计方案</div>
+<div class="red-line"></div>
+<div class="doc-title">{学校名称} {专业名称}<br>产教融合总经理统一规划方案</div>
+<div class="doc-date">{生成日期}</div>
+<div style="padding:12px;background:#f8f9fa;border-radius:4px;font-size:12px;color:#555;line-height:2">
+<span style="color:#cc0000;font-weight:700;font-size:13px">【教学目标】</span><br>
+<span style="font-weight:700;font-size:14px">一、课程定位与目标</span><br>
+<span style="font-weight:700;font-size:13px;color:#444">（一）知识目标</span><br>
+&emsp;1. 掌握{产品名称}的基本工艺流程<br>
+&emsp;2. 理解{产品名称}的营养搭配原理<br>
+&emsp;· 项目驱动教学法——以真实产品为载体<br>
+&emsp;· 任务驱动教学法——以典型工作任务为主线<br>
+<br>
+<span style="font-weight:700;font-size:14px">二、教学内容设计</span><br>
+| 周次 | 教学内容 | 实操任务 | 考核要点 |<br>
+|------|----------|----------|----------|<br>
+| 第1周 | {内容} | {任务} | {要点} |<br>
+<br>
+<div style="text-align:right;color:#666;font-size:11px;background:#fafafa;padding:8px">
+{学校名称}<br>{日期}
+</div>
+</div>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+<span class="tag t-red">导出Word</span>
+<span class="tag t-blue">复制</span>
+<span class="tag t-green">全屏</span>
+<span class="tag t-gold">续写</span>
+</div>
+</div>
+
+<h3>1.4 极简助农AI赚钱系统</h3>
+<div class="crop-grid">
+<div class="crop-card"><div class="icon">&#x1F34E;</div><div class="name">山货特产直销</div><div class="desc">拍照+发语音就能卖</div></div>
+<div class="crop-card"><div class="icon">&#x1F527;</div><div class="name">上门服务接单</div><div class="desc">附近3公里精准匹配</div></div>
+<div class="crop-card"><div class="icon">&#x1F3A8;</div><div class="name">手工制品销售</div><div class="desc">短视频引流卖全国</div></div>
+</div>
+<p style="text-indent:0;text-align:center;color:#666;font-size:13px">用户完成4道调研题 → AI推荐最适合的赚钱项目 → 一键生成操作方案 → AI对话持续指导</p>
+</div>
+
+<!-- ============ 值餐系统 ============ -->
+<div class="section">
+<h2>&#x1F372; 二、值餐（职餐）实战平台</h2>
+<p>中餐烹饪专业学生校内生产性实训的核心数字化平台，覆盖<strong>10个子页面</strong>，累计服务<strong>349,530人次</strong>，营业收入<strong>309.01万元</strong>，零食品安全事故。</p>
+
+<h3>2.1 今日精选</h3>
+<div class="crop-grid">
+<div class="crop-card" style="border-color:#EC4899"><div class="icon">&#x1F339;</div><div class="name">悦颜·漂亮餐</div><div class="desc">中医美容专业出品<br>4道养颜菜品</div></div>
+<div class="crop-card" style="border-color:#10B981"><div class="icon">&#x1F33F;</div><div class="name">康膳·健康餐</div><div class="desc">药食同源专业出品<br>4道药膳菜品</div></div>
+<div class="crop-card" style="border-color:#F59E0B"><div class="icon">&#x1F957;</div><div class="name">轻膳·轻食餐</div><div class="desc">营养搭配专业出品<br>4道低卡菜品</div></div>
+</div>
+
+<h3>2.2 十大子页面功能</h3>
+<div class="card-grid">
+<div class="card"><h4>&#x1F4C5; 今日精选</h4><p>3大餐类(悦颜4菜/康膳4菜/轻膳4菜) + 菜品卡片(名称/价格/卡路里/健康值/标签) + 购物车预订 + 预订截止倒计时</p></div>
+<div class="card"><h4>&#x2B50; 我的价值</h4><p>积分328分 + 4个Tab：口味画像(五维雷达图)/订单记录(3条)/奖励兑换(5种)/年度报告(6指标)</p></div>
+<div class="card"><h4>&#x1F91D; 信任体系</h4><p>3个Tab：评价列表(含厨师回复)/评价统计(6种触动标签)/发表评价(五维评分+标签+文字)</p></div>
+<div class="card"><h4>&#x1F4AC; 共创</h4><p>3个Tab：菜品投票(3选项)/创意提案/教育内容(4类：饮食文化/营养科学/后厨故事/人物专访)</p></div>
+<div class="card"><h4>&#x1F4CA; 后厨驾驶舱</h4><p>4核心数据卡片 + 预警系统 + 订单汇总 + 4工位任务分配(切配/炒锅/汤品/打包)</p></div>
+<div class="card"><h4>&#x1F4C8; 经营参谋部</h4><p>4个Tab：概览(4指标)/菜品TOP5/学生绩效(4人)/成本分析(6项)</p></div>
+<div class="card"><h4>&#x1F33F; 药食同源</h4><p>品牌故事 + 2大板块(中药材类/食材类) + 产品网格 + 详情页</p></div>
+<div class="card"><h4>&#x2699;&#xFE0F; 用餐习惯设置</h4><p>用餐方式(堂食/打包) + 座位偏好 + 6时段 + 茶水开关 + 3通知开关</p></div>
+</div>
+
+<h3>2.3 菜品数据示例</h3>
+<table class="data-table">
+<tr><th>餐类</th><th>菜品名</th><th>价格</th><th>卡路里</th><th>健康值</th><th>标签</th></tr>
+<tr><td>悦颜</td><td>玫瑰银耳莲子羹</td><td>¥18</td><td>120kcal</td><td style="color:#10B981">95</td><td>养颜·润肺</td></tr>
+<tr><td>悦颜</td><td>红枣枸杞燕窝盅</td><td>¥38</td><td>85kcal</td><td style="color:#10B981">98</td><td>补气·滋阴</td></tr>
+<tr><td>康膳</td><td>宁强天麻炖鸡汤</td><td>¥28</td><td>280kcal</td><td style="color:#10B981">96</td><td>药膳·补脑</td></tr>
+<tr><td>康膳</td><td>清蒸鲈鱼+药食同源汤</td><td>¥50</td><td>350kcal</td><td style="color:#10B981">97</td><td>高蛋白·低脂</td></tr>
+<tr><td>轻膳</td><td>五彩养生沙拉</td><td>¥18</td><td>120kcal</td><td style="color:#10B981">88</td><td>高纤维·维C</td></tr>
+<tr><td>轻膳</td><td>牛油果鸡胸肉碗</td><td>¥28</td><td>250kcal</td><td style="color:#10B981">92</td><td>高蛋白·低脂</td></tr>
+</table>
+</div>
+
+<!-- ============ 悦舍系统 ============ -->
+<div class="section">
+<h2>&#x1F3AE; 三、悦舍养生平台</h2>
+<p>中医养生保健专业校内生产性实训基地的数字化服务平台，总建筑面积<strong>680㎡</strong>，文件编号<strong>宁职中教字〔2024〕第067号</strong>，临床有效率<strong>91.7%</strong>。</p>
+
+<h3>3.1 三大服务分类</h3>
+
+<h4>&#x1F339; 悦颜坊（7项）</h4>
+<table class="data-table">
+<tr><th>项目</th><th>价格</th><th>原价</th><th>时长</th><th>标签</th></tr>
+<tr><td>毛孔冲浪</td><td>¥298</td><td>¥398</td><td>60min</td><td><span class="tag t-blue">深层清洁</span></td></tr>
+<tr><td>肌底净化</td><td>¥358</td><td>¥458</td><td>75min</td><td><span class="tag t-green">新品</span></td></tr>
+<tr><td>玫瑰灌肤</td><td>¥288</td><td>¥388</td><td>50min</td><td><span class="tag t-red">保湿·滋养</span></td></tr>
+<tr><td>水光原液精华焕肤</td><td>¥468</td><td>¥598</td><td>90min</td><td><span class="tag t-gold">限时·深层修复</span></td></tr>
+<tr><td>小部位脱毛</td><td>¥168</td><td>¥228</td><td>30min</td><td><span class="tag t-blue">精准·高效</span></td></tr>
+<tr><td>大部位脱毛</td><td>¥388</td><td>¥498</td><td>60min</td><td><span class="tag t-purple">持久·光滑</span></td></tr>
+<tr><td>头部洗护</td><td>¥198</td><td>¥258</td><td>45min</td><td><span class="tag t-green">放松·养护</span></td></tr>
+</table>
+
+<h4>&#x1F9D8; 悦身堂（6项）</h4>
+<table class="data-table">
+<tr><th>项目</th><th>价格</th><th>原价</th><th>时长</th><th>标签</th></tr>
+<tr><td>头部放松</td><td>¥268</td><td>¥338</td><td>45min</td><td><span class="tag t-purple">舒压·助眠</span></td></tr>
+<tr><td>肩颈放松</td><td>¥298</td><td>¥388</td><td>60min</td><td><span class="tag t-red">热门·解僵</span></td></tr>
+<tr><td>背部减压</td><td>¥328</td><td>¥428</td><td>60min</td><td><span class="tag t-blue">深层·舒缓</span></td></tr>
+<tr><td>拔罐</td><td>¥198</td><td>¥268</td><td>30min</td><td><span class="tag t-gold">祛湿·通络</span></td></tr>
+<tr><td>刮痧</td><td>¥228</td><td>¥298</td><td>30min</td><td><span class="tag t-green">排毒·活血</span></td></tr>
+<tr><td>艾灸</td><td>¥268</td><td>¥338</td><td>45min</td><td><span class="tag t-red">温补·养生</span></td></tr>
+</table>
+
+<h4>&#x1F4E6; 精选套餐（4项）</h4>
+<table class="data-table">
+<tr><th>套餐</th><th>价格</th><th>包含服务</th><th>时长</th></tr>
+<tr><td>头部按摩+拨筋刮痧+洗护</td><td>¥598</td><td>3项组合</td><td>120min</td></tr>
+<tr><td>精油开背+拔罐</td><td>¥468</td><td>2项组合</td><td>90min</td></tr>
+<tr><td>肩颈放松+刮痧</td><td>¥488</td><td>2项组合</td><td>90min</td></tr>
+<tr><td>卵巢保养+艾灸</td><td>¥588</td><td>2项组合</td><td>90min</td></tr>
+</table>
+
+<h3>3.2 服务人员</h3>
+<table class="data-table">
+<tr><th>姓名</th><th>职称</th><th>专长</th><th>评分</th><th>评价数</th><th>经验</th></tr>
+<tr><td>袁琪</td><td>康复理疗师</td><td>肩颈理疗·腰椎调理</td><td style="color:#C41230">4.9</td><td>128</td><td>2年</td></tr>
+<tr><td>张晋雯</td><td>中医康复师</td><td>推拿按摩·经络疏通</td><td style="color:#C41230">4.8</td><td>96</td><td>2年</td></tr>
+<tr><td>陈矾</td><td>美容理疗师</td><td>面部护理·皮肤管理</td><td style="color:#C41230">4.9</td><td>112</td><td>2年</td></tr>
+<tr><td>龙英</td><td>美容理疗师</td><td>美甲设计·手部护理</td><td style="color:#C41230">4.7</td><td>86</td><td>1年</td></tr>
+<tr><td>张小丽</td><td>美甲艺术师</td><td>美甲彩绘·甲片设计</td><td style="color:#C41230">4.8</td><td>74</td><td>1年</td></tr>
+<tr><td>安娥</td><td>美妆造型师</td><td>化妆造型·纹绣设计</td><td style="color:#C41230">4.9</td><td>92</td><td>2年</td></tr>
+</table>
+
+<h3>3.3 快捷功能</h3>
+<div class="card-grid">
+<div class="card"><h4>&#x1F4C5; 明日预约</h4><p>今日17:00前下单预订次日服务</p></div>
+<div class="card"><h4>&#x1F4CB; 我的悦约</h4><p>待赴约列表 + 历史记录</p></div>
+<div class="card"><h4>&#x1F3C6; 会员中心</h4><p>等级·积分·权益管理</p></div>
+<div class="card"><h4>&#x1F4D6; 养生小课</h4><p>养生知识与雅集活动</p></div>
+</div>
+</div>
+
+<!-- ============ 技术栈 ============ -->
+<div class="section">
+<h2>&#x1F6E0;&#xFE0F; 四、技术栈</h2>
+<table class="data-table">
+<tr><th>层级</th><th>技术</th><th>说明</th></tr>
+<tr><td>前端框架</td><td>Taro 4 + React 18 + TypeScript</td><td>跨端小程序框架，一套代码多端运行</td></tr>
+<tr><td>UI样式</td><td>Tailwind CSS 4 + shadcn/ui</td><td>原子化CSS + 高质量组件库</td></tr>
+<tr><td>后端框架</td><td>NestJS</td><td>企业级Node.js框架</td></tr>
+<tr><td>数据库</td><td>Supabase (PostgreSQL)</td><td>开源Firebase替代方案</td></tr>
+<tr><td>AI引擎</td><td>大语言模型API</td><td>13种Prompt模板驱动</td></tr>
+<tr><td>Word导出</td><td>docx库</td><td>单个+批量合并导出</td></tr>
+<tr><td>文件存储</td><td>TOS对象存储</td><td>上传文档解析</td></tr>
+</table>
+
+<h3>核心API接口</h3>
+<table class="data-table">
+<tr><th>接口</th><th>方法</th><th>用途</th></tr>
+<tr><td>/api/generate</td><td>POST</td><td>提交异步AI生成任务</td></tr>
+<tr><td>/api/generate/result?taskId=</td><td>GET</td><td>轮询获取生成结果</td></tr>
+<tr><td>/api/generate/continue-generate</td><td>POST</td><td>续写生成内容</td></tr>
+<tr><td>/api/generate/upload-doc</td><td>POST</td><td>上传文档提取文本</td></tr>
+<tr><td>/api/export/word?taskId=</td><td>GET</td><td>导出单个方案Word</td></tr>
+<tr><td>/api/export/word-all?taskIds=</td><td>GET</td><td>合并导出全部方案Word</td></tr>
+<tr><td>/api/yaoshi/categories</td><td>GET</td><td>药食分类数据</td></tr>
+<tr><td>/api/yaoshi/products</td><td>GET</td><td>药食产品数据</td></tr>
+</table>
+</div>
+
+<!-- ============ 使用入口 ============ -->
+<div class="section" style="text-align:center;background:linear-gradient(135deg,#003D7A,#C41230);color:#fff">
+<h2 style="color:#fff;border-color:rgba(255,255,255,.2)">&#x1F4F2; 扫码体验</h2>
+<p style="text-indent:0;font-size:16px;opacity:.95">微信小程序搜索或扫码进入<br><strong>课点操作系统 K-OS</strong></p>
+<p style="text-indent:0;margin-top:12px;font-size:14px">
+&#x1F517; <a href="https://code.coze.cn/p/7625242371097280539/deploy?tab=overview" style="color:#FFD700" target="_blank">code.coze.cn/p/7625242371097280539</a>
+</p>
+<div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+<span class="tag t-gold" style="font-size:13px;padding:6px 16px">产教融合AI</span>
+<span class="tag t-green" style="font-size:13px;padding:6px 16px">值餐实战</span>
+<span class="tag t-purple" style="font-size:13px;padding:6px 16px">悦舍养生</span>
+<span class="tag t-red" style="font-size:13px;padding:6px 16px">一键生成Word</span>
+<span class="tag t-blue" style="font-size:13px;padding:6px 16px">极简助农</span>
+</div>
+</div>
+
+</div>
+
+<div class="footer"><div class="inner">
+<p>宁强县职业高级中学 &copy; 2026 | 课点操作系统 K-OS v2.0 | 微信小程序</p>
+<p style="font-size:11px;opacity:.6;margin-top:4px">教师仅需输入专业、课程、学时三项参数，5分钟内自动生成产业情境化教学方案 | 19校零派驻完全自主运行</p>
+</div></div>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>根植产业重构课堂，由畏学到乐学——县域中职育人模式的创新与实践 | 2026年国家教学成果奖</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','SimHei','PingFang SC',sans-serif;background:#F2F4F7;color:#333;line-height:1.6}
+/* === TOP BAR === */
+.topbar{background:#003D7A;color:#fff;font-size:12px;padding:6px 0;border-bottom:3px solid #C41230}
+.topbar .inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#fff;text-decoration:none;margin-left:16px}
+.topbar a:hover{text-decoration:underline}
+/* === HEADER === */
+.header{background:linear-gradient(180deg,#004D99 0%,#003D7A 100%);color:#fff;padding:28px 0 0}
+.header .inner{max-width:1200px;margin:0 auto;padding:0 20px;text-align:center}
+.header .emblem{font-size:52px;line-height:1;margin-bottom:4px}
+.header h1{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.header .subtitle{font-size:16px;opacity:.9;font-weight:600;margin-bottom:8px}
+.header .meta{font-size:13px;opacity:.75;margin-bottom:6px}
+/* === NAV === */
+.nav{background:#003D7A;border-bottom:4px solid #C41230;position:sticky;top:0;z-index:100}
+.nav .inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex}
+.nav a{color:#fff;text-decoration:none;padding:14px 22px;font-size:15px;font-weight:600;display:block;transition:background .2s}
+.nav a:hover,.nav a.active{background:#C41230}
+/* === MAIN === */
+.main{max-width:1200px;margin:0 auto;padding:24px 20px}
+/* === HERO === */
+.hero{background:#fff;border-radius:8px;padding:32px;margin-bottom:20px;border-left:5px solid #C41230;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.hero h2{font-size:24px;color:#003D7A;margin-bottom:12px;font-weight:900}
+.hero p{font-size:15px;color:#444;line-height:1.9}
+.hero .highlight{color:#C41230;font-weight:700}
+/* === SECTION === */
+.section{background:#fff;border-radius:8px;padding:28px 32px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.section h2{font-size:22px;color:#003D7A;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #E8ECF2;font-weight:900}
+.section h2::before{content:'';display:inline-block;width:6px;height:22px;background:#C41230;margin-right:10px;vertical-align:middle;border-radius:2px}
+.section h3{font-size:18px;color:#003D7A;margin:16px 0 10px;font-weight:800}
+.section p{font-size:14px;color:#444;line-height:1.9;text-indent:2em;margin-bottom:10px}
+/* === CARDS === */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:16px;margin:16px 0}
+.card{background:#F8FAFD;border:1px solid #DEE4ED;border-radius:8px;padding:20px;transition:all .2s}
+.card:hover{border-color:#C41230;box-shadow:0 4px 16px rgba(196,18,48,.08)}
+.card h4{font-size:17px;color:#003D7A;margin-bottom:8px;font-weight:800}
+.card p{font-size:13px;color:#555;line-height:1.7;text-indent:0}
+.card .num{font-size:38px;font-weight:900;color:#C41230;display:block;line-height:1.2}
+.card .tag{display:inline-block;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:700;margin:4px 2px}
+.tag-blue{background:#E6F0FA;color:#003D7A}.tag-red{background:#FDEDEC;color:#8B2020}.tag-green{background:#E6F5EC;color:#107C41}.tag-gold{background:#FFF8EC;color:#7A4D00}
+/* === TABLE === */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.data-table th{background:#003D7A;color:#fff;padding:12px 14px;text-align:center;font-weight:700}
+.data-table td{padding:10px 14px;text-align:center;border-bottom:1px solid #E8ECF2}
+.data-table tr:nth-child(even){background:#F8FAFD}
+.data-table .up{color:#107C41;font-weight:700}.data-table .down{color:#C41230;font-weight:700}
+/* === STATS === */
+.stat-row{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
+.stat-item{flex:1;min-width:200px;text-align:center;padding:20px;background:linear-gradient(180deg,#F8FAFD,#fff);border:1px solid #DEE4ED;border-radius:8px}
+.stat-item .val{font-size:42px;font-weight:900;color:#003D7A;display:block;line-height:1.1}
+.stat-item .val.red{color:#C41230}.stat-item .val.green{color:#107C41}
+.stat-item .lbl{font-size:14px;color:#666;margin-top:6px;font-weight:600}
+/* === TIMELINE === */
+.timeline{position:relative;padding:10px 0;margin:16px 0}
+.tl-row{display:flex;gap:12px}
+.tl-card{flex:1;padding:16px;border-radius:8px;border-top:4px solid}
+.tl-card:nth-child(1){border-color:#0078D4;background:#E6F0FA}
+.tl-card:nth-child(2){border-color:#107C41;background:#E6F5EC}
+.tl-card:nth-child(3){border-color:#D48400;background:#FFF8EC}
+.tl-card:nth-child(4){border-color:#C41230;background:#FDEDEC}
+.tl-card .yr{font-size:16px;font-weight:900;color:#003D7A;margin-bottom:4px}
+.tl-card p{font-size:12px;color:#444;line-height:1.6;text-indent:0}
+/* === FOOTER === */
+.footer{background:#003D7A;color:#fff;padding:24px 0 16px;margin-top:24px}
+.footer .inner{max-width:1200px;margin:0 auto;padding:0 20px;text-align:center}
+.footer p{font-size:13px;opacity:.8;line-height:1.8}
+.footer .links{display:flex;justify-content:center;gap:20px;margin-bottom:12px;flex-wrap:wrap}
+.footer .links a{color:#fff;text-decoration:none;font-size:13px}
+.footer .links a:hover{text-decoration:underline}
+/* === RESPONSIVE === */
+@media(max-width:768px){.header h1{font-size:20px}.nav a{padding:10px 14px;font-size:13px}.card-grid{grid-template-columns:1fr}.tl-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar"><div class="inner">
+<span>2026年职业教育国家教学成果奖 | 陕西省推荐 | 申报网站</span>
+<span><a href="#">English</a><a href="#">无障碍浏览</a></span>
+</div></div>
+
+<!-- HEADER -->
+<div class="header"><div class="inner">
+<div class="emblem">&#x1F3C6;</div>
+<h1>根植产业重构课堂，由畏学到乐学</h1>
+<div class="subtitle">——县域中职育人模式的创新与实践</div>
+<div class="meta">成果完成单位：宁强县职业高级中学（牵头）| 推荐单位：陕西省教育厅 | 成果网址：tongdayang01.github.io</div>
+</div></div>
+
+<!-- NAV -->
+<div class="nav"><div class="inner">
+<a href="#home" class="active">首页</a>
+<a href="#about">成果简介</a>
+<a href="#report">总结报告</a>
+<a href="#innovation">创新特色</a>
+<a href="#effect">育人成效</a>
+<a href="#promote">推广应用</a>
+<a href="#evidence">佐证材料</a>
+<a href="#team">完成团队</a>
+</div></div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HERO -->
+<div class="hero" id="home">
+<h2>成果概要</h2>
+<p>本成果针对县域中职长期存在的<span class="highlight">育人目标单一导向、课堂供给与学情特征错配、课程内容与产业需求衔接滞后</span>三大结构性矛盾，自2013年起，历经十三年探索实践，首创"心理重建→课堂重构→产业闭环"<span class="highlight">三阶递进育人模式</span>，自主研发"课点"数智系统，实现改革经验算法化、复制零门槛。经22所跨省种子校覆盖8省6类极端场景验证，<span class="highlight">两度荣获陕西省教学成果特等奖</span>，被姜大源先生评价为"中职人才培养守正创新的标杆性实践"。</p>
+<div class="stat-row">
+<div class="stat-item"><span class="val red">89→21</span><span class="lbl">畏学指数(P<0.001)</span></div>
+<div class="stat-item"><span class="val">35%→92%</span><span class="lbl">课堂参与度</span></div>
+<div class="stat-item"><span class="val">3%→86%</span><span class="lbl">企业主动招聘率</span></div>
+<div class="stat-item"><span class="val green">0.821</span><span class="lbl">方法论解释力R方</span></div>
+<div class="stat-item"><span class="val">22校</span><span class="lbl">跨省种子校100%验收</span></div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+<h2>成果简介</h2>
+<h3>一、成果背景</h3>
+<p>宁强，地处秦巴山区腹地的原国家级贫困县。2013年的宁强县职业高级中学，387名新生中70%认为自己是一个没用的人，畏学指数高达89——100个学生中有89个对学习产生了临床级别的条件性恐惧。而同样是这些学生，在茶园里能精准判断采摘时机，在厨房里能独立完成一桌宴席。他们不是能力不足，而是教育的方式从未唤醒他们。</p>
+<p>2013年起，学校先后依托3项国家及省市教育科学规划课题，联合县域行业企业，开展了人才培养模式的系统探索。2015年，在完成产业需求与学生学情双向深度诊断的基础上，首创"三阶递进"育人模式，并颁行《人才培养创新行动计划(2015-2020)》。又经十年实践检验、迭代优化与跨省推广，形成以"从畏学到乐学，从课堂到产业"为核心的实践成果，两度荣获陕西省教学成果特等奖。</p>
+
+<h3>二、五维人才培养目标</h3>
+<p>聚焦县域茶叶、天麻、康养三大主导产业，科学定位了<span class="highlight">"有信心、会学习、精技能、擅经营、能兴乡"</span>五维人才培养目标——以岗位能力图谱为标尺，将"从一线操作到经营管理"的完整能力链条转化为学生成长阶梯。五个维度层层递进——"有信心"是起点（畏学指数89→21），"会学习"是方法（课堂参与度35%→92%），"精技能"是核心（赛标即课标），"擅经营"是价值（学生创办微企12家），"能兴乡"是归宿（本地就业率68%）。对接产业绘制岗位能力图谱，将27份企业岗位清单转化为课程内容，专业课程覆盖率提升至87%。确立了"心理重建→课堂重构→产业闭环"三阶递进培养路径，颁行包含五大工程、23项任务的五年行动计划。</p>
+
+<h3>三、三阶递进课程教学体系</h3>
+<p><b>第一阶"心理重建"</b>，构建价值引领的畏学逆转模块——基于387名新生基线调研(信度Cronbach α=0.87)与136名个案36个月纵向追踪，首次将中职生"畏学"从态度问题重新定义为可干预的"条件性情绪反射"。通过"两步干预、三轮循环"课程模块重塑学习信心，畏学指数从89降至21(p<0.001)。</p>
+<p><b>第二阶"课堂重构"</b>，创建"1+8+N"高频轮替课堂范式，每3-5分钟轮替、教师精讲不超10分钟，精准适配中职学生注意力节律，课堂参与度从35%升至92%，知识留存率从23%升至81%，实现了从"控制-服从"到"赋能-高效"的结构性转型。</p>
+<p><b>第三阶"产业闭环"</b>，构建"四真三化五链三场"操作系统——真实产业(27份岗位清单)、真实项目(自建值餐工坊、悦舍理疗中心等校内实战平台)、真实评价(客户扫码+企业月考+世赛检测+同伴互评+教师评价五位一体)。十门文化课完成产业化转型，学生结业提交"产品包"而非传统试卷。自主研发"课点"数智系统，教师输入专业、课程、产业需求三项核心参数，系统自动生成产业情境化教学方案，备课效率提升90%。</p>
+
+<h3>四、"自我造血、动态适配"的保障机制</h3>
+<p>校内建成三大产业实战平台，年营收稳定反哺教学，形成可持续的产教融合生态。建立"产业调研-岗位分析-课程对标-就业追踪"四环动态调整机制。构建教师五阶成长体系(1.0内容灌输→3.0学生引导→5.0场域浸泡)，培养了一支扎根县域、理实兼备的教学骨干队伍。</p>
+
+<h3>五、核心成效</h3>
+<div class="card-grid">
+<div class="card"><span class="num">2153人</span><p>在校生规模（2013年不足400人）</p></div>
+<div class="card"><span class="num">152人/年</span><p>本科上线（2013年为0）</p></div>
+<div class="card"><span class="num">4人次</span><p>世赛银奖（陕南零突破）</p></div>
+<div class="card"><span class="num">5800元</span><p>毕业生起始月薪（全国县域均值1.81倍）</p></div>
+<div class="card"><span class="num">68%</span><p>本地就业率（2013年仅12%）</p></div>
+<div class="card"><span class="num">22校</span><p>跨省种子校100%通过三阶段验收</p></div>
+</div>
+</div>
+
+<!-- INNOVATION -->
+<div class="section" id="innovation">
+<h2>成果特色与创新</h2>
+<div class="card-grid">
+<div class="card" style="border-left:4px solid #0078D4">
+<h4>理念创新</h4><p>创造性提出"价值引领铸魂、赋能乐学、产教兴乡"育人理念，确立了县域中职"为个体增值、为乡村振兴赋能"的类型教育价值逻辑。首次将县域中职教育从"缺陷补偿"范式转换为"潜能激活"范式——将学生从"学业受挫者"重新定义为"待唤醒的乡村振兴价值创造者"。</p>
+<div><span class="tag tag-blue">缺陷补偿→潜能激活</span><span class="tag tag-red">畏学89→21</span></div></div>
+<div class="card" style="border-left:4px solid #107C41">
+<h4>模式创新</h4><p>探索建构了"心理重建→课堂重构→产业闭环"三阶递进育人模式，实现了从心理底层到产业顶层的全链路贯通。三阶经22所种子校覆盖8省6类极端场景的完整复制验证，多元回归显示方法论解释力达82.1%，区域条件解释力仅7.3%。</p>
+<div><span class="tag tag-green">三阶递进全链路</span><span class="tag tag-blue">R方=0.821</span></div></div>
+<div class="card" style="border-left:4px solid #D48400">
+<h4>技术革新</h4><p>自主研发"课点"数智系统，构建了"经验算法化、复制零门槛"的动态适配保障机制。将十三年改革经验与专家智慧转化为可计算模型，教师仅需输入专业、课程、学时三项参数，5分钟内自动生成全部教学详细设计，备课效率提升90%。</p>
+<div><span class="tag tag-gold">经验算法化</span><span class="tag tag-blue">19校零派驻自主运行</span></div></div>
+</div>
+</div>
+
+<!-- EFFECT -->
+<div class="section" id="effect">
+<h2>育人成效</h2>
+<table class="data-table">
+<tr><th>指标维度</th><th>改革前(2013-2015)</th><th>改革后(2025-2026)</th><th>变化幅度</th></tr>
+<tr><td>畏学指数(反向指标)</td><td style="font-weight:900;color:#C41230">89</td><td style="font-weight:900;color:#107C41">21</td><td class="down">-68(降76%)</td></tr>
+<tr><td>在校生规模</td><td><400人</td><td style="font-weight:900;color:#107C41">2153人</td><td class="up">+438%</td></tr>
+<tr><td>本科上线</td><td>0人/年</td><td style="font-weight:900;color:#107C41">152人/年</td><td class="up">历史性突破</td></tr>
+<tr><td>课堂参与度</td><td>35%</td><td style="font-weight:900;color:#107C41">92%</td><td class="up">+57个百分点</td></tr>
+<tr><td>知识留存率</td><td>23%</td><td style="font-weight:900;color:#107C41">81%</td><td class="up">+58个百分点</td></tr>
+<tr><td>企业主动招聘率</td><td>3%</td><td style="font-weight:900;color:#107C41">86%</td><td class="up">+83个百分点</td></tr>
+<tr><td>毕业生起始月薪</td><td>2200元</td><td style="font-weight:900;color:#107C41">5800元</td><td class="up">达全国县域均值1.81倍</td></tr>
+<tr><td>本地就业率</td><td>12%</td><td style="font-weight:900;color:#107C41">68%</td><td class="up">+56个百分点</td></tr>
+<tr><td>用人单位满意率</td><td>41%</td><td style="font-weight:900;color:#107C41">93%</td><td class="up">+52个百分点</td></tr>
+<tr><td>学生创办微企</td><td>0</td><td style="font-weight:900;color:#107C41">12家</td><td class="up">带动就业80人</td></tr>
+</table>
+</div>
+
+<!-- PROMOTE -->
+<div class="section" id="promote">
+<h2>推广应用</h2>
+<h3>区域雁阵效应</h3>
+<div class="tl-row">
+<div class="tl-card"><div class="yr">头雁: 宁强职中</div><p>十二年模式策源地<br>在校生 400→2153人<br>2013-2018理论与实践成型</p></div>
+<div class="tl-card"><div class="yr">核心雁群: 6所帮扶校</div><p>零额外财政投入独立复制<br>南郑烹饪就业率62%→97%<br>2018-2020首轮验证</p></div>
+<div class="tl-card"><div class="yr">扩展雁群: 22所种子校</div><p>8省6类极端场景<br>100%三阶段验收(均9.2周)<br>2020-2025规模化验证</p></div>
+<div class="tl-card"><div class="yr">全域雁阵: 12所中职</div><p>核心标准纳入市级政策<br>汉中市全域推行<br>2025-2026全面落地</p></div>
+</div>
+
+<h3>跨省推广实证数据</h3>
+<div class="card-grid">
+<div class="card"><span class="num" style="color:#107C41">100%</span><p>三阶段验收通过率</p></div>
+<div class="card"><span class="num">9.2周</span><p>平均验收周期(SD=2.1)</p></div>
+<div class="card"><span class="num" style="color:#C41230">0.821</span><p>方法论解释力R方</p></div>
+<div class="card"><span class="num">0.073</span><p>区域条件解释力R方</p></div>
+<div class="card"><span class="num" style="color:#107C41">19所</span><p>零派驻完全自主运行</p></div>
+</div>
+
+<h3>政策转化与荣誉</h3>
+<div class="card-grid">
+<div class="card"><h4>省级荣誉</h4><p>2020年、2025年两度荣获陕西省教学成果特等奖；2022年获陕西省人民政府"全省职教改革成效明显地方"表彰</p></div>
+<div class="card"><h4>政策转化</h4><p>核心标准纳入《汉中市职业教育质量提升行动计划》，全市12所中职全面推行</p></div>
+<div class="card"><h4>专家评价</h4><p>姜大源先生评价为"'实实在在办好职业教育'重要指示的完整践行""中职人才培养守正创新的标杆性实践"</p></div>
+<div class="card"><h4>社会认可</h4><p>用人单位满意率从41%升至93%；累计35家省内外单位到校考察；获媒体报道30余次</p></div>
+</div>
+</div>
+
+<!-- EVIDENCE -->
+<div class="section" id="evidence">
+<h2>佐证材料</h2>
+<div class="card-grid">
+<div class="card"><h4>标志性成果</h4><p>两次省教学成果特等奖证书、成果鉴定书、查新报告、查重报告、成果展示网站截图</p></div>
+<div class="card"><h4>获奖证明</h4><p>学校发展(10项)、学生发展(21项)、教师发展(24项)、专业建设(17项)、教科研成果(14项)共75项</p></div>
+<div class="card"><h4>推广应用</h4><p>省内6校应用证明、22校跨省验收报告、多元回归分析报告、政策转化证明、会议推广证明共25项</p></div>
+<div class="card"><h4>媒体报道</h4><p>人民日报、《陕西教育》、《汉中日报》等30余次报道；姜大源评价函；用人单位满意率报告共16项</p></div>
+<div class="card"><h4>科研学术</h4><p>课题材料11项、论著论文专利8项，共19项</p></div>
+<div class="card"><h4>过程性支撑</h4><p>教学实施(15项)、产教融合(12项)、学生数据(11项)、教师数据(5项)、办学成效(7项)、社会服务(4项)共54项</p></div>
+</div>
+<p style="text-align:center;margin-top:16px"><a href="#" style="display:inline-block;padding:12px 32px;background:#C41230;color:#fff;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px">下载完整佐证材料目录(PDF)</a></p>
+</div>
+
+<!-- TEAM -->
+<div class="section" id="team">
+<h2>完成团队</h2>
+<h3>主要完成人</h3>
+<div class="card-grid">
+<div class="card"><h4>杨通达</h4><p>成果总设计师。宁强县职业高级中学教学副校长。首创赋能型行动学习法、1+8高效课堂范式和四真三化五链三场育人模式。主编230页《四真三化课程通完整手册》。</p></div>
+<div class="card"><h4>刘琼</h4><p>成果核心执行与标准化体系构建者。宁强县职业高级中学教务主任。将理论框架转化为全校可执行的标准化操作体系。</p></div>
+<div class="card"><h4>刘兴兰</h4><p>成果核心实证研究者。独立设计实施387名基线调研，完成136名个案36个月纵向追踪，运营值餐工坊。</p></div>
+<div class="card"><h4>何涛</h4><p>课点操作系统总开发者。独立完成全栈架构设计与代码开发，实现方案设计时间从6小时压缩至10分钟。</p></div>
+</div>
+<h3>主要完成单位</h3>
+<div class="card-grid">
+<div class="card"><h4>宁强县职业高级中学（牵头）</h4><p>成果策源地、理论发源地与实践核心阵地。独立完成三大核心组件的理论建构与方案设计。</p></div>
+<div class="card"><h4>南郑区职业技术教育中心</h4><p>成果跨校复制首位验证者。在零额外财政投入下使烹饪专业就业率从62%跃升至97%。</p></div>
+<div class="card"><h4>汉中市第一职业中等专业学校</h4><p>大规模、跨专业同步复制组织验证者。8专业42班同步推进，教师参与度从35%跃升至88%。</p></div>
+<div class="card"><h4>勉县职业教育中心</h4><p>新兴专业领域复制验证者。将模式成功应用于康养新设专业，毕业生起薪提高1800元。</p></div>
+</div>
+</div>
+
+<!-- REPORT -->
+<div class="section" id="report">
+<h2>成果总结报告</h2>
+<p>反映成果的总结报告（约5000字），系统阐述成果背景与历程、主要内容、解决的问题与方案、特色创新、育人成效与推广应用、未来展望六大板块。</p>
+<p style="text-align:center;margin-top:16px"><a href="#" style="display:inline-block;padding:12px 32px;background:#003D7A;color:#fff;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px;margin-right:12px">下载总结报告(PDF)</a><a href="#" style="display:inline-block;padding:12px 32px;background:#C41230;color:#fff;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px">下载申报书(PDF)</a></p>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer"><div class="inner">
+<div class="links">
+<a href="#">关于本站</a><a href="#">网站地图</a><a href="#">联系我们</a><a href="#">成果展示视频</a><a href="#">开放许可声明</a>
+</div>
+<p>成果完成单位：宁强县职业高级中学（牵头） | 推荐单位：陕西省教育厅<br>
+成果网址：https://tongdayang01.github.io/ | 本成果承诺：230页手册及800余套工单模板以开放许可协议全面开源<br>
+若获奖，将帮扶10所最困难县域中职低成本启动改革，并提供至少两年跟踪指导<br>
+&copy; 2026 宁强县职业高级中学 版权所有</p>
+</div></div>
+
+</body>
+</html>
