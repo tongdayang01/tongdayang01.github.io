@@ -3,178 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频展示 —— 宁强方案</title>
-    <meta name="description" content="国家级教学成果奖特等奖申报视频 - 9分30秒完整版 + 分镜脚本">
+    <title>视频展厅 · 影像纪实 | 国家教学成果特等奖</title>
+    <meta name="description" content="教学一线、专业推介、世赛舞台、文化传承——全方位呈现县域中职三阶递进育人模式改革创新成果">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        :root { --primary:#0B2A4A; --accent:#C4A962; --gold:#F6C343; --bg:#F5F3EE; --text:#2C2C2C; --dim:#666; --white:#fff; }
-        body { font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
-        a { color:var(--primary); text-decoration:none; }
-
-        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.15); }
-        .navbar-inner { max-width:1300px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
-        .brand { color:white; font-size:1.1rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
-        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-        .nav-links { display:flex; gap:4px; list-style:none; flex-wrap:wrap; }
-        .nav-links a { color:rgba(255,255,255,0.85); padding:6px 13px; border-radius:8px; font-size:0.88rem; transition:all 0.3s; white-space:nowrap; }
-        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(196,169,98,0.3); }
-
-        .main { max-width:1200px; margin:0 auto; padding:48px 24px; }
-        .page-header { text-align:center; margin-bottom:48px; }
-        .page-header .tag { display:inline-block; background:linear-gradient(135deg,#e8d5a8,#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
-        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:12px; }
-        .page-header p { color:var(--dim); font-size:1.05rem; max-width:700px; margin:0 auto; }
-
-        /* Video Hero */
-        .video-hero { background:linear-gradient(135deg,var(--primary),#061525); border-radius:20px; padding:40px; color:white; margin-bottom:32px; text-align:center; }
-        .video-hero h2 { font-size:1.4rem; margin-bottom:12px; }
-        .video-hero .meta { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; color:rgba(255,255,255,0.7); font-size:0.9rem; }
-        .video-hero .meta span { background:rgba(255,255,255,0.1); padding:4px 14px; border-radius:50px; }
-
-        /* Video Player */
-        .video-container { position:relative; border-radius:16px; overflow:hidden; margin-bottom:48px; background:#000; box-shadow:0 8px 40px rgba(0,0,0,0.3); }
-        .video-container video { width:100%; display:block; }
-        .video-placeholder { width:100%; aspect-ratio:3840/1640; max-height:600px; background:linear-gradient(135deg,#0B2A4A 0%,#061525 50%,#0B2A4A 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; color:white; }
-        .video-placeholder .icon { font-size:4rem; opacity:0.9; }
-        .video-placeholder p { opacity:0.7; font-size:0.95rem; text-align:center; padding:0 40px; }
-        .video-placeholder .note { background:rgba(255,255,255,0.08); padding:10px 24px; border-radius:8px; font-size:0.85rem; }
-        .video-download { text-align:center; margin:16px 0 40px; }
-        .video-download a { display:inline-block; padding:12px 32px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; font-size:1rem; transition:all 0.3s; }
-        .video-download a:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(196,169,98,0.4); }
-
-        /* Segment Timeline */
-        .timeline { margin-bottom:48px; }
-        .timeline h2 { font-size:1.3rem; color:var(--primary); margin-bottom:20px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
-        .seg-card { background:var(--white); border-radius:14px; padding:24px 28px; margin-bottom:14px; box-shadow:0 2px 16px rgba(0,0,0,0.06); border-left:5px solid var(--accent); display:grid; grid-template-columns:140px 1fr; gap:20px; align-items:start; transition:all 0.3s; }
-        .seg-card:hover { box-shadow:0 4px 24px rgba(0,0,0,0.1); transform:translateX(4px); }
-        .seg-card .time { font-weight:800; color:var(--primary); font-size:0.95rem; background:var(--bg); padding:8px 14px; border-radius:8px; text-align:center; }
-        .seg-card .content h3 { font-size:1.05rem; color:var(--primary); margin-bottom:6px; }
-        .seg-card .content p { font-size:0.9rem; color:var(--dim); line-height:1.7; }
-        .seg-card .content .tone { display:inline-block; font-size:0.78rem; background:#e8f0fe; color:var(--primary); padding:2px 10px; border-radius:50px; margin-top:4px; }
-
-        /* Full Script */
-        .script-full { background:var(--white); border-radius:16px; padding:40px; box-shadow:0 4px 24px rgba(0,0,0,0.08); margin-bottom:48px; }
-        .script-full h2 { font-size:1.3rem; color:var(--primary); margin-bottom:24px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
-        .script-block { background:var(--bg); border-radius:12px; padding:22px; margin-bottom:14px; border-left:4px solid var(--accent); }
-        .script-block .timecode { display:inline-block; background:var(--accent); color:var(--primary); padding:3px 14px; border-radius:50px; font-size:0.82rem; font-weight:700; margin-bottom:8px; }
-        .script-block h4 { color:var(--primary); margin-bottom:6px; font-size:1rem; }
-        .script-block p { font-size:0.92rem; color:var(--dim); line-height:1.9; }
-
-        .footer { background:#0B2A4A; color:rgba(255,255,255,0.6); padding:36px 0; text-align:center; font-size:0.9rem; }
-        .footer a { color:#e8d5a8; }
-
-        @media(max-width:768px){
-            .nav-links{display:none;}
-            .seg-card{grid-template-columns:1fr; gap:8px;}
-            .script-full{padding:24px 16px;}
-            .video-placeholder{aspect-ratio:16/9;}
-        }
+        :root{--gold:#C9A96E;--gold-light:#E8D5A3;--dark:#020815;--dark2:#0a1a3a;--text:#E8E8E8;--text-dim:#8A8A9A;--cyan:#00D4AA;--blue:#3B7DD8;--rose:#FF6B9D}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Noto Sans SC',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;line-height:1.8}
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(2,8,21,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+        .nav-brand{font-family:'Noto Serif SC',serif;font-weight:700;font-size:1.1rem;color:var(--gold-light);text-decoration:none}
+        .nav-links{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap}
+        .nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;transition:color .3s}
+        .nav-links a:hover,.nav-links a.active{color:var(--gold-light)}
+        .hero{min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:7rem 2rem 3rem;background:radial-gradient(ellipse at center,var(--dark2) 0%,var(--dark) 100%);position:relative}
+        .hero-content{position:relative;z-index:2;max-width:900px}
+        .hero-badge{display:inline-block;padding:.5rem 1.8rem;border-radius:2rem;background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.25);color:var(--gold-light);font-size:.85rem;letter-spacing:.2em;margin-bottom:2rem}
+        .hero h1{font-family:'Noto Serif SC',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.3;background:linear-gradient(135deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem}
+        .hero p{color:var(--text-dim);font-size:1.1rem;max-width:700px;margin:0 auto}
+        .section{padding:3rem 2rem;max-width:1300px;margin:0 auto;position:relative;z-index:2}
+        .section-tag{display:inline-block;padding:.3rem 1.2rem;border-radius:2rem;font-size:.78rem;letter-spacing:.15em;margin-bottom:.8rem}
+        .section-title{font-family:'Noto Serif SC',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--gold-light);margin-bottom:.5rem}
+        .section-desc{color:var(--text-dim);font-size:.95rem}
+        .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.8rem}
+        .video-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;transition:all .4s}
+        .video-card:hover{transform:translateY(-4px);border-color:rgba(201,169,110,.25);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+        .video-wrap{aspect-ratio:16/9;background:var(--dark2)}
+        .video-wrap video{width:100%;height:100%;object-fit:cover}
+        .video-info{padding:1.2rem 1.5rem}
+        .video-info h4{font-size:1.05rem;font-weight:600;margin-bottom:.4rem}
+        .video-info p{font-size:.85rem;color:var(--text-dim);margin-bottom:.6rem}
+        .tag{display:inline-block;padding:.2rem .7rem;border-radius:1rem;font-size:.7rem;letter-spacing:.08em;margin-right:.4rem;margin-bottom:.3rem}
+        .tag-gold{background:rgba(201,169,110,.12);color:var(--gold-light)}
+        .tag-blue{background:rgba(59,125,216,.12);color:#6BA5E7}
+        .tag-cyan{background:rgba(0,212,170,.12);color:var(--cyan)}
+        .tag-rose{background:rgba(255,107,157,.12);color:var(--rose)}
+        .feature-video{background:linear-gradient(135deg,rgba(201,169,110,.05),rgba(0,212,170,.05));border:1px solid rgba(201,169,110,.2);border-radius:20px;padding:2rem;margin-bottom:2.5rem}
+        .feature-video video{width:100%;border-radius:12px;max-height:70vh}
+        .feature-meta{display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
+        .feature-meta-item{text-align:center}
+        .feature-meta-val{font-size:1.6rem;font-weight:900;color:var(--gold)}
+        .feature-meta-label{font-size:.75rem;color:var(--text-dim)}
+        footer{padding:3rem 2rem;text-align:center;border-top:1px solid rgba(255,255,255,.06);background:var(--dark);position:relative;z-index:2}
+        @media(max-width:768px){.section{padding:2rem 1rem}.video-grid{grid-template-columns:1fr}.nav-links{gap:.6rem}.nav-links a{font-size:.7rem}}
     </style>
 </head>
 <body>
-
-<nav class="navbar">
-    <div class="navbar-inner">
-        <a href="index.html" class="brand"><span class="brand-icon">🎓</span><span>宁强方案</span></a>
-        <ul class="nav-links">
-            <li><a href="index.html">首页</a></li>
-            <li><a href="about.html">成果概况</a></li>
-            <li><a href="theory.html">理论框架</a></li>
-            <li><a href="architecture.html">系统架构</a></li>
-            <li><a href="curriculum.html">课程改革</a></li>
-            <li><a href="generator.html">AI系统</a></li>
-            <li><a href="zhican.html">值餐工坊</a></li>
-            <li><a href="yushe.html">悦舍理疗</a></li>
-            <li><a href="cultural-courses.html">文化课融合</a></li>
-            <li><a href="worldskills.html">赛教融合</a></li>
-            <li><a href="cases.html">推广案例</a></li>
-            <li><a href="stories.html">学生故事</a></li>
-            <li><a href="summary.html">总结报告</a></li>
-            <li><a href="speech.html">主题演讲</a></li>
-            <li><a href="videos.html" class="active">视频</a></li>
-        </ul>
+<nav>
+    <a href="index.html" class="nav-brand">🏆 宁强职中 · 特等奖申报</a>
+    <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="index.html#hall-darkness">成果概览</a>
+        <a href="index.html#hall-theory">理论框架</a>
+        <a href="index.html#hall-data">数据之巅</a>
+        <a href="videos.html" class="active">视频展厅</a>
+        <a href="summary.html">总结报告</a>
+        <a href="evidence.html">佐证材料</a>
     </div>
 </nav>
 
-<div class="main">
-    <div class="page-header">
-        <span class="tag">🎬 视频展示</span>
-        <h1>申报视频与教学影像</h1>
-        <p>9分30秒国家级教学成果奖申报视频 · 4K电影级制作 · 完整分镜脚本</p>
-    </div>
-
-    <!-- Video Hero -->
-    <div class="video-hero">
-        <h2>🎥 《从"厌学"到"创值"——点亮1600个县域中职的那盏灯》</h2>
-        <div class="meta">
-            <span>⏱ 9分30秒</span><span>🎬 7段叙事</span><span>📐 4K·2.35:1</span><span>🎵 原创配乐</span><span>🎙 男中音旁白</span>
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">🎥 展厅六 · 视频展厅</div>
+        <h1>影像纪实 · 看见真实</h1>
+        <p>教学一线课堂实录 · 五大专业推介 · 世赛银奖舞台剧 · 文化传承情景剧<br>全方位呈现县域中职三阶递进育人模式改革创新成果</p>
+        <div class="feature-meta" style="margin-top:2rem">
+            <div class="feature-meta-item"><div class="feature-meta-val">29</div><div class="feature-meta-label">视频总数</div></div>
+            <div class="feature-meta-item"><div class="feature-meta-val">6</div><div class="feature-meta-label">视频分类</div></div>
+            <div class="feature-meta-item"><div class="feature-meta-val">107MB</div><div class="feature-meta-label">主申报视频</div></div>
+            <div class="feature-meta-item"><div class="feature-meta-val">4K</div><div class="feature-meta-label">电影级制作</div></div>
         </div>
     </div>
+</section>
 
-    <!-- Video Player -->
-    <div class="video-container">
-        <!-- 替换下方src为实际视频URL后即可播放 -->
-        <video controls poster="assets/video-poster.jpg" preload="metadata" style="width:100%;display:block;">
-            <source src="assets/申报视频_9分30秒.mp4" type="video/mp4">
-            <source src="https://your-cdn.com/video.mp4" type="video/mp4">
+<!-- Main Submission Video -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(201,169,110,.12);color:var(--gold-light)">🏆 主申报视频</span>
+        <h2 class="section-title">9分30秒 · 国家级教学成果奖申报视频</h2>
+        <p class="section-desc">4K电影级制作 · 2.35:1宽银幕 · 原创配乐 · 男中音解说</p>
+    </div>
+    <div class="feature-video">
+        <video controls poster="assets/campus-aerial.jpg" preload="metadata">
+            <source src="assets/videos/特等奖申报_最终版.mp4" type="video/mp4">
         </video>
-        <div class="video-placeholder" id="videoFallback">
-            <div class="icon">🎬</div>
-            <p>4K电影级申报视频（3840×1640 / 2.35:1宽银幕）</p>
-            <p style="font-size:0.85rem;opacity:0.6;">视频文件上传后自动替换为播放器</p>
-            <div class="note">📁 视频文件路径：E:/video_project/output/宁强职中_国家级教学成果奖申报_9分30秒.mp4</div>
+        <div class="feature-meta">
+            <div class="feature-meta-item"><div class="feature-meta-val">9:30</div><div class="feature-meta-label">时长</div></div>
+            <div class="feature-meta-item"><div class="feature-meta-val">1920×1080</div><div class="feature-meta-label">分辨率</div></div>
+            <div class="feature-meta-item"><div class="feature-meta-val">7段</div><div class="feature-meta-label">叙事结构</div></div>
         </div>
-    </div>
-    <div class="video-download">
-        <a href="assets/申报视频_9分30秒.mp4" download>⬇ 下载完整视频（2.4GB / 4K）</a>
-    </div>
-
-    <!-- Cultural Performance Video Section -->
-    <div class="script-full" style="margin-top:48px;">
-        <h2>🎭 学校情景舞台剧 · 文化馆展演</h2>
-        <p style="color:var(--dim);margin-bottom:24px;">2025年陕西省全民学习活动周唯一展演节目，以舞台艺术再现宁强职中产业课堂改革后斩获汉中市首枚世界职业院校技能大赛银奖的真实故事。</p>
-
-        <div class="video-container" style="margin-bottom:24px;">
-            <video controls preload="metadata" style="width:100%;display:block;border-radius:12px;">
-                <source src="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" type="video/mp4">
-            </video>
+        <div style="margin-top:1.5rem;padding:1.5rem;background:rgba(255,255,255,.02);border-radius:12px">
+            <p style="font-size:.85rem;color:var(--text-dim);line-height:2.2">
+                📍 <strong style="color:var(--gold-light)">段落一：</strong>痛点深渊——2014年职中危机<br>
+                📍 <strong style="color:var(--gold-light)">段落二：</strong>答案之书——职教第一性原理<br>
+                📍 <strong style="color:var(--gold-light)">段落三：</strong>赋能乐学——从畏学到乐学<br>
+                📍 <strong style="color:var(--gold-light)">段落四：</strong>高效强思——1+8+N课堂革命<br>
+                📍 <strong style="color:var(--gold-light)">段落五：</strong>产业创值——四真三化五链三场<br>
+                📍 <strong style="color:var(--gold-light)">段落六：</strong>成果璀璨——数据爆炸对比<br>
+                📍 <strong style="color:var(--gold-light)">段落七：</strong>推广辐射——22校8省联盟
+            </p>
         </div>
-        <div class="video-download">
-            <a href="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" download>⬇ 情景舞台剧（480p / 46MB）</a>
-        </div>
-
-        <div class="script-block" style="margin-top:24px;">
-            <span class="timecode">🎬 0:00-19:00</span>
-            <h4>全省全民学习活动周 · 唯一展演节目</h4>
-            <p>本剧目由宁强职中师生自编自演，是2025年陕西省全民学习活动周职业教育板块<strong>唯一的现场展演节目</strong>。全剧以学校产业课堂改革为背景，真实还原了学生赵佳明、郑燕、孟婷瑶三位曾被贴上"问题学生"标签的少年，从厌学迷茫到站上世界职业院校技能大赛领奖台、斩获<strong>汉中市首枚世赛银牌</strong>的蜕变历程。剧目将值餐工坊的灶台、悦舍理疗的床位、融创市集的摊位搬上舞台，生动诠释了"四真三化五链三场"改革如何让每一个被遗忘的孩子重新被看见、被需要、被尊重。省市领导观演后给予高度评价。</p>
-        </div>
-    </div>
-
-    <div style="text-align:center; margin:48px 0 64px;">
-        <a href="summary.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">📖 阅读成果总结报告 →</a>
-        <a href="speech.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--primary),#1a3a5c); color:white; border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">🎙 主题演讲全文 →</a>
     </div>
 </div>
 
-<div class="footer">
-    <p>© 2026 宁强县职业高级中学 · 产业·课堂双螺旋教学成果团队</p>
-    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="summary.html">总结报告</a> · <a href="speech.html">主题演讲</a></p>
+<!-- Professional Promo Videos -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(0,212,170,.12);color:var(--cyan)">🏭 专业推介</span>
+        <h2 class="section-title">五大特色专业 · 推介视频</h2>
+        <p class="section-desc">医学美容 · 无人机技术 · 汽车维修 · 烹饪艺术 —— 宁强职中王牌专业展示</p>
+    </div>
+    <div class="video-grid">
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/promo/医美.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>💄 医学美容专业</h4><p>中医美容与现代医美技术融合，省级示范专业</p><span class="tag tag-rose">省级示范</span><span class="tag tag-gold">高就业率</span></div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/promo/无人机专业.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🛸 无人机应用技术</h4><p>植保无人机、航拍测绘——前沿科技赋能乡村振兴</p><span class="tag tag-blue">前沿科技</span><span class="tag tag-cyan">服务三农</span></div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/promo/汽修.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🔧 汽车运用与维修</h4><p>新能源+传统燃油车双修，企业真实工位实训</p><span class="tag tag-gold">实用技能</span><span class="tag tag-gold">高薪就业</span></div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/promo/烹饪.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🍳 中餐烹饪专业</h4><p>省级示范 · 值餐工坊67个月运营 · 349,530人次服务</p><span class="tag tag-cyan">省级示范</span><span class="tag tag-gold">王牌专业</span></div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/promo/烹饪鱼香肉丝.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🐟 经典菜品 · 鱼香肉丝</h4><p>从课堂到餐桌——学生实操展示完整制作过程</p><span class="tag tag-cyan">实操展示</span><span class="tag tag-gold">教学成果</span></div>
+        </div>
+    </div>
 </div>
 
-<script>
-// Hide placeholder if video loads successfully
-document.addEventListener('DOMContentLoaded', function() {
-    var video = document.querySelector('video');
-    var placeholder = document.getElementById('videoFallback');
-    if (video && placeholder) {
-        video.addEventListener('loadeddata', function() {
-            placeholder.style.display = 'none';
-        });
-        video.addEventListener('error', function() {
-            placeholder.style.display = 'flex';
-        });
-    }
-});
-</script>
+<!-- Professional Class Teaching -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(59,125,216,.12);color:#6BA5E7">📚 专业课堂实录</span>
+        <h2 class="section-title">19节专业课 · 教学一线</h2>
+        <p class="section-desc">1+8+N高效课堂范式真实记录——"启思议展评测练结"八环节见证课堂革命</p>
+    </div>
+    <div class="video-grid" id="classroom-videos">
+        <script>
+        (function(){
+            const c = document.currentScript.parentElement;
+            const hashes = ['1ce384cc1f45e38a0b006ed9a82d8546','421a0b0033c976b6d96001c9de90c2d5','499db42c1a4bfbc349a9a7f94ed44c1c','54347a6322fd3f448e6675a5cc02ed3f','58751ad2ac114e414b7536064338a87d','6224c38bdc74eef584cb2dca76f2c0fd','70ac6733bfe9503b86c9ef8d084083a4','88e58e872884a0a750a9dae17754c5a5','9c00f9c54057aaa08988b7761c5d9027','a18bd269457b132926921774e927965c','a6b574cd9f69043e532ec76c56557f04','adeb349d4f4b42b54e78f77c3f5eaa65','aec9536f1c1c9ef7753359fc6f02e0ed','cff31dfa3a37007d239cade0583f69de','d2ccb60c70671774ea984ececed30fb1','d79a98a2cd174459afce97561252073c','dbc536c3b424d2efdec99791d0591a98','fa12333b47c7ed6e3000cd6b7cf41d50','fcd5b0ca97f5385a502585eebe49ea4c'];
+            for(let i=0;i<19;i++)c.insertAdjacentHTML('beforeend','<div class="video-card"><div class="video-wrap"><video controls preload="none"><source src="assets/videos/professional/'+hashes[i]+'.mp4" type="video/mp4"></video></div><div class="video-info"><h4>📖 课堂实录 '+(i+1)+'</h4><p>专业课堂教学实录 · 1+8+N高效课堂范式</p><span class="tag tag-blue">专业课</span><span class="tag tag-cyan">1+8+N课堂</span></div></div>');
+        })();
+        </script>
+    </div>
+</div>
+
+<!-- Cultural Stage Performance -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(255,107,157,.12);color:var(--rose)">🎭 文化传承</span>
+        <h2 class="section-title">情景舞台剧 · 文化馆演出</h2>
+        <p class="section-desc">学生自主创作，演绎世赛夺银之路——2025年陕西省全民终身学习活动周开幕式演出</p>
+    </div>
+    <div class="video-grid">
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🎬 情景舞台剧（完整版）</h4><p>从"厌学少年"到"世赛银牌"——学生自编自导自演，19分钟</p><span class="tag tag-rose">原创剧目</span><span class="tag tag-gold">省级演出</span></div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/文化馆_校长讲话_19min起_480p.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🎙 校长讲话 · 改革宣言</h4><p>杨通达校长阐述三阶递进育人模式核心理念</p><span class="tag tag-gold">改革理念</span><span class="tag tag-gold">领导声音</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- World Skills -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(255,215,0,.12);color:#FFD700">🌍 世赛荣耀</span>
+        <h2 class="section-title">世界技能大赛 · 银奖舞台剧</h2>
+        <p class="section-desc">2024年里昂世赛康复技术银奖——陕南中职历史性突破 · 4人获奖 · 全部保送本科</p>
+    </div>
+    <div class="video-grid" style="max-width:800px;margin:0 auto">
+        <div class="video-card" style="grid-column:1/-1">
+            <div class="video-wrap"><video controls preload="metadata"><source src="assets/videos/worldskills-stage.mp4" type="video/mp4"></video></div>
+            <div class="video-info"><h4>🏅 世赛银奖 · 大型舞台剧</h4><p>赵佳明、孟婷媱、郑燕、陈一佳——从大山深处到世界技能舞台</p><span class="tag tag-gold">世界技能大赛</span><span class="tag tag-gold">银奖作品</span><span class="tag tag-rose">4人获奖</span><span class="tag tag-blue">保送本科</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Teacher Video Archive -->
+<div class="section">
+    <div style="margin-bottom:2rem">
+        <span class="section-tag" style="background:rgba(255,255,255,.06);color:var(--text-dim)">👩‍🏫 教师上课视频</span>
+        <h2 class="section-title">名师课堂实录（存档）</h2>
+        <p class="section-desc">核心教师团队完整课堂记录——涵盖语文、数学、多门专业课</p>
+    </div>
+    <div style="padding:2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;text-align:center">
+        <p style="font-size:2rem;margin-bottom:.8rem">📦</p>
+        <h3 style="font-family:'Noto Serif SC',serif;color:var(--gold-light);margin-bottom:.5rem">教师上课视频合集 · 5套精选</h3>
+        <p style="color:var(--text-dim);font-size:.9rem;margin-bottom:1.5rem">兰老师 · 周老师 · 宁老师 · 琼老师 · 周评课实录<br>共计 5套合集 · 9.5GB · 完整课堂教学实录</p>
+        <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
+            <span class="tag tag-gold" style="font-size:.8rem;padding:.4rem 1rem">兰老师 2.34GB</span>
+            <span class="tag tag-blue" style="font-size:.8rem;padding:.4rem 1rem">周老师 755MB</span>
+            <span class="tag tag-cyan" style="font-size:.8rem;padding:.4rem 1rem">周评 1.99GB</span>
+            <span class="tag tag-rose" style="font-size:.8rem;padding:.4rem 1rem">宁老师 784MB</span>
+            <span class="tag tag-gold" style="font-size:.8rem;padding:.4rem 1rem">琼老师 3.22GB</span>
+        </div>
+        <p style="color:var(--text-dim);font-size:.75rem;margin-top:1.5rem">📍 完整原档见 E:\教师上课视频\7.9\ · 联系人：杨通达团队</p>
+    </div>
+</div>
+
+<footer>
+    <p style="font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:700;color:var(--gold-light);margin-bottom:.5rem">赋能乐学 · 高效强思 · 产业创值</p>
+    <p style="color:var(--text-dim);font-size:.85rem">县域中职三阶递进育人模式创新的十年实践 | 宁强县职业高级中学</p>
+    <p style="color:var(--text-dim);font-size:.75rem;margin-top:.8rem">© 2026 宁强县职业技术教育中心 · 国家职业教育教学成果特等奖申报</p>
+    <div style="margin-top:1rem">
+        <a href="index.html" style="color:var(--gold-light);text-decoration:none;font-size:.8rem;margin:0 1rem">← 返回首页</a>
+        <a href="summary.html" style="color:var(--gold-light);text-decoration:none;font-size:.8rem;margin:0 1rem">总结报告</a>
+        <a href="evidence.html" style="color:var(--gold-light);text-decoration:none;font-size:.8rem;margin:0 1rem">佐证材料</a>
+    </div>
+</footer>
 </body>
 </html>

@@ -1,0 +1,7 @@
+# Large video files (>100MB) - not pushed to GitHub
+assets/videos/worldskills-stage.mp4
+assets/videos/特等奖申报_最终版.mp4
+
+# Temp files
+*.tmp
+*.bak
