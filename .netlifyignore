@@ -1,0 +1,3 @@
+# Exclude large video files from deployment
+assets/videos/worldskills-stage.mp4
+assets/videos/特等奖申报_最终版.mp4

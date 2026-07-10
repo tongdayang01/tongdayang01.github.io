@@ -5,3 +5,6 @@ assets/videos/特等奖申报_最终版.mp4
 # Temp files
 *.tmp
 *.bak
+
+# Local Netlify folder
+.netlify

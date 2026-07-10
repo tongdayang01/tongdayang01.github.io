@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Reverse proxy: serve local content for all paths
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
