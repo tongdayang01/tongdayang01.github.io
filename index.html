@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height:100%;margin:0;padding:0;overflow:hidden;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>县域中职三阶递进育人模式创新 | 国家教学成果奖</title>
+<meta name="description" content="国家级职业教育教学成果特等奖申报网站 - 宁强县职业高级中学 杨通达团队">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#020815}
+  #content-frame{width:100%;height:100%;border:none;display:block}
+  .fallback-overlay{display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(170deg,#020815 0%,#0f2b4c 50%,#111F3A 100%);color:#E8E8E8;font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:40px}
+  .fallback-overlay.visible{display:flex}
+  .fallback-overlay h2{font-size:1.5rem;margin-bottom:16px;color:#C9A96E;font-weight:700}
+  .fallback-overlay p{font-size:1rem;margin-bottom:12px;opacity:0.85;max-width:600px;line-height:2}
+  .fallback-overlay .backup-url{display:inline-block;margin-top:20px;padding:14px 32px;background:linear-gradient(135deg,#C9A96E,#E8D5A3);color:#020815;border-radius:8px;font-weight:700;text-decoration:none;font-size:1rem;transition:all .3s}
+  .fallback-overlay .backup-url:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,169,110,.3)}
+  .spinner{width:44px;height:44px;border:3px solid rgba(201,169,110,.15);border-top-color:#C9A96E;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:24px}
+  .footer-note{font-size:.75rem;opacity:.4;margin-top:32px;position:absolute;bottom:24px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Fullscreen iframe -->
+<iframe
+  id="content-frame"
+  allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"
+  allowfullscreen
+  loading="eager"
+  title="国家教学成果奖申报网站 - 宁强县职业高级中学"
+></iframe>
+
+<!-- Fallback overlay (shown on slow load or error) -->
+<div id="fallback-overlay" class="fallback-overlay">
+  <div class="spinner" id="spinner"></div>
+  <h2 id="fallback-title">正在载入申报成果网站...</h2>
+  <p id="fallback-desc">如长时间未能显示完整内容，请点击下方链接直接访问备用站点：</p>
+  <a id="backup-link" class="backup-url" href="#" target="_blank">打开备用站点</a>
+  <p class="footer-note">本页面为透明代理 · 实际内容托管于腾讯云CDN · 地址栏始终不变</p>
+</div>
+
+<script>
+(function(){
+  // ====================================================================
+  // 配置：替换为您的实际腾讯云 COS/CDN 域名（末尾无斜杠）
+  // 上线前将此占位符替换为实际域名，如:
+  //   var COS_BASE = 'https://yangtongda-1234567890.cos.ap-guangzhou.myqcloud.com';
+  // 或CDN加速域名:
+  //   var COS_BASE = 'https://award.your-custom-domain.com';
+  // ====================================================================
+  var COS_BASE = '__TENCENT_CLOUD_DOMAIN__';
+
+  // 资源文件扩展名列表（走直接跳转，不走iframe）
+  var RESOURCE_EXTS = [
+    '.jpg','.jpeg','.png','.gif','.svg','.webp','.ico','.bmp',
+    '.mp4','.webm','.ogg','.mp3','.wav','.flac',
+    '.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx',
+    '.zip','.rar','.7z','.tar','.gz','.bz2',
+    '.ttf','.woff','.woff2','.otf',
+    '.css','.js','.json','.xml','.txt'
+  ];
+
+  // 判断路径是否为资源文件
+  function isResource(path){
+    path = path.toLowerCase();
+    for(var i=0;i<RESOURCE_EXTS.length;i++){
+      var ext = RESOURCE_EXTS[i];
+      var idx = path.lastIndexOf(ext);
+      if(idx===-1)continue;
+      var after = path.substring(idx+ext.length);
+      if(after===''||after.charAt(0)==='?'||after.charAt(0)==='#'||after==='/')return true;
+    }
+    return false;
+  }
+
+  // 构建腾讯云完整URL
+  function buildCosUrl(){
+    var path = window.location.pathname;
+    var search = window.location.search;
+    var hash = window.location.hash;
+
+    // 根路径 → index.html
+    if(path==='/'||path===''){
+      return COS_BASE + '/index.html' + search + hash;
+    }
+
+    // 去掉开头的斜杠
+    if(path.charAt(0)==='/'){
+      path = path.substring(1);
+    }
+
+    // 无扩展名的路径追加 .html（SPA风格路由如 /about → /about.html）
+    if(path.indexOf('.')===-1){
+      // 处理尾部斜杠: /charts/ → charts/index.html
+      if(path.charAt(path.length-1)==='/'){
+        path = path + 'index.html';
+      } else {
+        path = path + '.html';
+      }
+    }
+
+    // 清理双斜杠
+    path = path.replace(/\/+/g,'/');
+
+    return COS_BASE + '/' + path + search + hash;
+  }
+
+  var cosUrl = buildCosUrl();
+
+  // ---- 资源文件：直接跳转 ----
+  if(isResource(window.location.pathname)){
+    window.location.replace(cosUrl);
+    return;
+  }
+
+  // ---- HTML页面：全屏iframe嵌入 ----
+  var iframe = document.getElementById('content-frame');
+  var fallback = document.getElementById('fallback-overlay');
+  var spinner = document.getElementById('spinner');
+  var fallbackTitle = document.getElementById('fallback-title');
+  var backupLink = document.getElementById('backup-link');
+
+  // 设定备用链接
+  backupLink.href = cosUrl;
+  backupLink.textContent = '打开备用站点（腾讯云CDN直达）';
+
+  // 设定iframe源
+  iframe.src = cosUrl;
+
+  // ---- 接收iframe发来的postMessage（标题同步）----
+  window.addEventListener('message',function(e){
+    if(e.data&&e.data.type==='page-title'&&e.data.title){
+      document.title = e.data.title;
+    }
+    if(e.data&&e.data.type==='iframe-loaded'){
+      // 加载成功，隐藏loading备选界面
+      fallback.classList.remove('visible');
+      spinner.style.display='none';
+    }
+    if(e.data&&e.data.type==='navigate'){
+      // 子页面请求变更URL（pushState保持地址栏同步）
+      try{
+        window.history.replaceState({},'',e.data.path);
+      }catch(_){}
+    }
+  });
+
+  // ---- 超时兜底：8秒后显示备用入口 ----
+  var fallbackShown = false;
+  var loadTimeout = setTimeout(function(){
+    fallbackShown = true;
+    fallbackTitle.textContent = '页面加载较慢，请稍候...';
+    document.getElementById('fallback-desc').textContent = '当前网络可能较慢。如长时间无响应，请使用备用入口直接访问：';
+    fallback.classList.add('visible');
+  },8000);
+
+  // ---- iframe加载完成 ----
+  iframe.addEventListener('load',function(){
+    clearTimeout(loadTimeout);
+    if(fallbackShown){
+      fallbackTitle.textContent = '内容加载完成';
+      setTimeout(function(){fallback.classList.remove('visible');},600);
+    }
+  });
+
+  // ---- iframe加载失败 ----
+  iframe.addEventListener('error',function(){
+    clearTimeout(loadTimeout);
+    spinner.style.display='none';
+    fallbackTitle.textContent = '无法加载内容，请使用备用入口';
+    document.getElementById('fallback-desc').textContent = '当前页面加载失败。请点击下方按钮直接访问完整内容：';
+    fallback.classList.add('visible');
+  });
+
+})();
+</script>
+
+</body>
+</html>
