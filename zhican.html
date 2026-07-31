@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>值餐系统 — 宁职创原</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+        --green: #10b981; --orange: #f59e0b; --rose: #f43f5e;
+        --purple: #8b5cf6; --teal: #14b8a6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    /* Navigation */
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #92400e 0%, #b45309 40%, #d97706 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; }
+    .hero h1 span { background: linear-gradient(135deg, #fff, #fef3c7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 680px; margin: 0 auto 28px; line-height: 1.8; }
+    .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 1.8rem; font-weight: 800; color: #fef3c7; }
+    .hero-stat .label { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* Section */
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 52px; }
+    .section-tag { display: inline-block; background: linear-gradient(135deg, #92400e, #b45309); color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+    .section-title { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Food Category Tabs */
+    .food-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .food-tab { padding: 14px 32px; border-radius: 50px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; }
+    .food-tab:hover { border-color: var(--orange); }
+    .food-tab.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+    /* Meal Cards */
+    .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .meal-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; }
+    .meal-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .meal-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .meal-img.beauty { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
+    .meal-img.health { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .meal-img.light { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .meal-body { padding: 20px 22px 24px; }
+    .meal-body h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .meal-body .desc { font-size: 0.85rem; color: var(--text-light); margin-bottom: 14px; line-height: 1.6; }
+    .meal-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .meal-meta span { font-size: 0.8rem; padding: 4px 10px; border-radius: 50px; font-weight: 600; }
+    .meta-price { background: #fef3c7; color: #92400e; }
+    .meta-cal { background: #f0fdf4; color: #065f46; }
+    .meta-health { background: #fdf2f8; color: #831843; }
+    .meta-tag { background: #eff6ff; color: #1e40af; }
+
+    /* Sub-section Grid */
+    .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; }
+    .sub-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+    .sub-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .sub-card-header { padding: 24px 24px 18px; position: relative; }
+    .sub-card-header .icon { font-size: 2rem; margin-bottom: 8px; }
+    .sub-card-header h3 { font-size: 1.1rem; font-weight: 700; color: white; }
+    .sub-card-header p { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .sub-card-body { padding: 20px 24px 24px; }
+    .sub-card-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .sub-card-body p strong { color: var(--primary); }
+    .sub-list { list-style: none; margin-top: 10px; }
+    .sub-list li { padding: 6px 0; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid #f0f0f0; }
+    .sub-list li::before { content: "▸ "; color: var(--orange); font-weight: bold; }
+    .sub-list li:last-child { border-bottom: none; }
+
+    /* Color schemes for subcards */
+    .sc1 { background: linear-gradient(135deg, #92400e, #b45309); }
+    .sc2 { background: linear-gradient(135deg, #065f46, #047857); }
+    .sc3 { background: linear-gradient(135deg, #553c9a, #6b46c1); }
+    .sc4 { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+    .sc5 { background: linear-gradient(135deg, #1e3a5f, #1e40af); }
+    .sc6 { background: linear-gradient(135deg, #831843, #9d174d); }
+    .sc7 { background: linear-gradient(135deg, #1a365d, #2a4a7f); }
+    .sc8 { background: linear-gradient(135deg, #4a1942, #6b21a8); }
+    .sc9 { background: linear-gradient(135deg, #0f766e, #0d9488); }
+    .sc10 { background: linear-gradient(135deg, #334155, #475569); }
+
+    /* Trust System */
+    .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .score-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+    .score-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+    .score-bar { margin-bottom: 12px; }
+    .score-bar .label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px; }
+    .score-bar .bar { height: 8px; border-radius: 4px; background: #e2e8f0; overflow: hidden; }
+    .score-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+    /* Radar Placeholder */
+    .radar-placeholder { display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: var(--radius); min-height: 280px; }
+
+    /* Feature Tags */
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .feature-tag { display: inline-block; background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 50px; font-size: 0.82rem; font-weight: 600; }
+
+    /* Cockpit Cards */
+    .cockpit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .cockpit-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center; transition: all 0.3s; }
+    .cockpit-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .cockpit-card .number { font-size: 2rem; font-weight: 800; color: var(--primary); }
+    .cockpit-card .number.warn { color: #dc2626; }
+    .cockpit-card .label { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Advisory table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .data-table th { background: #1a365d; color: white; padding: 12px 14px; text-align: left; font-weight: 600; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+    .data-table tr:nth-child(even) { background: #f8f9fa; }
+    .data-table .up { color: #10b981; }
+    .data-table .down { color: #ef4444; }
+
+    /* YaoShi Grid */
+    .yaoshi-category { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .yaoshi-category h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--orange); }
+    .yaoshi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .yaoshi-item { background: #f8f9fa; border-radius: 10px; padding: 16px; text-align: center; border: 1px solid #e2e8f0; transition: all 0.3s; }
+    .yaoshi-item:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .yaoshi-item .name { font-weight: 700; font-size: 0.95rem; color: var(--primary); }
+    .yaoshi-item .price { color: #dc2626; font-weight: 600; margin: 4px 0; }
+    .yaoshi-item .features { font-size: 0.78rem; color: var(--text-light); }
+
+    /* Setting Cards */
+    .setting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .setting-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid #e2e8f0; transition: all 0.3s; }
+    .setting-card:hover { border-color: var(--orange); }
+    .setting-card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .setting-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .setting-card .opts { display: flex; gap: 6px; flex-wrap: wrap; }
+    .setting-card .opt { padding: 5px 12px; border-radius: 50px; border: 1px solid #e2e8f0; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+    .setting-card .opt:hover, .setting-card .opt.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+    /* Footer */
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.6rem; }
+        .trust-grid { grid-template-columns: 1fr; }
+        .meal-grid, .sub-grid { grid-template-columns: 1fr; }
+        .navbar-inner { gap: 8px; }
+        .navbar-links a { font-size: 0.72rem; padding: 4px 7px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+<li><a href="cultural-courses.html">文化基础课</a></li>
+
+            <a href="zhican.html" class="active">值餐</a>
+            <a href="yushe.html">悦舍</a>
+            <a href="platform.html">平台生态</a>
+            <a href="architecture.html">技术架构</a>
+            <a href="stories.html">成长故事</a>
+            <a href="videos.html">视频</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">🍳 四真三化五链三场 · 真实产业现场</div>
+    <h1>值餐 Zhican — <span>职业教育特色餐饮系统</span></h1>
+    <p>让课堂成为产业第一现场：学生掌勺、客户下单、真金白银交易。<br>三大餐类 · 信任评价体系 · 共创机制 · 厨房驾驶舱 · 经营参谋 —— 完整复刻餐饮产业全链路</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="num">3</div><div class="label">餐类</div></div>
+        <div class="hero-stat"><div class="num">30+</div><div class="label">菜品</div></div>
+        <div class="hero-stat"><div class="num">10</div><div class="label">功能模块</div></div>
+        <div class="hero-stat"><div class="num">100%</div><div class="label">真实运营</div></div>
+    </div>
+</section>
+
+<div class="container">
+
+<!-- ============ 7.1 今日精选 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">🍽️ 今日精选</span>
+        <h2 class="section-title">三大餐类 · 真材实料 · 真实交易</h2>
+        <p class="section-desc">中医美容专业、营养搭配专业、轻食烹饪专业学生联合出品，每日新鲜供应</p>
+    </div>
+
+    <div class="food-tabs">
+        <button class="food-tab active" onclick="showFoodTab('beauty')">🌸 悦颜（漂亮餐）</button>
+        <button class="food-tab" onclick="showFoodTab('health')">💪 康膳（健康餐）</button>
+        <button class="food-tab" onclick="showFoodTab('light')">🥗 轻膳（轻食餐）</button>
+    </div>
+
+    <!-- 悦颜 -->
+    <div class="meal-grid food-panel active" id="panel-beauty">
+        <div class="meal-card">
+            <div class="meal-img beauty">🌸</div>
+            <div class="meal-body">
+                <h4>玫瑰红枣炖鸡汤</h4>
+                <p class="desc">中医美容专业出品，玫瑰花疏肝解郁、红枣补气养血、乌鸡滋阴润燥</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥38</span>
+                    <span class="meta-cal">320kcal</span>
+                    <span class="meta-health">健康值 92</span>
+                    <span class="meta-tag">养颜美容</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">🌺</div>
+            <div class="meal-body">
+                <h4>当归黄芪炖排骨</h4>
+                <p class="desc">经典气血双补配方，当归活血、黄芪补气，搭配排骨温补不燥</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥42</span>
+                    <span class="meta-cal">380kcal</span>
+                    <span class="meta-health">健康值 95</span>
+                    <span class="meta-tag">气血双补</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">💐</div>
+            <div class="meal-body">
+                <h4>黑芝麻核桃糊</h4>
+                <p class="desc">滋阴补肾、乌发养颜，秦巴山区原生黑芝麻+核桃仁石磨慢熬</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥18</span>
+                    <span class="meta-cal">250kcal</span>
+                    <span class="meta-health">健康值 88</span>
+                    <span class="meta-tag">抗衰老</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img beauty">🍵</div>
+            <div class="meal-body">
+                <h4>银耳莲子枸杞羹</h4>
+                <p class="desc">银耳润肺、莲子养心、枸杞明目，四季皆宜的养颜圣品</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥22</span>
+                    <span class="meta-cal">180kcal</span>
+                    <span class="meta-health">健康值 90</span>
+                    <span class="meta-tag">滋阴润燥</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 康膳 -->
+    <div class="meal-grid food-panel" id="panel-health" style="display:none;">
+        <div class="meal-card">
+            <div class="meal-img health">🥩</div>
+            <div class="meal-body">
+                <h4>天麻红烧肉</h4>
+                <p class="desc">营养搭配专业王牌菜，宁强天麻+精选五花，药食同源典范</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥45</span>
+                    <span class="meta-cal">520kcal</span>
+                    <span class="meta-health">健康值 85</span>
+                    <span class="meta-tag">药食同源</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">🐟</div>
+            <div class="meal-body">
+                <h4>党参黄芪蒸鲈鱼</h4>
+                <p class="desc">高蛋白低脂肪，党参补中益气、黄芪增强免疫，适合术后康复</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥48</span>
+                    <span class="meta-cal">280kcal</span>
+                    <span class="meta-health">健康值 93</span>
+                    <span class="meta-tag">高蛋白</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">🍲</div>
+            <div class="meal-body">
+                <h4>枸杞山药炖羊肉</h4>
+                <p class="desc">冬季温补首选，山药健脾、枸杞养肝，羊肉温而不燥</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥52</span>
+                    <span class="meta-cal">450kcal</span>
+                    <span class="meta-health">健康值 89</span>
+                    <span class="meta-tag">温补养生</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img health">🥬</div>
+            <div class="meal-body">
+                <h4>荷塘月色蒸时蔬</h4>
+                <p class="desc">莲藕+百合+木耳+西兰花，清蒸保留营养，搭配枸杞点缀</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥28</span>
+                    <span class="meta-cal">160kcal</span>
+                    <span class="meta-health">健康值 96</span>
+                    <span class="meta-tag">营养均衡</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轻膳 -->
+    <div class="meal-grid food-panel" id="panel-light" style="display:none;">
+        <div class="meal-card">
+            <div class="meal-img light">🥗</div>
+            <div class="meal-body">
+                <h4>藜麦虾仁沙拉碗</h4>
+                <p class="desc">三色藜麦+鲜虾仁+牛油果+樱桃番茄，高纤维低GI</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥35</span>
+                    <span class="meta-cal">220kcal</span>
+                    <span class="meta-health">健康值 94</span>
+                    <span class="meta-tag">低卡优选</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">🥒</div>
+            <div class="meal-body">
+                <h4>鸡胸肉蔬菜卷</h4>
+                <p class="desc">低温慢煮鸡胸+生菜+胡萝卜丝+黄瓜条，搭配自制低脂酱汁</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥28</span>
+                    <span class="meta-cal">190kcal</span>
+                    <span class="meta-health">健康值 91</span>
+                    <span class="meta-tag">高纤维</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">🍋</div>
+            <div class="meal-body">
+                <h4>柠檬薄荷鳕鱼排</h4>
+                <p class="desc">深海鳕鱼低温烹制，柠檬汁提鲜、薄荷叶解腻，清爽无负担</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥39</span>
+                    <span class="meta-cal">210kcal</span>
+                    <span class="meta-health">健康值 90</span>
+                    <span class="meta-tag">清爽解腻</span>
+                </div>
+            </div>
+        </div>
+        <div class="meal-card">
+            <div class="meal-img light">🍓</div>
+            <div class="meal-body">
+                <h4>奇亚籽水果酸奶杯</h4>
+                <p class="desc">奇亚籽+希腊酸奶+时令鲜果+坚果碎，高蛋白代餐首选</p>
+                <div class="meal-meta">
+                    <span class="meta-price">¥22</span>
+                    <span class="meta-cal">165kcal</span>
+                    <span class="meta-health">健康值 88</span>
+                    <span class="meta-tag">代餐轻食</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chef Team -->
+    <div style="margin-top:48px;text-align:center;">
+        <div class="section-tag" style="background:linear-gradient(135deg,#1a365d,#2a4a7f);">👨‍🍳 厨师团队</div>
+        <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">👨‍🍳</div>
+                <div style="font-weight:700;color:var(--primary);">李师傅</div>
+                <div style="font-size:0.82rem;color:var(--text-light);">烹饪专业二年级<br>擅长川菜药膳</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">👩‍🍳</div>
+                <div style="font-weight:700;color:var(--primary);">张同学</div>
+                <div style="font-size:0.82rem;color:var(--text-light);">烹饪专业三年级<br>擅长面点轻食</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">👨‍🍳</div>
+                <div style="font-weight:700;color:var(--primary);">王同学</div>
+                <div style="font-size:0.82rem;color:var(--text-light);">烹饪专业二年级<br>擅长汤品炖品</div>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);width:180px;text-align:center;">
+                <div style="font-size:3rem;">👩‍🍳</div>
+                <div style="font-weight:700;color:var(--primary);">赵同学</div>
+                <div style="font-size:0.82rem;color:var(--text-light);">烹饪专业一年级<br>擅长沙拉饮品</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.2 我的价值 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">👤 我的价值</span>
+        <h2 class="section-title">口味画像 × 积分 × 订单</h2>
+        <p class="section-desc">数据驱动的个性化用餐体验，让每一餐都懂你</p>
+    </div>
+
+    <div class="sub-grid">
+        <!-- 口味画像 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">🎯</div>
+                <h3>口味画像 · 五维雷达图</h3>
+                <p>AI感知你的味蕾偏好</p>
+            </div>
+            <div class="sub-card-body">
+                <div class="radar-placeholder">
+                    <svg width="260" height="260" viewBox="0 0 260 260">
+                        <defs>
+                            <linearGradient id="radarFill" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0.05"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Pentagon grid -->
+                        <g transform="translate(130,130)">
+                            <polygon points="0,-110 104.5,-34 64.5,89 -64.5,89 -104.5,-34" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-82 78,-25 48,66 -48,66 -78,-25" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-54 51,-17 32,44 -32,44 -51,-17" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <polygon points="0,-26 24.7,-8 15.3,21 -15.3,21 -24.7,-8" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+                            <!-- Data polygon -->
+                            <polygon points="0,-90 80,-38 55,70 -55,55 -70,-30" fill="url(#radarFill)" stroke="#10b981" stroke-width="2"/>
+                            <!-- Points -->
+                            <circle cx="0" cy="-90" r="4" fill="#10b981"/>
+                            <circle cx="80" cy="-38" r="4" fill="#10b981"/>
+                            <circle cx="55" cy="70" r="4" fill="#10b981"/>
+                            <circle cx="-55" cy="55" r="4" fill="#10b981"/>
+                            <circle cx="-70" cy="-30" r="4" fill="#10b981"/>
+                            <!-- Labels -->
+                            <text x="0" y="-118" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">辣度 78</text>
+                            <text x="112" y="-42" text-anchor="start" fill="#1a365d" font-size="12" font-weight="700">咸度 65</text>
+                            <text x="68" y="90" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">甜度 55</text>
+                            <text x="-68" y="90" text-anchor="middle" fill="#1a365d" font-size="12" font-weight="700">健康指数 85</text>
+                            <text x="-112" y="-42" text-anchor="end" fill="#1a365d" font-size="12" font-weight="700">冒险指数 72</text>
+                        </g>
+                    </svg>
+                </div>
+                <p style="text-align:center;margin-top:12px;">五维雷达图：<strong>辣度 78</strong> · <strong>咸度 65</strong> · <strong>甜度 55</strong> · <strong>健康指数 85</strong> · <strong>冒险指数 72</strong></p>
+            </div>
+        </div>
+
+        <!-- 积分 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">💰</div>
+                <h3>我的积分 · 消费积累</h3>
+                <p>每一餐都在积累价值</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="text-align:center;padding:20px;">
+                    <div style="font-size:3.5rem;font-weight:900;color:#6b46c1;">2,860</div>
+                    <div style="color:var(--text-light);">当前积分</div>
+                    <div style="margin-top:16px;background:#f8f9fa;border-radius:12px;padding:16px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span>消费 ¥1 = 1 积分</span>
+                            <span style="color:#6b46c1;font-weight:600;">¥2,860 累计消费</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                            <span>评价奖励</span>
+                            <span style="color:#6b46c1;font-weight:600;">+80 积分</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>共创贡献</span>
+                            <span style="color:#6b46c1;font-weight:600;">+120 积分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单记录 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">📋</div>
+                <h3>订单记录</h3>
+                <p>已完成 / 待处理 / 已取消</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="display:flex;gap:12px;margin-bottom:16px;">
+                    <button style="background:#10b981;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">已完成 47</button>
+                    <button style="background:#f59e0b;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">待处理 3</button>
+                    <button style="background:#ef4444;color:white;border:none;padding:8px 16px;border-radius:50px;font-size:0.82rem;cursor:pointer;">已取消 5</button>
+                </div>
+                <ul class="sub-list">
+                    <li>今日 · 天麻红烧肉 ¥45 · <span style="color:#10b981;">已完成</span></li>
+                    <li>昨日 · 藜麦虾仁沙拉碗 ¥35 · <span style="color:#10b981;">已完成</span></li>
+                    <li>06/05 · 玫瑰红枣炖鸡汤 ¥38 · <span style="color:#10b981;">已完成</span></li>
+                    <li>06/05 · 鸡胸肉蔬菜卷 ¥28 · <span style="color:#f59e0b;">待处理</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 奖励兑换 -->
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">🎁</div>
+                <h3>奖励兑换</h3>
+                <p>优惠券 · 体验 · 礼品</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="background:#fef3c7;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">🎫</span>
+                        <div style="flex:1;"><strong>满50减10优惠券</strong><br><span style="font-size:0.8rem;color:var(--text-light);">消耗 200 积分</span></div>
+                    </div>
+                    <div style="background:#f0fdf4;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">🌟</span>
+                        <div style="flex:1;"><strong>新品试吃体验券</strong><br><span style="font-size:0.8rem;color:var(--text-light);">消耗 150 积分</span></div>
+                    </div>
+                    <div style="background:#fdf2f8;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.5rem;">🎁</span>
+                        <div style="flex:1;"><strong>定制餐具礼盒</strong><br><span style="font-size:0.8rem;color:var(--text-light);">消耗 800 积分</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.3 信任体系 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">⭐ 信任体系</span>
+        <h2 class="section-title">四维评价 × 触动标签</h2>
+        <p class="section-desc">真实评价驱动真实成长 —— 口味、健康、性价比、分量四维评分，触动标签直达人心</p>
+    </div>
+
+    <div class="trust-grid">
+        <!-- 评分 -->
+        <div class="score-card">
+            <h4>📊 四维评分系统</h4>
+            <div class="score-bar">
+                <div class="label"><span>口味</span><span>4.8 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:96%;background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>健康</span><span>4.6 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:92%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>性价比</span><span>4.5 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div></div>
+            </div>
+            <div class="score-bar">
+                <div class="label"><span>分量</span><span>4.3 / 5.0</span></div>
+                <div class="bar"><div class="bar-fill" style="width:86%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"></div></div>
+            </div>
+        </div>
+
+        <!-- 触动标签 -->
+        <div class="score-card">
+            <h4>💝 触动标签</h4>
+            <div class="feature-tags">
+                <span class="feature-tag">❤️ 很用心 (156)</span>
+                <span class="feature-tag">😋 味道惊喜 (132)</span>
+                <span class="feature-tag">🎨 摆盘好看 (98)</span>
+                <span class="feature-tag">🍖 分量足 (87)</span>
+                <span class="feature-tag">🤝 服务好 (74)</span>
+                <span class="feature-tag">👍 会推荐 (112)</span>
+            </div>
+            <div style="margin-top:20px;padding:16px;background:#f8f9fa;border-radius:10px;">
+                <p style="font-size:0.88rem;line-height:1.7;">
+                    <strong>🏆 评价统计：</strong><br>
+                    总触动值 <span style="color:#10b981;font-weight:700;">2,847</span> · 
+                    TOP贡献者 <span style="color:#f59e0b;font-weight:700;">张老师 (328 触动)</span> · 
+                    最受欢迎厨师 <span style="color:#8b5cf6;font-weight:700;">李师傅 (4.9分)</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- 评价列表 -->
+        <div class="score-card" style="grid-column:span 2;">
+            <h4>💬 最新评价</h4>
+            <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+                <div style="padding:16px;border-bottom:1px solid #f0f0f0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <span style="font-weight:700;">王老师</span><span style="color:#f59e0b;">⭐⭐⭐⭐⭐</span>
+                        <span style="font-size:0.78rem;color:var(--text-light);">06/07 12:30</span>
+                    </div>
+                    <p style="font-size:0.88rem;">天麻红烧肉绝了！肉炖得入口即化，天麻的清香刚好中和了油腻。学生能做出这个水平，真的很惊喜。</p>
+                    <div style="margin-top:6px;"><span class="feature-tag" style="font-size:0.72rem;">很用心</span><span class="feature-tag" style="font-size:0.72rem;">味道惊喜</span><span class="feature-tag" style="font-size:0.72rem;">会推荐</span></div>
+                    <div style="background:#f8f9fa;padding:10px;border-radius:8px;margin-top:8px;font-size:0.82rem;color:var(--text-light);">
+                        <strong>👨‍🍳 李师傅回复：</strong>谢谢王老师！天麻是昨天刚从山上收的鲜货，品质好味道才到位。下次来试试新出的当归排骨~
+                    </div>
+                </div>
+                <div style="padding:16px;border-bottom:1px solid #f0f0f0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                        <span style="font-weight:700;">李同学</span><span style="color:#f59e0b;">⭐⭐⭐⭐</span>
+                        <span style="font-size:0.78rem;color:var(--text-light);">06/06 12:15</span>
+                    </div>
+                    <p style="font-size:0.88rem;">藜麦虾仁沙拉很不错，分量对一个女生刚好，如果能多加点虾仁就更好了！</p>
+                    <div style="margin-top:6px;"><span class="feature-tag" style="font-size:0.72rem;">摆盘好看</span><span class="feature-tag" style="font-size:0.72rem;">服务好</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.4 共创 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">🤝 共创 Co-Create</span>
+        <h2 class="section-title">教学相长 · 产教共创</h2>
+        <p class="section-desc">学生参与菜品研发、用户投票决定上新、创意提案社区孵化</p>
+    </div>
+
+    <div class="sub-grid">
+        <div class="sub-card">
+            <div class="sub-card-header sc1">
+                <div class="icon">🗳️</div>
+                <h3>菜品投票</h3>
+                <p>新菜品上线前的民主决策</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;">
+                    <strong>🍄 松茸炖鸡</strong> <span style="float:right;color:#10b981;">142 票 ✓</span>
+                    <div class="bar" style="margin-top:6px;"><div class="bar-fill" style="width:78%;background:#10b981;"></div></div>
+                </div>
+                <div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;">
+                    <strong>🥑 牛油果拌面</strong> <span style="float:right;color:#f59e0b;">98 票</span>
+                    <div class="bar" style="margin-top:6px;"><div class="bar-fill" style="width:54%;background:#f59e0b;"></div></div>
+                </div>
+                <p style="font-size:0.82rem;color:var(--text-light);">松茸炖鸡得票最高，将于下周正式上线！</p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">💡</div>
+                <h3>创意提案</h3>
+                <p>提交你的菜品创意，社区点赞评论</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="padding:12px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;">
+                    <strong>🌶️ 汉中麻辣香锅</strong><br>
+                    <span style="font-size:0.82rem;color:var(--text-light);">提案人：陈同学（烹饪一） | ❤️ 67 · 💬 23</span>
+                </div>
+                <div style="padding:12px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;">
+                    <strong>🍠 紫薯山药糕</strong><br>
+                    <span style="font-size:0.82rem;color:var(--text-light);">提案人：刘同学（烹饪二） | ❤️ 45 · 💬 15</span>
+                </div>
+                <p style="font-size:0.82rem;color:var(--text-light);">学生提案经社区投票后可进入实际研发阶段</p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">📚</div>
+                <h3>教育内容</h3>
+                <p>四类内容深度呈现</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li>🍜 饮食文化：秦巴山区食材故事</li>
+                    <li>🔬 营养科学：药食同源知识图谱</li>
+                    <li>🔥 后厨故事：教室里的烟火气</li>
+                    <li>👤 人物专访：从洗菜工到掌勺师傅</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">学生撰写、教师审核、社区互动，形成可持续的内容生态</p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc5">
+                <div class="icon">🍳</div>
+                <h3>厨师与学生共创</h3>
+                <p>让课堂成为研发中心</p>
+            </div>
+            <div class="sub-card-body">
+                <p><strong>共创流程：</strong></p>
+                <ul class="sub-list">
+                    <li>学生提案 → 厨师审核 → 联合研发</li>
+                    <li>试做品尝 → 迭代优化 → 上线投票</li>
+                    <li>标准制定 → 量化配方 → 写入教案</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">已有 <strong>12道</strong> 菜品通过共创机制纳入正式菜单</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.5 厨房驾驶舱 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">📡 厨房驾驶舱</span>
+        <h2 class="section-title">实时数据 · 精准掌控</h2>
+        <p class="section-desc">订单总览、厨师团队、预警系统、工位任务 —— 一屏尽览</p>
+    </div>
+
+    <div class="cockpit-grid">
+        <div class="cockpit-card"><div class="number">127</div><div class="label">总订单数</div></div>
+        <div class="cockpit-card"><div class="number">89</div><div class="label">已预订</div></div>
+        <div class="cockpit-card"><div class="number warn">12</div><div class="label">待确认</div></div>
+        <div class="cockpit-card"><div class="number" style="color:#10b981;">¥5,842</div><div class="label">预估收入</div></div>
+    </div>
+
+    <div class="sub-grid" style="margin-top:32px;">
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">👨‍🍳</div>
+                <h3>厨师团队 · 当前值班</h3>
+                <p>A组：李师傅、张同学、王同学</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li>👨‍🍳 李师傅（主厨）：热菜区 · 已出 34 单</li>
+                    <li>👩‍🍳 张同学（副厨）：凉菜区 · 已出 22 单</li>
+                    <li>👨‍🍳 王同学（帮厨）：汤品区 · 已出 18 单</li>
+                    <li>👩‍🍳 赵同学（备菜）：切配区 · 备料充足</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc5">
+                <div class="icon">⚠️</div>
+                <h3>预警系统</h3>
+                <p>实时监控 · 及时响应</p>
+            </div>
+            <div class="sub-card-body">
+                <div style="padding:10px;background:#fef2f2;border-radius:8px;margin-bottom:8px;border-left:4px solid #ef4444;">
+                    <strong>🔴 食材预警：</strong>天麻库存仅剩 3 份
+                </div>
+                <div style="padding:10px;background:#fffbeb;border-radius:8px;margin-bottom:8px;border-left:4px solid #f59e0b;">
+                    <strong>🟡 库存预警：</strong>藜麦即将低于安全库存
+                </div>
+                <div style="padding:10px;background:#f0fdf4;border-radius:8px;border-left:4px solid #10b981;">
+                    <strong>🟢 新订单提醒：</strong>+3 单 · 锅塌豆腐 ×2 + 沙拉 ×1
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc1">
+                <div class="icon">📊</div>
+                <h3>订单汇总</h3>
+                <p>每道菜订单数 + 特殊需求</p>
+            </div>
+            <div class="sub-card-body">
+                <table class="data-table">
+                    <tr><th>菜品</th><th>订单</th><th>特殊需求</th></tr>
+                    <tr><td>天麻红烧肉</td><td>28</td><td>少油 ×3</td></tr>
+                    <tr><td>锅塌豆腐</td><td>22</td><td>加辣 ×2</td></tr>
+                    <tr><td>藜麦沙拉</td><td>18</td><td>去虾 ×1</td></tr>
+                    <tr><td>玫瑰鸡汤</td><td>15</td><td>—</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">🔧</div>
+                <h3>工位任务分配</h3>
+                <p>各工位制作任务明细</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>热菜工位：</strong>红烧肉×12、豆腐×10、蒸鱼×8</li>
+                    <li><strong>凉菜工位：</strong>沙拉×14、蔬菜卷×8、酸奶杯×6</li>
+                    <li><strong>汤品工位：</strong>鸡汤×10、排骨汤×8、银耳羹×6</li>
+                    <li><strong>面点工位：</strong>待分配</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.6 经营参谋 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">📈 经营参谋</span>
+        <h2 class="section-title">数据驱动的经营决策</h2>
+        <p class="section-desc">经营日报 · 菜品排行 · 学生绩效 · 趋势图表</p>
+    </div>
+
+    <div class="cockpit-grid">
+        <div class="cockpit-card">
+            <div class="number">127</div>
+            <div class="label">今日订单数 <span class="up">↑ 12%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">¥5,842</div>
+            <div class="label">今日销售额 <span class="up">↑ 8%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">¥46.0</div>
+            <div class="label">客单价 <span class="up">↑ 3%</span></div>
+        </div>
+        <div class="cockpit-card">
+            <div class="number">62<span style="font-size:1rem;">%</span></div>
+            <div class="label">毛利率 <span class="up">↑ 2%</span></div>
+        </div>
+    </div>
+
+    <div class="trust-grid" style="margin-top:32px;">
+        <div class="score-card">
+            <h4>🏆 菜品销量 TOP5</h4>
+            <table class="data-table">
+                <tr><th>排名</th><th>菜品</th><th>销量</th><th>评分</th><th>增长</th></tr>
+                <tr><td>🥇</td><td>天麻红烧肉</td><td>28</td><td>4.9</td><td class="up">+15%</td></tr>
+                <tr><td>🥈</td><td>锅塌豆腐</td><td>22</td><td>4.7</td><td class="up">+8%</td></tr>
+                <tr><td>🥉</td><td>藜麦虾仁沙拉</td><td>18</td><td>4.6</td><td class="up">+22%</td></tr>
+                <tr><td>4</td><td>玫瑰红枣鸡汤</td><td>15</td><td>4.8</td><td class="up">+5%</td></tr>
+                <tr><td>5</td><td>鸡胸肉蔬菜卷</td><td>12</td><td>4.5</td><td class="down">-2%</td></tr>
+            </table>
+        </div>
+
+        <div class="score-card">
+            <h4>👨‍🍳 学生绩效</h4>
+            <table class="data-table">
+                <tr><th>学生</th><th>制作数</th><th>评分</th><th>触动值</th><th>浪费率</th></tr>
+                <tr><td>李师傅</td><td>34</td><td>4.9</td><td>156</td><td class="up">3.2%</td></tr>
+                <tr><td>张同学</td><td>22</td><td>4.7</td><td>98</td><td class="up">4.5%</td></tr>
+                <tr><td>王同学</td><td>18</td><td>4.6</td><td>72</td><td>5.1%</td></tr>
+                <tr><td>赵同学</td><td>15</td><td>4.4</td><td>45</td><td class="down">7.8%</td></tr>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.7 AI 对话 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">💬 AI 对话</span>
+        <h2 class="section-title">和达叔聊天</h2>
+        <p class="section-desc">从首页浮窗直接跳转 · 文字输入 · AI 智能回复</p>
+    </div>
+
+    <div style="max-width:600px;margin:0 auto;background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;">
+        <div style="background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🧔</div>
+            <div><strong>达叔</strong><br><span style="font-size:0.78rem;opacity:0.8;">AI 对话 · 在线</span></div>
+        </div>
+        <div style="padding:20px;min-height:300px;background:#f8f9fa;">
+            <div style="background:white;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;">
+                <p style="font-size:0.9rem;">达叔，今天值餐有什么推荐？</p>
+            </div>
+            <div style="background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;margin-left:auto;">
+                <p style="font-size:0.9rem;">今天天麻红烧肉刚出锅，用的是昨天山上收的新鲜天麻，配上正宗的五花三层，同事们都说好！另外藜麦虾仁沙拉也很受欢迎，清爽健康。你想来点什么？😊</p>
+            </div>
+            <div style="background:white;border-radius:12px;padding:12px 16px;margin-bottom:12px;max-width:80%;">
+                <p style="font-size:0.9rem;">给我来个天麻红烧肉吧，再加个藜麦沙拉。</p>
+            </div>
+            <div style="background:#eff6ff;border-radius:12px;padding:12px 16px;max-width:80%;margin-left:auto;">
+                <p style="font-size:0.9rem;">好嘞！天麻红烧肉 ¥45 + 藜麦虾仁沙拉 ¥35 = 总共 ¥80。已下单，预计 12:20 可取餐。记得来取哦~</p>
+            </div>
+        </div>
+        <div style="padding:12px 16px;border-top:1px solid #e2e8f0;display:flex;gap:10px;">
+            <input type="text" placeholder="输入消息..." style="flex:1;padding:10px 16px;border:1px solid #e2e8f0;border-radius:50px;font-size:0.9rem;">
+            <button style="background:var(--orange);color:white;border:none;padding:10px 20px;border-radius:50px;font-weight:600;cursor:pointer;">发送</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.8 运营 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">⚙️ 运营中心</span>
+        <h2 class="section-title">运营模块 + 管理模块</h2>
+        <p class="section-desc">后厨驾驶舱 · 经营参谋部 · 库存管理 · 质量管控 · 调研问卷 · 心理测评 · 预约管理 · 数据看板</p>
+    </div>
+
+    <div class="sub-grid">
+        <div class="sub-card">
+            <div class="sub-card-header sc4">
+                <div class="icon">🚀</div>
+                <h3>运营模块</h3>
+                <p>四大运营入口</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>后厨驾驶舱：</strong>生产组管理 · 排班调度 · 实时监控</li>
+                    <li><strong>经营参谋部：</strong>数据分析 · 经营决策 · 报表生成</li>
+                    <li><strong>库存管理：</strong>食材入库 · 出库记录 · 库存预警</li>
+                    <li><strong>质量管控：</strong>品检验收 · 过程控制 · 问题追溯</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc3">
+                <div class="icon">📋</div>
+                <h3>管理模块</h3>
+                <p>四大管理入口</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>调研问卷：</strong>在校学生 / 毕业生 / 企业 / 社会 / 教师 五类问卷</li>
+                    <li><strong>心理测评管理：</strong>风险评估 · 危机干预 · CSV导出</li>
+                    <li><strong>预约管理：</strong>悦舍服务预约 · 值餐订餐管理</li>
+                    <li><strong>数据看板：</strong>全局数据可视化 · 实时监控大屏</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc2">
+                <div class="icon">📦</div>
+                <h3>库存管理</h3>
+                <p>食材全流程追踪</p>
+            </div>
+            <div class="sub-card-body">
+                <p><strong>入库管理：</strong>食材采购入库记录、供应商信息、批次追溯</p>
+                <p><strong>出库记录：</strong>每道菜食材消耗自动扣减</p>
+                <p><strong>库存预警：</strong>安全库存阈值设定，低于阈值自动提醒</p>
+                <p style="color:#ef4444;font-weight:600;">⚠️ 天麻仅剩 3 份，请及时补货</p>
+            </div>
+        </div>
+
+        <div class="sub-card">
+            <div class="sub-card-header sc6">
+                <div class="icon">✅</div>
+                <h3>质量管控</h3>
+                <p>品检 · 过程 · 追溯</p>
+            </div>
+            <div class="sub-card-body">
+                <ul class="sub-list">
+                    <li><strong>品检验收：</strong>食材入库品质检查</li>
+                    <li><strong>过程控制：</strong>制作过程中的卫生、温度、时间监控</li>
+                    <li><strong>问题追溯：</strong>任一菜品可追溯到原料批次和制作者</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-top:10px;">所有品控数据录入学生成长档案，作为实训成绩依据</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 7.9 药食同源 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">🌿 药食同源</span>
+        <h2 class="section-title">秦巴山区天然好物 · 标准化品质保障</h2>
+        <p class="section-desc">中药材类 + 食材类两大分类，每个产品含详情页与功效说明</p>
+    </div>
+
+    <div class="yaoshi-category">
+        <h4>🌱 中药材类</h4>
+        <div class="yaoshi-grid">
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🌿</div>
+                <div class="name">宁强天麻</div>
+                <div class="price">¥68/斤</div>
+                <div class="features">息风止痉 · 平肝潜阳</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🌸</div>
+                <div class="name">汉中黄芪</div>
+                <div class="price">¥45/斤</div>
+                <div class="features">补气固表 · 利水消肿</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🍂</div>
+                <div class="name">秦巴当归</div>
+                <div class="price">¥58/斤</div>
+                <div class="features">补血活血 · 调经止痛</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🍄</div>
+                <div class="name">秦岭灵芝</div>
+                <div class="price">¥128/斤</div>
+                <div class="features">补气安神 · 止咳平喘</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="yaoshi-category">
+        <h4>🥬 食材类</h4>
+        <div class="yaoshi-grid">
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🥜</div>
+                <div class="name">秦巴核桃</div>
+                <div class="price">¥25/斤</div>
+                <div class="features">补肾健脑 · 润肠通便</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🫘</div>
+                <div class="name">汉中黑芝麻</div>
+                <div class="price">¥18/斤</div>
+                <div class="features">补肝肾 · 益精血</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🫒</div>
+                <div class="name">秦岭枸杞</div>
+                <div class="price">¥35/斤</div>
+                <div class="features">滋补肝肾 · 益精明目</div>
+            </div>
+            <div class="yaoshi-item">
+                <div style="font-size:2rem;">🌰</div>
+                <div class="name">秦巴山药</div>
+                <div class="price">¥15/斤</div>
+                <div class="features">健脾养胃 · 补肺固肾</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;padding:20px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border-radius:var(--radius);border:1px solid #fde68a;">
+        <p style="color:#92400e;font-weight:600;">📡 数据来源：后端 /api/yaoshi/categories 和 /api/yaoshi/products | 子页面：herbs（药材）/ foods（食材）/ detail（详情）</p>
+    </div>
+</section>
+
+<!-- ============ 7.10 用餐习惯设置 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">⚙️ 用餐习惯设置</span>
+        <h2 class="section-title">个性化用餐体验</h2>
+        <p class="section-desc">堂食/外带 · 取餐时段 · 座位偏好 · 茶水偏好 · 通知设置</p>
+    </div>
+
+    <div class="setting-grid">
+        <div class="setting-card">
+            <div class="icon">🍽️</div>
+            <h4>用餐方式</h4>
+            <div class="opts">
+                <span class="opt active">🏠 堂食</span>
+                <span class="opt">📦 外带</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">⏰</div>
+            <h4>取餐时段</h4>
+            <div class="opts">
+                <span class="opt">11:30</span>
+                <span class="opt active">11:45</span>
+                <span class="opt">12:00</span>
+                <span class="opt">12:15</span>
+                <span class="opt">12:30</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">🪑</div>
+            <h4>座位偏好</h4>
+            <div class="opts">
+                <span class="opt">🪟 靠窗</span>
+                <span class="opt">📐 角落</span>
+                <span class="opt">⚪ 圆桌</span>
+                <span class="opt active">🎲 随便</span>
+            </div>
+        </div>
+        <div class="setting-card">
+            <div class="icon">🍵</div>
+            <h4>茶水偏好</h4>
+            <div class="opts">
+                <span class="opt active">☕ 需要</span>
+                <span class="opt">🚫 不需要</span>
+            </div>
+        </div>
+        <div class="setting-card" style="grid-column:span 2;">
+            <div class="icon">🔔</div>
+            <h4>通知设置</h4>
+            <div class="opts">
+                <span class="opt active">📅 预约提醒</span>
+                <span class="opt active">📦 取餐提醒</span>
+                <span class="opt">🔥 烹饪通知</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- Footer -->
+<footer class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> · <a href="theory.html">理论框架</a> · <a href="generator.html">AI系统</a> · <a href="zhican.html">值餐</a> · <a href="yushe.html">悦舍</a>
+    </p>
+</footer>
+
+<script>
+function showFoodTab(tab) {
+    document.querySelectorAll('.food-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.food-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).style.display = 'grid';
+    event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
