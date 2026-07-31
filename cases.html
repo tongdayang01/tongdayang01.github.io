@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>典型案例 —— 宁强方案</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary:#1a365d; --accent:#c9a96e; --gold:#f6c343; --bg:#f8f9fa; --text:#2d3748; }
+        body { font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
+        a { color:var(--primary); text-decoration:none; }
+        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; }
+        .navbar-inner { max-width:1200px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.15rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .nav-links { display:flex; gap:8px; list-style:none; }
+        .nav-links a { color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:0.95rem; transition:all 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(201,169,110,0.3); }
+        .main { max-width:1200px; margin:0 auto; padding:40px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; padding:48px 0 0; }
+        .page-header .tag { display:inline-block; background:linear-gradient(135deg,#e8d5a8,#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
+        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:16px; }
+        .page-header p { color:#718096; font-size:1.05rem; max-width:640px; margin:0 auto; }
+
+        .case-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:32px; margin-bottom:64px; }
+        .case-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08); transition:all 0.3s; }
+        .case-card:hover { transform:translateY(-6px); box-shadow:0 12px 48px rgba(0,0,0,0.13); }
+        .case-visual { height:220px; display:flex; align-items:center; justify-content:center; color:white; flex-direction:column; text-align:center; padding:32px; position:relative; overflow:hidden; }
+        .case-visual::before { content:''; position:absolute; inset:0; opacity:0.08; background:repeating-conic-gradient(from 0deg,#fff 0% 25%,transparent 0% 100%); }
+        .case-visual .icon { font-size:3.5rem; margin-bottom:16px; position:relative; }
+        .case-visual h3 { font-size:1.4rem; position:relative; margin-bottom:8px; }
+        .case-visual p { font-size:0.9rem; opacity:0.75; position:relative; }
+        .case-body { padding:28px 32px 32px; }
+        .case-body h4 { font-size:1.1rem; color:var(--primary); margin-bottom:12px; }
+        .case-body p { font-size:0.95rem; color:#718096; line-height:1.85; margin-bottom:14px; }
+        .case-stats { display:flex; gap:16px; margin:16px 0; flex-wrap:wrap; }
+        .case-stat { background:var(--bg); border-radius:10px; padding:12px 16px; flex:1; min-width:100px; text-align:center; }
+        .case-stat .num { font-size:1.3rem; font-weight:800; color:var(--primary); display:block; }
+        .case-stat .lbl { font-size:0.78rem; color:#718096; }
+        .case-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+        .case-tag { background:#ebf4ff; color:var(--primary); padding:4px 12px; border-radius:50px; font-size:0.8rem; font-weight:500; }
+        .case-btn { display:inline-block; margin-top:20px; padding:10px 24px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; font-size:0.9rem; transition:all 0.3s; text-decoration:none; }
+        .case-btn:hover { transform:scale(1.05); color:var(--primary); }
+
+        .comparison { background:white; border-radius:16px; padding:40px; margin-bottom:48px; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .comparison h2 { font-size:1.4rem; color:var(--primary); margin-bottom:28px; text-align:center; }
+        .comp-table { width:100%; border-collapse:collapse; }
+        .comp-table th { background:var(--primary); color:white; padding:14px 18px; font-size:0.9rem; text-align:left; }
+        .comp-table th:first-child { border-radius:10px 0 0 0; }
+        .comp-table th:last-child { border-radius:0 10px 0 0; }
+        .comp-table td { padding:12px 18px; border-bottom:1px solid #e2e8f0; font-size:0.92rem; vertical-align:top; }
+        .comp-table tr:hover td { background:#f8f9fa; }
+        .comp-table .highlight { background:#fefce8; font-weight:600; color:#92400e; }
+        .footer { background:#0f172a; color:rgba(255,255,255,0.6); padding:40px 0; text-align:center; font-size:0.9rem; }
+
+        @media(max-width:768px){
+            .nav-links{display:none;}
+            .case-visual{height:180px;}
+            .comparison{padding:24px 16px;}
+            .comp-table{font-size:0.82rem;}
+            .miniapp-content{flex-direction:column;}
+            .miniapp-img{max-width:100%;}
+            .miniapp-data{grid-template-columns:1fr;}
+        }
+        .miniapp-showcase { background:white; border-radius:16px; padding:40px; margin:48px 0; box-shadow:0 4px 24px rgba(0,0,0,0.08); }
+        .miniapp-showcase h2 { font-size:1.4rem; color:var(--primary); margin-bottom:12px; text-align:center; }
+        .miniapp-showcase .sub { text-align:center; color:#718096; font-size:0.95rem; margin-bottom:32px; }
+        .miniapp-content { display:flex; gap:40px; align-items:center; flex-wrap:wrap; }
+        .miniapp-img { flex:1; min-width:280px; max-width:420px; }
+        .miniapp-img img { width:100%; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.12); border:1px solid #e2e8f0; }
+        .miniapp-info { flex:1; min-width:280px; }
+        .miniapp-info h3 { color:var(--primary); font-size:1.1rem; margin-bottom:16px; }
+        .miniapp-info p { color:#4a5568; font-size:0.95rem; line-height:1.85; margin-bottom:12px; }
+        .miniapp-data { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
+        .miniapp-data-item { background:#f8f9fa; border-radius:10px; padding:16px; text-align:center; }
+        .miniapp-data-item .num { font-size:1.5rem; font-weight:800; color:var(--primary); display:block; }
+        .miniapp-data-item .lbl { font-size:0.78rem; color:#718096; margin-top:4px; }
+        .miniapp-note { background:#fefce8; border-left:4px solid var(--gold); padding:12px 16px; border-radius:0 8px 8px 0; margin-top:16px; font-size:0.88rem; color:#92400e; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span>宁强方案</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="theory.html">理论框架</a></li>
+            <li><a href="cases.html" class="active">典型案例</a></li>
+            <li><a href="worldskills.html">世赛服务</a></li>
+            <li><a href="promotion.html">职称跃升</a></li>
+            <li><a href="curriculum.html">课程设计</a></li>
+            <li><a href="generator.html">AI系统</a></li>
+<li><a href="cultural-courses.html">文化基础课</a></li>
+
+            <li><a href="zhican.html">值餐</a></li>
+            <li><a href="yushe.html">悦舍</a></li>
+            <li><a href="platform.html">平台生态</a></li>
+            <li><a href="architecture.html">技术架构</a></li>
+            <li><a href="stories.html">成长故事</a></li>
+            <li><a href="summary.html">总结报告</a></li>
+<li><a href="speech.html">主题演讲</a></li>
+<li><a href="videos.html">视频</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <span class="tag">🍳 典型案例</span>
+        <h1>从一块豆腐开始的<br>课堂革命</h1>
+        <p>三个典型课堂案例，见证"产业第一现场"如何在县域中职落地生根</p>
+    </div>
+
+    <div class="case-grid">
+
+        <!-- Case 1: Tofu -->
+        <div class="case-card">
+            <div class="case-visual" style="background:linear-gradient(135deg,#1a365d,#2a4a7f);">
+                <div class="icon">🍳</div>
+                <h3>锅塌豆腐</h3>
+                <p>文化课融合典型 · 跨学科革命</p>
+            </div>
+            <div class="case-body">
+                <h4>📚 文化课如何不再"陪跑"？</h4>
+                <p><strong>背景：</strong>传统文化课与专业"两张皮"，学生问"学语文有什么用？"——在职业教育语境里，这是个致命问题。</p>
+                <p><strong>设计：</strong>以"锅塌豆腐"为真实项目，语文学写产品故事、数学计算成本定价、英语制作双语菜单、思政融入工匠精神。</p>
+                <div class="case-stats">
+                    <div class="case-stat"><span class="num">4</span><span class="lbl">学科融合</span></div>
+                    <div class="case-stat"><span class="num">87份</span><span class="lbl">产品文案</span></div>
+                    <div class="case-stat"><span class="num">&lt;3%</span><span class="lbl">成本误差率</span></div>
+                </div>
+                <p><strong>成果：</strong>《一碗豆腐的旅程》文案被本地餐厅采用；双语菜单在"融创者市集"实际使用；学生"有用性"认可度从32%→89%。</p>
+                <div class="case-tags">
+                    <span class="case-tag">语文融合</span>
+                    <span class="case-tag">数学成本</span>
+                    <span class="case-tag">英语菜单</span>
+                    <span class="case-tag">思政融入</span>
+                </div>
+                <a href="#" class="case-btn" onclick="event.preventDefault();alert('详细教案文档即将开放下载');">📄 查看完整教案</a>
+            </div>
+        </div>
+
+        <!-- Case 2: Tianma -->
+        <div class="case-card">
+            <div class="case-visual" style="background:linear-gradient(135deg,#1a365d,#2d5a27);">
+                <div class="icon">🌿</div>
+                <h3>天麻红烧肉</h3>
+                <p>专业课改革典型 · 本土产业链进课堂</p>
+            </div>
+            <div class="case-body">
+                <h4>🏔️ 本土资源如何变成教学资产？</h4>
+                <p><strong>背景：</strong>宁强天麻是地理标志产品，但本地中职从未将其纳入教学。学生"守着金山讨饭吃"。</p>
+                <p><strong>设计：</strong>以"天麻红烧肉"研发为项目，从天麻种植（真实产业）→菜品研发（真实岗位）→成本测算（真实任务）→客户评测（真实评价），完整走完五链。</p>
+                <div class="case-stats">
+                    <div class="case-stat"><span class="num">3家</span><span class="lbl">餐厅采纳</span></div>
+                    <div class="case-stat"><span class="num">87份</span><span class="lbl">单日销售</span></div>
+                    <div class="case-stat"><span class="num">2600+</span><span class="lbl">单日营收(元)</span></div>
+                </div>
+                <p><strong>成果：</strong>本地3家餐厅采纳学生研发配方；"融创者市集"单日销售87份；学生家长反馈"原来你们在学校学的，真能帮到家里"。</p>
+                <div class="case-tags">
+                    <span class="case-tag">本土资源</span>
+                    <span class="case-tag">地理标志</span>
+                    <span class="case-tag">五链贯通</span>
+                    <span class="case-tag">家庭认同</span>
+                </div>
+                <a href="#" class="case-btn" onclick="event.preventDefault();alert('详细教案文档即将开放下载');">📄 查看完整教案</a>
+            </div>
+        </div>
+
+        <!-- Case 3: Yueshe -->
+        <div class="case-card">
+            <div class="case-visual" style="background:linear-gradient(135deg,#1a365d,#4a1942);">
+                <div class="icon">💆</div>
+                <h3>悦舍·愈身堂</h3>
+                <p>康复技术典型 · 年服务2000+人次</p>
+            </div>
+            <div class="case-body">
+                <h4>🏥 实训室如何变成"真诊所"？</h4>
+                <p><strong>背景：</strong>传统实训"模拟病人、假数据、老师打分"，学生走上岗位才发现"学的和用的完全两码事"。</p>
+                <p><strong>设计：</strong>把康复实训室改造成面向社区的"愈身堂"，年均服务2000+真实客户。学生轮岗接待、评估、操作、回访全流程。</p>
+                <div class="case-stats">
+                    <div class="case-stat"><span class="num">2000+</span><span class="lbl">年服务人次</span></div>
+                    <div class="case-stat"><span class="num">94%</span><span class="lbl">客户满意度</span></div>
+                    <div class="case-stat"><span class="num">4人</span><span class="lbl">世赛银奖</span></div>
+                </div>
+                <p><strong>成果：</strong>客户满意度94%；赵佳明团队在此完成世赛训练；3人凭此经历免试升入陕西工业职业技术大学；1人就业月薪8000+。</p>
+                <div class="case-tags">
+                    <span class="case-tag">真实客户</span>
+                    <span class="case-tag">社区服务</span>
+                    <span class="case-tag">世赛基地</span>
+                    <span class="case-tag">免试升学</span>
+                </div>
+                <a href="#" class="case-btn" onclick="event.preventDefault();alert('详细教案文档即将开放下载');">📄 查看完整教案</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 小程序实战展示 -->
+    <div class="miniapp-showcase">
+        <h2>📱 "宁职创原"小程序 —— 三种治理课堂落地的数字引擎</h2>
+        <p class="sub">"四真三化五链三场"不是PPT理论，是真实运行、每日服务师生的数字产品</p>
+        <div class="miniapp-content">
+            <div class="miniapp-img">
+                <img src="assets/ningzhi-app-screenshot.jpg" alt="宁职创原小程序实战界面" loading="lazy" />
+            </div>
+            <div class="miniapp-info">
+                <h3>🔬 值餐 VALU —— 从洗菜工到掌勺师傅的数字化成长</h3>
+                <p>健康餐饮 · 烹饪专业 · 营养配餐 · 技能变现。学生通过小程序接单、完成真实餐饮服务，从"值"到"创"，每一步都有数据记录。</p>
+                <div class="miniapp-data">
+                    <div class="miniapp-data-item"><span class="num">23</span><span class="lbl">今日预约</span></div>
+                    <div class="miniapp-data-item"><span class="num">96%</span><span class="lbl">客户满意度</span></div>
+                    <div class="miniapp-data-item"><span class="num">8k+</span><span class="lbl">累计创收(元)</span></div>
+                </div>
+
+                <h3 style="margin-top:24px;">🌿 悦舍 YU·SPA —— 年服务2000+人次的真实产业现场</h3>
+                <p>身心悦校 · 中医美容 · 中医康复 · 深度疗愈。明目药约 / 2大核心 / 8个选项 / 3个疗程 —— 真实客户、真实评价、真实收益，让学生在校期间就积累了临床经验。</p>
+                <div class="miniapp-data">
+                    <div class="miniapp-data-item"><span class="num">2000+</span><span class="lbl">年服务人次</span></div>
+                    <div class="miniapp-data-item"><span class="num">94%</span><span class="lbl">客户满意度</span></div>
+                    <div class="miniapp-data-item"><span class="num">4人</span><span class="lbl">世赛银奖</span></div>
+                </div>
+
+                <div class="miniapp-note">
+                    💡 <strong>评审点睛：</strong>该小程序已接入微信生态，包含"明目值造/值库卷轴/我的值造/共创值造"四维成长体系，实现了"学科→产业"教学设计的全流程数字化。学生从"接单"到"交付"到"评价"的完整数据链路，为"真实评价"提供了不可篡改的数字证据。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 跨学科协同教学证据链 -->
+    <div style="margin:64px 0;">
+        <h2 style="text-align:center;color:var(--primary);font-size:1.6rem;margin-bottom:12px;">📚 跨学科协同教学证据链</h2>
+        <p style="text-align:center;color:var(--text-light);max-width:740px;margin:0 auto 40px;line-height:1.8;">
+            一块锅塌豆腐，串联语文×数学×英语×历史×信息技术×营养配餐六门课，<br>
+            每门课都是造产品的一双手 —— 这就是"三化"中"教学项目化"最完整的实证。
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;">
+
+            <!-- Card 1: 语文 -->
+            <div class="case-card" style="border-top:4px solid #3b82f6;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#1e3a8f,#1e40af);height:160px;">
+                    <div class="icon">📝</div>
+                    <h3>语文 × 锅塌豆腐</h3>
+                    <p>4课时 · 卖点·文案·SOP·口语</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">87份</span><span class="lbl">产品文案</span></div>
+                        <div class="case-stat"><span class="num">4</span><span class="lbl">课时完整方案</span></div>
+                    </div>
+                    <p><strong>第1课时：</strong>提炼宁强辣版锅塌豆腐核心卖点（信息归纳+差异化表达）</p>
+                    <p><strong>第2课时：</strong>撰写锅塌豆腐SOP操作文本（规范说明文写作+HACCP关键控制点）</p>
+                    <p><strong>第3课时：</strong>设计校园推广文案（广告文案写作·班级群/公众号/展示板）</p>
+                    <p><strong>第4课时：</strong>模拟顾客接待产品介绍（职业口语交际+真实顾客打分）</p>
+                    <div class="case-tags">
+                        <span class="case-tag">卖点提炼</span>
+                        <span class="case-tag">SOP写作</span>
+                        <span class="case-tag">推广文案</span>
+                        <span class="case-tag">口语交际</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('语文教学设计文档即将开放下载');">📄 查看完整教案</a>
+                </div>
+            </div>
+
+            <!-- Card 2: 数学 -->
+            <div class="case-card" style="border-top:4px solid #059669;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#064e3b,#065f46);height:160px;">
+                    <div class="icon">🔢</div>
+                    <h3>数学 × 锅塌豆腐</h3>
+                    <p>4课时 · 成本→定价→利润→营收</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">&lt;3%</span><span class="lbl">成本误差率</span></div>
+                        <div class="case-stat"><span class="num">4</span><span class="lbl">课时完整方案</span></div>
+                    </div>
+                    <p><strong>第1课时：</strong>单份锅塌豆腐原料成本计算（单位换算+成本汇总·真原料真采购价）</p>
+                    <p><strong>第2课时：</strong>组合套餐总成本核算（多菜品汇总+成本占比分析）</p>
+                    <p><strong>第3课时：</strong>毛利率计算与产品定价（销售毛利率公式+固定成本分摊）</p>
+                    <p><strong>第4课时：</strong>产品线利润与营收分析（利润柱状图+经营优化建议<strong>提交给校园餐厅运营小组</strong>）</p>
+                    <div class="case-tags">
+                        <span class="case-tag">成本计算</span>
+                        <span class="case-tag">毛利率</span>
+                        <span class="case-tag">定价策略</span>
+                        <span class="case-tag">利润分析</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('数学教学设计文档即将开放下载');">📄 查看完整教案</a>
+                </div>
+            </div>
+
+            <!-- Card 3: 历史 -->
+            <div class="case-card" style="border-top:4px solid #d97706;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#78350f,#92400e);height:160px;">
+                    <div class="icon">📜</div>
+                    <h3>历史 × 锅塌豆腐</h3>
+                    <p>4课时 · 丝路香料·全球贸易·文化输出</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">4</span><span class="lbl">课时完整方案</span></div>
+                        <div class="case-stat"><span class="num">3</span><span class="lbl">跨学科链接</span></div>
+                    </div>
+                    <p><strong>导入：</strong>豆腐起源（中国西汉）→ 丝绸之路香料传入（胡椒/孜然）→ 锅塌豆腐的"全球化"基因</p>
+                    <p><strong>核心任务：</strong>以"宁强天麻豆腐"为主题，撰写一份向"一带一路"沿线国家推广的产品文化说明书。</p>
+                    <p><strong>真客户：</strong>本地文旅局·用于宁强美食文化对外推广素材（真实输出·真实评价）</p>
+                    <div class="case-tags">
+                        <span class="case-tag">丝绸之路</span>
+                        <span class="case-tag">全球贸易</span>
+                        <span class="case-tag">文化输出</span>
+                        <span class="case-tag">真实客户</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('历史教学设计文档即将开放下载');">📄 查看完整教案</a>
+                </div>
+            </div>
+
+            <!-- Card 4: 信息技术 -->
+            <div class="case-card" style="border-top:4px solid #7c3aed;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#312e81,#3730a3);height:160px;">
+                    <div class="icon">💻</div>
+                    <h3>信息技术 × 锅塌豆腐</h3>
+                    <p>8课时/3大模块 · AI生图→美图→WPS→剪映</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">8</span><span class="lbl">课时/3模块</span></div>
+                        <div class="case-stat"><span class="num">3</span><span class="lbl">AI工具链</span></div>
+                    </div>
+                    <p><strong>模块1·海报设计（4课时）：</strong>豆包AI生图 → 美图秀秀修图 → 排版设计 → 定稿输出</p>
+                    <p><strong>模块2·成本核算（2课时）：</strong>WPS表格搭建成本框架 → 公式自动核算 → 多方案对比</p>
+                    <p><strong>模块3·微视频制作（2课时）：</strong>脚本撰写+素材收集 → 剪映剪辑+字幕 → 1分钟推广短视频（抖音/视频号真实发布）</p>
+                    <div class="case-tags">
+                        <span class="case-tag">AI生图</span>
+                        <span class="case-tag">成本核算</span>
+                        <span class="case-tag">微视频</span>
+                        <span class="case-tag">真实发布</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('信息技术教学设计文档即将开放下载');">📄 查看完整教案</a>
+                </div>
+            </div>
+
+            <!-- Card 5: 营养与配餐 -->
+            <div class="case-card" style="border-top:4px solid #0891b2;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#0c4a6e,#155e75);height:160px;">
+                    <div class="icon">🥗</div>
+                    <h3>营养与配餐 × 锅塌豆腐</h3>
+                    <p>8学时/4周 · 营养分析→标注→配餐→售卖</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">8</span><span class="lbl">学时/4周</span></div>
+                        <div class="case-stat"><span class="num">3</span><span class="lbl">产品线</span></div>
+                    </div>
+                    <p><strong>第1周：</strong>原料营养价值分析（豆腐/鸡蛋/宁强红油/配菜营养表）</p>
+                    <p><strong>第2周：</strong>热量计算与营养标注（三大营养素配比+正规营养标签）</p>
+                    <p><strong>第3周：</strong>分客群配餐方案设计（高中生/健身人群/老年营养·3条产品线完整方案）</p>
+                    <p><strong>第4周：</strong>产品制作与市场检验（<strong>真实售卖+顾客评价+持续改进</strong>）</p>
+                    <div class="case-tags">
+                        <span class="case-tag">营养分析</span>
+                        <span class="case-tag">标签标注</span>
+                        <span class="case-tag">配餐设计</span>
+                        <span class="case-tag">真实售卖</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('营养与配餐教学设计文档即将开放下载');">📄 查看完整教案</a>
+                </div>
+            </div>
+
+            <!-- Card 6: 药食同源手册 -->
+            <div class="case-card" style="border-top:4px solid #be185d;">
+                <div class="case-visual" style="background:linear-gradient(135deg,#831843,#9d1744);height:160px;">
+                    <div class="icon">🌿</div>
+                    <h3>药食同源 · 完整运营手册</h3>
+                    <p>11章·689段·6表·19028字 · 从蓝图到落地</p>
+                </div>
+                <div class="case-body">
+                    <div class="case-stats">
+                        <div class="case-stat"><span class="num">11</span><span class="lbl">章节</span></div>
+                        <div class="case-stat"><span class="num">19k</span><span class="lbl">字数</span></div>
+                        <div class="case-stat"><span class="num">5</span><span class="lbl">主题套餐</span></div>
+                    </div>
+                    <p><strong>核心产品：</strong>5款养生饮品+5款药膳主食+4款蒸炖盅+4款手工小食+5款节气限定（全配方量化）</p>
+                    <p><strong>5大校园主题套餐：</strong>考试周/女生经期/运动恢复/清肠解腻/四季节气</p>
+                    <p><strong>实训体系：</strong>阶梯式8+24+16+12+全学期，1师8-10生标准化班组，100分量化考核</p>
+                    <p><strong>HACCP全流程质控</strong>+5大标准化台账，确保"从农田到餐桌"安全可追溯。</p>
+                    <div class="case-tags">
+                        <span class="case-tag">药食同源</span>
+                        <span class="case-tag">5大套餐</span>
+                        <span class="case-tag">HACCP管控</span>
+                        <span class="case-tag">实训标准</span>
+                    </div>
+                    <a href="#" class="case-btn" onclick="event.preventDefault();alert('药食同源手册文档即将开放下载');">📄 查看完整手册</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison">
+        <h2>📊 传统模式 VS "四真三化五链三场"模式</h2>
+        <div style="overflow-x:auto;">
+        <table class="comp-table">
+            <thead>
+                <tr>
+                    <th style="min-width:160px;">对比维度</th>
+                    <th style="min-width:220px;">传统中职课堂</th>
+                    <th style="min-width:220px;" class="highlight">四真三化五链三场模式</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>学习内容</strong></td>
+                    <td>教科书上的标准化案例，与本地产业脱节</td>
+                    <td class="highlight">宁强天麻、本地餐厅订单、社区真实客户——学习内容即工作内容</td>
+                </tr>
+                <tr>
+                    <td><strong>学习方式</strong></td>
+                    <td>老师讲、学生听；做模拟题、写模拟报告</td>
+                    <td class="highlight">真实工单驱动；导·学·展·评四环节；客户现场评分</td>
+                </tr>
+                <tr>
+                    <td><strong>评价标准</strong></td>
+                    <td>教师打分（主观）；期末考试一考定音</td>
+                    <td class="highlight">过程评价40%+成果评价30%+客户评价20%+同行评价10%</td>
+                </tr>
+                <tr>
+                    <td><strong>学生状态</strong></td>
+                    <td>厌学指数高（我校2014年基线91/100）</td>
+                    <td class="highlight">课堂活力指数92%；学生主动认领工单比例≥85%</td>
+                </tr>
+                <tr>
+                    <td><strong>教师角色</strong></td>
+                    <td>知识传授者；"演员"（表演型课堂）</td>
+                    <td class="highlight">任务设计者、资源协调者、成长见证者——"接住学生每一个球"</td>
+                </tr>
+                <tr>
+                    <td><strong>升学就业</strong></td>
+                    <td>升学难、就业对口率低、"职教低人一等"</td>
+                    <td class="highlight">本科上线152人/年；世赛银奖免试升本；就业月薪8000+——人人出彩</td>
+                </tr>
+                <tr>
+                    <td><strong>改革成本</strong></td>
+                    <td>需要大量设备投入、企业深度合作——县域中职做不到</td>
+                    <td class="highlight">零新增财政投入（勉县案例）；校内工坊自建；可复制、可推广</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin:48px 0;">
+        <a href="generator.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem;">🛠️ 立即使用在线工单生成器 →</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;"><a href="index.html" style="color:var(--accent-light);">返回首页</a> · <a href="theory.html" style="color:var(--accent-light);">理论框架</a> · <a href="generator.html" style="color:var(--accent-light);">工单生成器</a></p>
+</div>
+
+</body>
+</html>
