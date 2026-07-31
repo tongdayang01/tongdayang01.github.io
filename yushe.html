@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>悦舍 — 宁职创原</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+        --rose: #f43f5e; --purple: #8b5cf6; --teal: #14b8a6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #831843 0%, #9d174d 40%, #be185d 100%); color: white; padding: 80px 32px 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04) 0%, transparent 40%); }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; position: relative; }
+    .hero h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; position: relative; }
+    .hero h1 span { background: linear-gradient(135deg, #fff, #fce7f3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 720px; margin: 0 auto 32px; line-height: 1.8; position: relative; }
+    .hero-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 2rem; font-weight: 800; color: #fce7f3; }
+    .hero-stat .label { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 52px; }
+    .section-tag { display: inline-block; background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; }
+    .section-title { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Welcome Area */
+    .welcome-card { max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, #fdf2f8, #fce7f3, #fdf2f8); border-radius: 24px; padding: 48px; text-align: center; box-shadow: var(--shadow-lg); position: relative; overflow: hidden; }
+    .welcome-card::before { content:''; position:absolute; top:-100px; right:-100px; width:300px; height:300px; background:radial-gradient(circle, rgba(190,24,93,0.1) 0%, transparent 70%); border-radius:50%; }
+    .welcome-card h2 { font-size: 2rem; font-weight: 800; color: #831843; margin-bottom: 12px; }
+    .welcome-card .motto { font-size: 1.1rem; color: #9d174d; font-style: italic; margin-bottom: 28px; }
+    .welcome-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .welcome-stat { text-align: center; padding: 16px 24px; background: white; border-radius: 16px; box-shadow: var(--shadow); }
+    .welcome-stat .num { font-size: 1.6rem; font-weight: 800; color: #be185d; }
+    .welcome-stat .label { font-size: 0.82rem; color: var(--text-light); }
+
+    /* Service Tabs */
+    .service-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+    .service-tab { padding: 14px 32px; border-radius: 50px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: all 0.3s; }
+    .service-tab:hover { border-color: #be185d; }
+    .service-tab.active { background: linear-gradient(135deg, #831843, #be185d); color: white; border-color: transparent; }
+
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .service-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; display: flex; align-items: flex-start; gap: 16px; }
+    .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: #fce7f3; }
+    .service-card .icon { font-size: 2rem; min-width: 48px; text-align: center; }
+    .service-card .info { flex: 1; }
+    .service-card .info h4 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .service-card .info .price { font-size: 1.15rem; font-weight: 800; color: #be185d; }
+    .service-card .info .desc { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Staff Grid */
+    .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .staff-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: all 0.3s; border: 1px solid #f0f0f0; text-align: center; }
+    .staff-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .staff-avatar { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 700; }
+    .staff-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .staff-card .role { font-size: 0.85rem; color: #be185d; font-weight: 600; margin-bottom: 8px; }
+    .staff-card .meta { font-size: 0.82rem; color: var(--text-light); margin-bottom: 4px; }
+    .staff-card .stars { color: #f59e0b; font-size: 0.9rem; margin-bottom: 8px; }
+    .staff-card .review { font-size: 0.82rem; color: var(--text-light); font-style: italic; line-height: 1.5; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+
+    /* Quick Actions */
+    .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .quick-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); text-align: center; transition: all 0.3s; border-top: 4px solid; cursor: pointer; }
+    .quick-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .quick-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .quick-card h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .quick-card p { font-size: 0.85rem; color: var(--text-light); }
+    .qc1 { border-color: #be185d; }
+    .qc2 { border-color: #8b5cf6; }
+    .qc3 { border-color: #f59e0b; }
+    .qc4 { border-color: #10b981; }
+
+    /* Timer */
+    .timer-section { max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 24px; padding: 40px; text-align: center; color: white; box-shadow: var(--shadow-lg); }
+    .timer-section h3 { font-size: 1.3rem; margin-bottom: 8px; }
+    .timer-section p { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 20px; }
+    .timer-digits { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .timer-digit { text-align: center; }
+    .timer-digit .num { font-size: 2.8rem; font-weight: 900; background: rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 16px; min-width: 70px; display: block; }
+    .timer-digit .unit { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .timer-sep { font-size: 2.4rem; font-weight: 300; color: rgba(255,255,255,0.4); align-self: center; }
+    .timer-expired { font-size: 1.3rem; color: #fca5a5; padding: 20px; display: none; }
+
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.6rem; }
+        .timer-digit .num { font-size: 2rem; min-width: 50px; padding: 8px 10px; }
+        .timer-sep { font-size: 1.6rem; }
+        .staff-grid, .service-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+<li><a href="cultural-courses.html">文化基础课</a></li>
+
+            <a href="zhican.html">值餐</a>
+            <a href="yushe.html" class="active">悦舍</a>
+            <a href="platform.html">平台生态</a>
+            <a href="architecture.html">技术架构</a>
+            <a href="stories.html">成长故事</a>
+            <a href="videos.html">视频</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">💆 四真三化五链三场 · 真实客户 · 真实评价 · 真实成长</div>
+    <h1>悦舍 Yushe — <span>健康养生服务预约平台</span></h1>
+    <p>中医美容和康复理疗专业学生提供服务。<br>悦身，悦心，悦自己 —— 让每一次服务都是真实的学习</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="num">12.5k+</div><div class="label">服务人次</div></div>
+        <div class="hero-stat"><div class="num">8.6k+</div><div class="label">评价数</div></div>
+        <div class="hero-stat"><div class="num">99.2%</div><div class="label">满意度</div></div>
+        <div class="hero-stat"><div class="num">6</div><div class="label">专业服务人员</div></div>
+    </div>
+</section>
+
+<div class="container">
+
+<!-- ============ 8.1 Welcome Area ============ -->
+<section class="section">
+    <div class="welcome-card">
+        <h2>✨ 悦身，悦心，悦自己</h2>
+        <p class="motto">—— 中医美容 · 康复理疗 · 由内而外的健康之美</p>
+        <div class="welcome-stats">
+            <div class="welcome-stat">
+                <div class="num">12,567</div>
+                <div class="label">服务人次</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">8,642</div>
+                <div class="label">用户评价</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">99.2%</div>
+                <div class="label">满意度</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="num">17</div>
+                <div class="label">服务项目</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.2 Three Service Categories ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">💆 三大服务分类</span>
+        <h2 class="section-title">悦颜坊 · 悦身堂 · 精选套餐</h2>
+        <p class="section-desc">中医美容专业 + 中医康复专业学生联合提供服务，17项专业项目</p>
+    </div>
+
+    <div class="service-tabs">
+        <button class="service-tab active" onclick="showServiceTab('face')">🌸 悦颜坊 · 面部护理</button>
+        <button class="service-tab" onclick="showServiceTab('body')">💪 悦身堂 · 推拿理疗</button>
+        <button class="service-tab" onclick="showServiceTab('combo')">🎁 精选套餐</button>
+    </div>
+
+    <!-- 悦颜坊 7项 -->
+    <div class="service-panel" id="panel-face">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">💦</div>
+                <div class="info"><h4>毛孔冲浪</h4><div class="price">¥298</div><div class="desc">深层清洁毛孔，去除黑头粉刺，搭配中药蒸汽开孔</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🧹</div>
+                <div class="info"><h4>肌底净化</h4><div class="price">¥358</div><div class="desc">中药面膜深层净化，排出肌底毒素，改善暗沉肤色</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🌹</div>
+                <div class="info"><h4>玫瑰灌肤</h4><div class="price">¥288</div><div class="desc">玫瑰精油灌肤导入，补水保湿，提亮嫩肤</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">✨</div>
+                <div class="info"><h4>水光原液精华焕肤</h4><div class="price">¥468</div><div class="desc">高浓度玻尿酸+胶原蛋白原液导入，深层焕肤修复</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">✂️</div>
+                <div class="info"><h4>小部位脱毛</h4><div class="price">¥168</div><div class="desc">唇部/腋下等小部位温和脱毛</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🦵</div>
+                <div class="info"><h4>大部位脱毛</h4><div class="price">¥388</div><div class="desc">腿部/手臂等大部位专业脱毛</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">💇</div>
+                <div class="info"><h4>头部洗护</h4><div class="price">¥198</div><div class="desc">中药洗发+头部按摩+护发精华，舒缓解压</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 悦身堂 6项 -->
+    <div class="service-panel" id="panel-body" style="display:none;">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">🧠</div>
+                <div class="info"><h4>头部放松</h4><div class="price">¥268</div><div class="desc">中医推拿手法疏通头部经络，缓解头痛失眠</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🦴</div>
+                <div class="info"><h4>肩颈放松</h4><div class="price">¥298</div><div class="desc">推拿+刮痧+拔罐三合一，有效缓解肩颈僵硬酸痛</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">💪</div>
+                <div class="info"><h4>背部减压</h4><div class="price">¥328</div><div class="desc">精油推背+经络疏通，针对久坐族背部疲劳</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🫙</div>
+                <div class="info"><h4>拔罐</h4><div class="price">¥198</div><div class="desc">传统中医拔罐疗法，祛湿排毒、舒筋活络</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🪨</div>
+                <div class="info"><h4>刮痧</h4><div class="price">¥228</div><div class="desc">专业刮痧手法，疏通经络、活血化瘀</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🔥</div>
+                <div class="info"><h4>艾灸</h4><div class="price">¥268</div><div class="desc">陈年艾条温灸穴位，温经散寒、扶阳固本</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 精选套餐 4项 -->
+    <div class="service-panel" id="panel-combo" style="display:none;">
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="icon">🌟</div>
+                <div class="info"><h4>头部按摩 + 拨筋刮痧 + 洗护</h4><div class="price">¥598</div><div class="desc">头部全套护理，从头到心的放松体验</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">💎</div>
+                <div class="info"><h4>精油开背 + 拔罐</h4><div class="price">¥468</div><div class="desc">精油推背舒缓解压，拔罐排毒祛湿</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🎯</div>
+                <div class="info"><h4>肩颈放松 + 刮痧</h4><div class="price">¥488</div><div class="desc">肩颈重点放松，刮痧活血通络</div></div>
+            </div>
+            <div class="service-card">
+                <div class="icon">🌸</div>
+                <div class="info"><h4>卵巢保养 + 艾灸</h4><div class="price">¥588</div><div class="desc">中医调理手法+温灸，女性专属保养套餐</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.3 Staff Display ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">👩‍⚕️ 服务团队</span>
+        <h2 class="section-title">6位专业服务人员</h2>
+        <p class="section-desc">中医美容 · 中医康复 · 美容理疗 · 美甲艺术 · 美妆造型 —— 专业对口服务</p>
+    </div>
+
+    <div class="staff-grid">
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#831843,#be185d);">袁</div>
+            <h4>袁琪</h4>
+            <div class="role">康复理疗师</div>
+            <div class="stars">⭐⭐⭐⭐⭐ 4.9</div>
+            <div class="meta">1,247 条评价 · 3年经验</div>
+            <div class="meta">专长：肩颈理疗 · 拔罐 · 刮痧</div>
+            <div class="review">"手法专业，按完肩膀明显轻松了很多，下次还找袁老师！"</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">张</div>
+            <h4>张晋雯</h4>
+            <div class="role">中医康复师</div>
+            <div class="stars">⭐⭐⭐⭐⭐ 4.8</div>
+            <div class="meta">1,089 条评价 · 2年经验</div>
+            <div class="meta">专长：艾灸 · 推拿 · 经络调理</div>
+            <div class="review">"艾灸做得很舒服，温温热热的，做完整个身体都暖了。"</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">陈</div>
+            <h4>陈矾</h4>
+            <div class="role">美容理疗师</div>
+            <div class="stars">⭐⭐⭐⭐ 4.7</div>
+            <div class="meta">892 条评价 · 2年经验</div>
+            <div class="meta">专长：面部护理 · 脱毛 · 焕肤</div>
+            <div class="review">"毛孔冲浪做完皮肤真的变干净了，黑头少了超多！"</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#7c2d12,#ea580c);">龙</div>
+            <h4>龙英</h4>
+            <div class="role">美容理疗师</div>
+            <div class="stars">⭐⭐⭐⭐ 4.6</div>
+            <div class="meta">756 条评价 · 1年经验</div>
+            <div class="meta">专长：面部护理 · 精油按摩</div>
+            <div class="review">"玫瑰灌肤做完脸嫩嫩的，连男朋友都说皮肤变好了！"</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#4a1942,#a855f7);">张</div>
+            <h4>张小丽</h4>
+            <div class="role">美甲艺术师</div>
+            <div class="stars">⭐⭐⭐⭐ 4.5</div>
+            <div class="meta">623 条评价 · 1年经验</div>
+            <div class="meta">专长：美甲设计 · 手部护理</div>
+            <div class="review">"做的款式太好看了，而且很牢固，两周了都没掉！"</div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-avatar" style="background:linear-gradient(135deg,#065f46,#10b981);">安</div>
+            <h4>安娥</h4>
+            <div class="role">美妆造型师</div>
+            <div class="stars">⭐⭐⭐⭐ 4.5</div>
+            <div class="meta">498 条评价 · 1年经验</div>
+            <div class="meta">专长：日常妆 · 舞台妆 · 造型设计</div>
+            <div class="review">"毕业典礼的妆容就是安老师化的，超级上镜！"</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.4 Quick Functions ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag">⚡ 快捷功能</span>
+        <h2 class="section-title">一键触达 · 高效服务</h2>
+        <p class="section-desc">预约明日悦疗 · 我的悦约 · 会员中心 · 养生小课</p>
+    </div>
+
+    <div class="quick-grid">
+        <div class="quick-card qc1">
+            <div class="icon">📅</div>
+            <h4>预约明日悦疗</h4>
+            <p>今日 17:00 前下单<br>明日即可享受服务</p>
+        </div>
+        <div class="quick-card qc2">
+            <div class="icon">📋</div>
+            <h4>我的悦约</h4>
+            <p>待赴约：3 项<br>历史记录：47 项</p>
+        </div>
+        <div class="quick-card qc3">
+            <div class="icon">👑</div>
+            <h4>会员中心</h4>
+            <p>等级：黄金会员<br>积分：2,860 · 权益：8项</p>
+        </div>
+        <div class="quick-card qc4">
+            <div class="icon">📖</div>
+            <h4>养生小课</h4>
+            <p>养生知识 · 雅集活动<br>节气养生 · 经络入门</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 8.5 Countdown Timer ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag">⏳ 预订倒计时</span>
+        <h2 class="section-title">每日 17:00 截止预订</h2>
+        <p class="section-desc">请在今日 17:00 前完成预订，逾期将于明日开放</p>
+    </div>
+
+    <div class="timer-section">
+        <h3>⏰ 距离今日预订截止还有</h3>
+        <p>请尽快完成你的悦疗预约</p>
+        <div class="timer-digits" id="liveTimer">
+            <div class="timer-digit"><span class="num" id="th">--</span><span class="unit">时</span></div>
+            <div class="timer-sep">:</div>
+            <div class="timer-digit"><span class="num" id="tm">--</span><span class="unit">分</span></div>
+            <div class="timer-sep">:</div>
+            <div class="timer-digit"><span class="num" id="ts">--</span><span class="unit">秒</span></div>
+        </div>
+        <div class="timer-expired" id="timerExpired">今日预订已截止，请明天再来 ~</div>
+    </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> · <a href="zhican.html">值餐</a> · <a href="yushe.html">悦舍</a> · <a href="generator.html">AI系统</a>
+    </p>
+</footer>
+
+<script>
+function showServiceTab(tab) {
+    document.querySelectorAll('.service-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).style.display = '';
+    event.target.classList.add('active');
+}
+
+// Live countdown timer to 17:00
+function updateTimer() {
+    const now = new Date();
+    const deadline = new Date(now);
+    deadline.setHours(17, 0, 0, 0);
+    
+    if (now >= deadline) {
+        document.getElementById('liveTimer').style.display = 'none';
+        document.getElementById('timerExpired').style.display = 'block';
+        return;
+    }
+
+    const diff = deadline - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('th').textContent = String(h).padStart(2, '0');
+    document.getElementById('tm').textContent = String(m).padStart(2, '0');
+    document.getElementById('ts').textContent = String(s).padStart(2, '0');
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
