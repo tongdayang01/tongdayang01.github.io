@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术架构 — 宁职创原</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); color: white; padding: 72px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background: radial-gradient(circle at 50% 30%, rgba(99,102,241,0.08) 0%, transparent 70%); }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; position: relative; z-index: 1; }
+    .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; position: relative; z-index: 1; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 720px; margin: 0 auto; line-height: 1.8; position: relative; z-index: 1; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-tag { display: inline-block; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; color: white; }
+    .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Architecture diagram area */
+    .arch-diagram { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin-bottom: 32px; }
+    .layer { margin-bottom: 16px; padding: 16px 20px; border-radius: 10px; border-left: 5px solid; }
+    .layer h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .layer p { font-size: 0.85rem; color: var(--text-light); }
+
+    /* API Table */
+    .api-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .api-table thead { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
+    .api-table th { padding: 14px 16px; text-align: left; font-weight: 600; }
+    .api-table td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 0.84rem; }
+    .api-table tr:nth-child(even) { background: #f8f9fa; }
+    .api-table tr:hover { background: #eff6ff; }
+    .method { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+    .method-post { background: #dbeafe; color: #1e40af; }
+    .method-get { background: #d1fae5; color: #065f46; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card-head { padding: 24px 24px 16px; }
+    .card-head h3 { font-size: 1.1rem; font-weight: 700; color: white; }
+    .card-head p { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .card-body { padding: 20px 24px 24px; }
+    .card-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .card-body ul { list-style: none; margin-top: 8px; }
+    .card-body ul li { padding: 5px 0; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid #f0f0f0; }
+    .card-body ul li::before { content: "▸ "; color: var(--gold); font-weight: bold; }
+    .card-body ul li:last-child { border-bottom: none; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+
+    .subpkg-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 16px; }
+    .subpkg-table th { background: #1e1b4b; color: white; padding: 10px 14px; text-align: left; }
+    .subpkg-table td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; }
+    .subpkg-table tr:nth-child(even) { background: #f8f9fa; }
+
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.5rem; }
+        .card-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+<li><a href="cultural-courses.html">文化基础课</a></li>
+
+            <a href="zhican.html">值餐</a>
+            <a href="yushe.html">悦舍</a>
+            <a href="platform.html">平台生态</a>
+            <a href="architecture.html" class="active">技术架构</a>
+            <a href="stories.html">成长故事</a>
+            <a href="summary.html">总结报告</a>
+            <a href="speech.html">主题演讲</a>
+            <a href="videos.html">视频</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">🏗️ 后端架构 + 全局特性</div>
+    <h1>技术架构：让每一行代码都有教育温度</h1>
+    <p>GenerateService 12+级优先级注入 · 30+生成类型 · PaymentService支付体系 · 30+API接口 · 跨端兼容 · 分包策略</p>
+</section>
+
+<div class="container">
+
+<!-- ============ 15. 后端架构 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#1e1b4b,#6366f1);">⚙️ 后端架构</span>
+        <h2 class="section-title">核心服务 · API路由 · 支付体系</h2>
+        <p class="section-desc">GenerateService(~5900+行) + PaymentService + 30+ API接口</p>
+    </div>
+
+    <!-- GenerateService -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">🧠 GenerateService — AI内容生成引擎（~5900+行）</h3>
+
+    <div class="arch-diagram">
+        <div class="layer" style="background:#f0fdf4;border-color:#10b981;">
+            <h4 style="color:#065f46;">🌱 12+级优先级注入系统 (Layer -1 ~ Layer 12+)</h4>
+            <p>从系统级默认值 → 用户偏好 → 全局策略 → 模块配置 → 教育层次 → 专业适配 → 历史上下文 → 实时输入 → 动态覆盖，逐层叠加，确保每次生成精准适配当前场景。</p>
+        </div>
+        <div class="layer" style="background:#eff6ff;border-color:#3b82f6;">
+            <h4 style="color:#1e40af;">🎓 教育层次差异化</h4>
+            <p>中职 / 高职 / 职教本科 三个层次独立策略配置，同一模块输出不同深度的内容。中职偏重实操与工单，高职偏重方案设计，职教本科偏重理论体系与创新。</p>
+        </div>
+        <div class="layer" style="background:#fef3c7;border-color:#f59e0b;">
+            <h4 style="color:#92400e;">⚡ 异步生成 + 轮询机制</h4>
+            <p>POST /api/generate 提交任务 → 返回 taskId → 客户端轮询 GET /api/generate/result/:taskId → 获取完整结果。支持长文本、多模块并行生成。</p>
+        </div>
+        <div class="layer" style="background:#f5f3ff;border-color:#8b5cf6;">
+            <h4 style="color:#5b21b6;">🔧 30+种 generateType</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">快速方案</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">职考通</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">毕业要求矩阵</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">商业锻造</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">AI突破</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">一人公司</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">经验萃取</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">总经理</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">心理测评</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">助农系统</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">世赛方案</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">职称评审</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">课程设计</span>
+                <span class="tag" style="background:#e0e7ff;color:#3730a3;">... +17更多</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PaymentService -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">💳 PaymentService — 支付与解锁</h3>
+    <div class="card-grid" style="margin-bottom:32px;">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#059669,#10b981);">
+                <h3>微信支付</h3><p>小程序端原生支持</p>
+            </div>
+            <div class="card-body"><p>微信小程序内直接调起支付，支持模块解锁、会员购买、值餐下单、悦舍预约。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+                <h3>抖音支付</h3><p>抖音小程序适配</p>
+            </div>
+            <div class="card-body"><p>抖音小程序端的支付通道，与微信支付平行支持，覆盖更广用户群。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                <h3>模拟支付</h3><p>开发/演示环境</p>
+            </div>
+            <div class="card-body"><p>开发环境和演示场景下的模拟支付，无需真实交易即可测试完整流程。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+                <h3>Supabase订单存储</h3><p>订单持久化</p>
+            </div>
+            <div class="card-body"><p>所有支付订单存储在Supabase数据库，支持订单查询、退款、统计分析。模块解锁状态本地+云端双写。</p></div>
+        </div>
+    </div>
+
+    <!-- API Routes -->
+    <h3 style="color:var(--primary);margin-bottom:16px;font-size:1.2rem;">🔌 API路由（全局前缀 /api）</h3>
+    <div style="overflow-x:auto;">
+    <table class="api-table">
+        <thead>
+            <tr><th>Method</th><th>路径</th><th>功能说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/generate</td><td>AI内容生成（异步返回taskId）</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/generate/result/:taskId</td><td>轮询生成结果</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/user/stats</td><td>用户统计数据</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/quote/daily</td><td>每日金句</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/journey/small-joy/recommend</td><td>小确幸推荐</td></tr>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/journey/small-joy/save</td><td>保存小确幸</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/coach/get-today-three-things</td><td>获取今日三件事</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/booking/statistics</td><td>预约统计</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/statistics</td><td>心理测评统计</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/high-risk</td><td>高风险列表</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/records</td><td>测评记录</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/psy-assess/export-csv</td><td>CSV导出</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/yaoshi/categories</td><td>药食分类</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/yaoshi/products</td><td>药食产品</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/qrcode/survey</td><td>问卷二维码</td></tr>
+            <tr><td><span class="method method-get">GET</span></td><td>/api/qrcode/psy-assess</td><td>心理测评二维码</td></tr>
+            <tr><td><span class="method method-post">POST</span></td><td>/api/admin/login</td><td>管理员登录</td></tr>
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);font-style:italic;">/api/payment/* — 支付相关接口（微信支付/抖音支付/模拟支付/订单查询）</td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ============ 16. 全局特性 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#0f172a,#475569);">🌍 全局特性</span>
+        <h2 class="section-title">跨端兼容 · 数据持久化 · UI组件 · 分包策略</h2>
+        <p class="section-desc">微信小程序 / 抖音小程序 / H5 三端适配，60+组件库，7大分包</p>
+    </div>
+
+    <div class="card-grid">
+        <!-- Cross-platform -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+                <h3>📱 跨端兼容</h3><p>微信 · 抖音 · H5</p>
+            </div>
+            <div class="card-body">
+                <p><strong>三端适配策略：</strong></p>
+                <ul>
+                    <li>微信小程序：原生组件（Camera/RecorderManager等）</li>
+                    <li>抖音小程序：抖音支付 + 抖音API适配</li>
+                    <li>H5端：降级提示 + 兼容处理</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);">基于Taro跨端框架，一套代码三端运行</p>
+            </div>
+        </div>
+
+        <!-- Data Persistence -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+                <h3>💾 数据持久化</h3><p>localStorage + Supabase 双写</p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>localStorage：</strong>本地缓存，离线可用</li>
+                    <li><strong>Supabase数据库：</strong>云端同步，多设备共享</li>
+                    <li><strong>登录态管理：</strong>用户登录状态持久化</li>
+                    <li><strong>已购模块缓存：</strong>本地记录解锁状态</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- UI Components -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">
+                <h3>🎨 UI组件体系</h3><p>60+组件 · 原子化样式</p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>shadcn/ui (Taro版)：</strong>60+可定制组件</li>
+                    <li><strong>Tailwind CSS 4：</strong>原子化样式引擎</li>
+                    <li><strong>lucide-react-taro：</strong>图标库</li>
+                    <li><strong>深色/浅色主题：</strong>双主题支持</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Subpackage Strategy -->
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#92400e,#f59e0b);">
+                <h3>📦 分包策略</h3><p>7大分包 · 按需加载</p>
+            </div>
+            <div class="card-body">
+                <table class="subpkg-table">
+                    <tr><th>包名</th><th>内容</th></tr>
+                    <tr><td><strong>主包</strong></td><td>首页、brain页面</td></tr>
+                    <tr><td><strong>zhican</strong></td><td>值餐相关页面（10+子页面）</td></tr>
+                    <tr><td><strong>yushe</strong></td><td>悦舍相关页面（服务/人员/预订）</td></tr>
+                    <tr><td><strong>capability</strong></td><td>世赛服务/职称跃升/课程设计/知录/对话</td></tr>
+                    <tr><td><strong>main</strong></td><td>行动教练/用户画像/历史记录</td></tr>
+                    <tr><td><strong>value-meal</strong></td><td>调研问卷（7类问卷+二维码）</td></tr>
+                    <tr><td><strong>admin</strong></td><td>管理后台（预约管理+心理测评）</td></tr>
+                </table>
+                <p style="font-size:0.78rem;color:var(--text-light);margin-top:8px;">分包按需加载，优化首屏性能，符合微信小程序2MB主包限制</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary banner -->
+    <div style="margin-top:40px;padding:32px;background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:var(--radius);text-align:center;color:white;">
+        <h3 style="font-size:1.2rem;color:var(--gold);margin-bottom:12px;">🏗️ 宁职创原 · 全栈技术架构</h3>
+        <p style="color:rgba(255,255,255,0.75);line-height:1.9;font-size:0.95rem;">
+            <strong>前端：</strong>Taro + React + TypeScript + Tailwind CSS 4 + shadcn/ui<br>
+            <strong>后端：</strong>Node.js + GenerateService + PaymentService<br>
+            <strong>数据：</strong>Supabase + localStorage 双写<br>
+            <strong>AI：</strong>多级优先级注入 + 多种生成类型 + 异步生成轮询<br>
+            <strong>支付：</strong>微信支付 + 抖音支付 + 模拟支付<br>
+            <strong>跨端：</strong>微信小程序 + 抖音小程序 + H5<br>
+            <strong>API：</strong>30+ RESTful接口 · 全局前缀 /api
+        </p>
+    </div>
+</section>
+
+</div>
+
+<footer class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> · <a href="generator.html">AI系统</a> · <a href="zhican.html">值餐</a> · <a href="yushe.html">悦舍</a> · <a href="platform.html">平台生态</a>
+    </p>
+</footer>
+
+</body>
+</html>
