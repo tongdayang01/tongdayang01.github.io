@@ -1,22 +1,32 @@
-var CACHE='award-v2';
-var MIRROR='https://present-workout-awards-sections.trycloudflare.com';
-var MIRROR_HOST=new URL(MIRROR).hostname;
-self.addEventListener('install',function(e){e.waitUntil(self.skipWaiting())});
-self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim())});
-self.addEventListener('fetch',function(e){
-  var u=new URL(e.request.url);
-  if(u.hostname==='tongdayang01.github.io'||u.hostname==='tongdayang01-backup.github.io'){
-    e.respondWith(caches.open(CACHE).then(function(c){
-      return c.match(e.request).then(function(r){
-        var p=fetch(e.request).then(function(n){c.put(e.request,n.clone());return n});
-        return r||p;
-      });
-    }));
-  }else if(u.hostname===MIRROR_HOST){
-    e.respondWith(fetch(e.request).then(function(r){
-      var cp=r.clone();
-      caches.open(CACHE).then(function(c){c.put(e.request,cp)});
-      return r;
-    }).catch(function(){return caches.match(e.request)}));
+const CACHE_NAME = 'site-v2';
+const MIRROR_ORIGIN = 'https://present-workout-awards-sections.trycloudflare.com';
+
+self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (url.hostname === 'tongdayang01.github.io') {
+    event.respondWith(
+      fetch(event.request).then(res => {
+        const cloned = res.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
+        return res;
+      }).catch(() => {
+        return caches.match(event.request);
+      })
+    );
+  }
+  else if (url.origin === MIRROR_ORIGIN) {
+    event.respondWith(
+      fetch(event.request).then(res => {
+        const cloned = res.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
+        return res;
+      }).catch(() => {
+        return caches.match(event.request);
+      })
+    );
   }
 });
