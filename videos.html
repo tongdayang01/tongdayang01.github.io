@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频展示 —— 宁强方案</title>
+    <meta name="description" content="国家级教学成果奖特等奖申报视频 - 9分30秒完整版 + 分镜脚本">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary:#0B2A4A; --accent:#C4A962; --gold:#F6C343; --bg:#F5F3EE; --text:#2C2C2C; --dim:#666; --white:#fff; }
+        body { font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif; color:var(--text); background:var(--bg); line-height:1.8; }
+        a { color:var(--primary); text-decoration:none; }
+
+        .navbar { background:var(--primary); padding:0 24px; position:sticky; top:0; z-index:100; box-shadow:0 2px 20px rgba(0,0,0,0.15); }
+        .navbar-inner { max-width:1300px; margin:0 auto; height:64px; display:flex; align-items:center; justify-content:space-between; }
+        .brand { color:white; font-size:1.1rem; font-weight:700; display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .brand-icon { width:38px; height:38px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .nav-links { display:flex; gap:4px; list-style:none; flex-wrap:wrap; }
+        .nav-links a { color:rgba(255,255,255,0.85); padding:6px 13px; border-radius:8px; font-size:0.88rem; transition:all 0.3s; white-space:nowrap; }
+        .nav-links a:hover, .nav-links a.active { color:white; background:rgba(196,169,98,0.3); }
+
+        .main { max-width:1200px; margin:0 auto; padding:48px 24px; }
+        .page-header { text-align:center; margin-bottom:48px; }
+        .page-header .tag { display:inline-block; background:linear-gradient(135deg,#e8d5a8,#fef3c7); color:var(--primary); padding:6px 20px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:16px; }
+        .page-header h1 { font-size:clamp(1.8rem,3.5vw,2.6rem); color:var(--primary); font-weight:800; margin-bottom:12px; }
+        .page-header p { color:var(--dim); font-size:1.05rem; max-width:700px; margin:0 auto; }
+
+        /* Video Hero */
+        .video-hero { background:linear-gradient(135deg,var(--primary),#061525); border-radius:20px; padding:40px; color:white; margin-bottom:32px; text-align:center; }
+        .video-hero h2 { font-size:1.4rem; margin-bottom:12px; }
+        .video-hero .meta { display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; color:rgba(255,255,255,0.7); font-size:0.9rem; }
+        .video-hero .meta span { background:rgba(255,255,255,0.1); padding:4px 14px; border-radius:50px; }
+
+        /* Video Player */
+        .video-container { position:relative; border-radius:16px; overflow:hidden; margin-bottom:48px; background:#000; box-shadow:0 8px 40px rgba(0,0,0,0.3); }
+        .video-container video { width:100%; display:block; }
+        .video-placeholder { width:100%; aspect-ratio:3840/1640; max-height:600px; background:linear-gradient(135deg,#0B2A4A 0%,#061525 50%,#0B2A4A 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; color:white; }
+        .video-placeholder .icon { font-size:4rem; opacity:0.9; }
+        .video-placeholder p { opacity:0.7; font-size:0.95rem; text-align:center; padding:0 40px; }
+        .video-placeholder .note { background:rgba(255,255,255,0.08); padding:10px 24px; border-radius:8px; font-size:0.85rem; }
+        .video-download { text-align:center; margin:16px 0 40px; }
+        .video-download a { display:inline-block; padding:12px 32px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; font-size:1rem; transition:all 0.3s; }
+        .video-download a:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(196,169,98,0.4); }
+
+        /* Segment Timeline */
+        .timeline { margin-bottom:48px; }
+        .timeline h2 { font-size:1.3rem; color:var(--primary); margin-bottom:20px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
+        .seg-card { background:var(--white); border-radius:14px; padding:24px 28px; margin-bottom:14px; box-shadow:0 2px 16px rgba(0,0,0,0.06); border-left:5px solid var(--accent); display:grid; grid-template-columns:140px 1fr; gap:20px; align-items:start; transition:all 0.3s; }
+        .seg-card:hover { box-shadow:0 4px 24px rgba(0,0,0,0.1); transform:translateX(4px); }
+        .seg-card .time { font-weight:800; color:var(--primary); font-size:0.95rem; background:var(--bg); padding:8px 14px; border-radius:8px; text-align:center; }
+        .seg-card .content h3 { font-size:1.05rem; color:var(--primary); margin-bottom:6px; }
+        .seg-card .content p { font-size:0.9rem; color:var(--dim); line-height:1.7; }
+        .seg-card .content .tone { display:inline-block; font-size:0.78rem; background:#e8f0fe; color:var(--primary); padding:2px 10px; border-radius:50px; margin-top:4px; }
+
+        /* Full Script */
+        .script-full { background:var(--white); border-radius:16px; padding:40px; box-shadow:0 4px 24px rgba(0,0,0,0.08); margin-bottom:48px; }
+        .script-full h2 { font-size:1.3rem; color:var(--primary); margin-bottom:24px; padding-bottom:12px; border-bottom:3px solid var(--accent); display:inline-block; }
+        .script-block { background:var(--bg); border-radius:12px; padding:22px; margin-bottom:14px; border-left:4px solid var(--accent); }
+        .script-block .timecode { display:inline-block; background:var(--accent); color:var(--primary); padding:3px 14px; border-radius:50px; font-size:0.82rem; font-weight:700; margin-bottom:8px; }
+        .script-block h4 { color:var(--primary); margin-bottom:6px; font-size:1rem; }
+        .script-block p { font-size:0.92rem; color:var(--dim); line-height:1.9; }
+
+        .footer { background:#0B2A4A; color:rgba(255,255,255,0.6); padding:36px 0; text-align:center; font-size:0.9rem; }
+        .footer a { color:#e8d5a8; }
+
+        @media(max-width:768px){
+            .nav-links{display:none;}
+            .seg-card{grid-template-columns:1fr; gap:8px;}
+            .script-full{padding:24px 16px;}
+            .video-placeholder{aspect-ratio:16/9;}
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="index.html" class="brand"><span class="brand-icon">🎓</span><span>宁强方案</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">成果概况</a></li>
+            <li><a href="theory.html">理论框架</a></li>
+            <li><a href="architecture.html">系统架构</a></li>
+            <li><a href="curriculum.html">课程改革</a></li>
+            <li><a href="generator.html">AI系统</a></li>
+            <li><a href="zhican.html">值餐工坊</a></li>
+            <li><a href="yushe.html">悦舍理疗</a></li>
+            <li><a href="cultural-courses.html">文化课融合</a></li>
+            <li><a href="worldskills.html">赛教融合</a></li>
+            <li><a href="cases.html">推广案例</a></li>
+            <li><a href="stories.html">学生故事</a></li>
+            <li><a href="summary.html">总结报告</a></li>
+            <li><a href="speech.html">主题演讲</a></li>
+            <li><a href="videos.html" class="active">视频</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="page-header">
+        <span class="tag">🎬 视频展示</span>
+        <h1>申报视频与教学影像</h1>
+        <p>9分30秒国家级教学成果奖申报视频 · 4K电影级制作 · 完整分镜脚本</p>
+    </div>
+
+    <!-- Video Hero -->
+    <div class="video-hero">
+        <h2>🎥 《从"厌学"到"创值"——点亮1600个县域中职的那盏灯》</h2>
+        <div class="meta">
+            <span>⏱ 9分30秒</span><span>🎬 7段叙事</span><span>📐 4K·2.35:1</span><span>🎵 原创配乐</span><span>🎙 男中音旁白</span>
+        </div>
+    </div>
+
+    <!-- Video Player -->
+    <div class="video-container">
+        <!-- 主申报视频 - 10分钟有声版 -->
+        <video controls poster="assets/video-poster.jpg" preload="metadata" style="width:100%;display:block;">
+            <source src="/videos/main_presentation.mp4" type="video/mp4">
+        </video>
+        <div class="video-placeholder" id="videoFallback">
+            <div class="icon">🎬</div>
+            <p>4K电影级申报视频（3840×1640 / 2.35:1宽银幕）</p>
+            <p style="font-size:0.85rem;opacity:0.6;">视频文件上传后自动替换为播放器</p>
+            <div class="note">📁 视频文件路径：E:/video_project/output/宁强职中_国家级教学成果奖申报_9分30秒.mp4</div>
+        </div>
+    </div>
+    <div class="video-download">
+        <a href="/videos/main_presentation.mp4" download>⬇ 下载完整视频（10分钟有声版 / 720p）</a>
+    </div>
+
+    <!-- Cultural Performance Video Section -->
+    <div class="script-full" style="margin-top:48px;">
+        <h2>🎭 学校情景舞台剧 · 文化馆展演</h2>
+        <p style="color:var(--dim);margin-bottom:24px;">2025年陕西省全民学习活动周唯一展演节目，以舞台艺术再现宁强职中产业课堂改革后斩获汉中市首枚世界职业院校技能大赛银奖的真实故事。</p>
+
+        <div class="video-container" style="margin-bottom:24px;">
+            <video controls preload="metadata" style="width:100%;display:block;border-radius:12px;">
+                <source src="/videos/stage_drama.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="video-download">
+            <a href="/videos/stage_drama.mp4" download>⬇ 情景舞台剧（480p / 48MB）</a>
+        </div>
+
+        <div class="script-block" style="margin-top:24px;">
+            <span class="timecode">🎬 0:00-19:00</span>
+            <h4>全省全民学习活动周 · 唯一展演节目</h4>
+            <p>本剧目由宁强职中师生自编自演，是2025年陕西省全民学习活动周职业教育板块<strong>唯一的现场展演节目</strong>。全剧以学校产业课堂改革为背景，真实还原了学生赵佳明、郑燕、孟婷瑶三位曾被贴上"问题学生"标签的少年，从厌学迷茫到站上世界职业院校技能大赛领奖台、斩获<strong>汉中市首枚世赛银牌</strong>的蜕变历程。剧目将值餐工坊的灶台、悦舍理疗的床位、融创市集的摊位搬上舞台，生动诠释了"四真三化五链三场"改革如何让每一个被遗忘的孩子重新被看见、被需要、被尊重。省市领导观演后给予高度评价。</p>
+        </div>
+    </div>
+
+    <div style="text-align:center; margin:48px 0 64px;">
+        <a href="summary.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--accent),var(--gold)); color:var(--primary); border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">📖 阅读成果总结报告 →</a>
+        <a href="speech.html" style="display:inline-block; padding:14px 36px; background:linear-gradient(135deg,var(--primary),#1a3a5c); color:white; border-radius:50px; font-weight:700; text-decoration:none; font-size:1.05rem; margin:0 8px;">🎙 主题演讲全文 →</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 宁强县职业高级中学 · 产业·课堂双螺旋教学成果团队</p>
+    <p style="margin-top:8px;"><a href="index.html">返回首页</a> · <a href="summary.html">总结报告</a> · <a href="speech.html">主题演讲</a></p>
+</div>
+
+<script>
+// Hide placeholder if video loads successfully
+document.addEventListener('DOMContentLoaded', function() {
+    var video = document.querySelector('video');
+    var placeholder = document.getElementById('videoFallback');
+    if (video && placeholder) {
+        video.addEventListener('loadeddata', function() {
+            placeholder.style.display = 'none';
+        });
+        video.addEventListener('error', function() {
+            placeholder.style.display = 'flex';
+        });
+    }
+});
+</script>
+</body>
+</html>
