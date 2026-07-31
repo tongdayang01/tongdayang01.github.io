@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平台生态 — 宁职创原</title>
+<style>
+    :root {
+        --primary: #1a365d; --accent: #2a4a7f; --gold: #f59e0b;
+        --bg: #f8f9fa; --text: #2d3748; --text-light: #718096;
+        --white: #ffffff; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,0.12); --radius: 16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    .navbar { background: var(--primary); padding: 0 32px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.15); }
+    .navbar-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 20px; }
+    .navbar-brand { color: var(--gold); font-size: 1.15rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+    .navbar-links { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+    .navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.78rem; padding: 5px 10px; border-radius: 50px; white-space: nowrap; transition: all 0.2s; }
+    .navbar-links a:hover, .navbar-links a.active { color: white; background: rgba(255,255,255,0.12); }
+
+    .hero { background: linear-gradient(135deg, #1e3a5f 0%, #312e81 50%, #1e3a5f 100%); color: white; padding: 72px 32px 56px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 50px; font-size: 0.82rem; margin-bottom: 20px; }
+    .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 700px; margin: 0 auto; line-height: 1.8; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .section { padding: 72px 0; }
+    .section:nth-child(even) { background: white; }
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-tag { display: inline-block; padding: 6px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-bottom: 12px; color: white; }
+    .section-title { font-size: 1.7rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    .section-desc { color: var(--text-light); font-size: 0.95rem; max-width: 640px; margin: 0 auto; }
+
+    /* Cards */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+    .card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card-head { padding: 24px 24px 16px; }
+    .card-head .icon { font-size: 2rem; margin-bottom: 8px; }
+    .card-head h3 { font-size: 1.1rem; font-weight: 700; color: white; }
+    .card-head p { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 4px; }
+    .card-body { padding: 20px 24px 24px; }
+    .card-body p { font-size: 0.88rem; color: var(--text-light); line-height: 1.8; margin-bottom: 8px; }
+    .card-body p strong { color: var(--primary); }
+    .card-body ul { list-style: none; margin-top: 8px; }
+    .card-body ul li { padding: 5px 0; font-size: 0.85rem; color: var(--text-light); border-bottom: 1px solid #f0f0f0; }
+    .card-body ul li::before { content: "▸ "; color: var(--gold); font-weight: bold; }
+    .card-body ul li:last-child { border-bottom: none; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .tag { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+
+    /* Survey */
+    .survey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .survey-card { background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow); text-align: center; transition: all 0.3s; border: 2px solid transparent; }
+    .survey-card:hover { border-color: #6366f1; transform: translateY(-2px); }
+    .survey-card .icon { font-size: 2rem; margin-bottom: 8px; }
+    .survey-card h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 4px; }
+    .survey-card .target { font-size: 0.8rem; color: var(--text-light); }
+
+    /* Admin Stats */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: var(--shadow); text-align: center; }
+    .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+    .stat-card .label { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+
+    /* Risk badges */
+    .risk-badge { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+    .risk-normal { background: #d1fae5; color: #065f46; }
+    .risk-mild { background: #fef3c7; color: #92400e; }
+    .risk-good { background: #d1fae5; color: #065f46; }
+    .risk-moderate { background: #fed7aa; color: #9a3412; }
+    .risk-attention { background: #fed7aa; color: #9a3412; }
+    .risk-high { background: #fecaca; color: #991b1b; }
+    .risk-critical { background: #fca5a5; color: #7f1d1d; }
+
+    /* Tags for label system */
+    .label-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+    .footer { background: var(--primary); color: rgba(255,255,255,0.6); text-align: center; padding: 36px 32px; font-size: 0.85rem; }
+    .footer a { color: var(--gold); text-decoration: none; margin: 0 8px; }
+
+    @media (max-width: 768px) {
+        .hero h1 { font-size: 1.5rem; }
+        .card-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html">🏫 宁职创原</a>
+        <div class="navbar-links">
+            <a href="index.html">首页</a>
+            <a href="theory.html">理论框架</a>
+            <a href="cases.html">典型案例</a>
+            <a href="worldskills.html">世赛服务</a>
+            <a href="promotion.html">职称跃升</a>
+            <a href="curriculum.html">课程设计</a>
+            <a href="generator.html">AI系统</a>
+<li><a href="cultural-courses.html">文化基础课</a></li>
+
+            <a href="zhican.html">值餐</a>
+            <a href="yushe.html">悦舍</a>
+            <a href="platform.html" class="active">平台生态</a>
+            <a href="architecture.html">技术架构</a>
+            <a href="stories.html">成长故事</a>
+            <a href="videos.html">视频</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">🌐 平台生态 · 数据驱动的职教运营体系</div>
+    <h1>平台生态：从调研到洞察的全链路数字化</h1>
+    <p>多角色调研问卷 · 预约管理后台 · 心理测评系统 · 全天候语音日记 · AI行动教练 · 达叔对话引擎 · 七维用户画像</p>
+</section>
+
+<div class="container"><div style="max-width:1200px;margin:12px auto 0;background:linear-gradient(135deg,#f8f6f0,#fff);border:1px solid #e2e0da;border-radius:14px;padding:20px 28px;font-size:.85rem;color:#555;line-height:1.8"><strong style="color:#0f2b4c;font-size:1rem">开源共享生态</strong> - 值餐工坊(10子页面/3大餐类12道菜品/购物车/评价体系/后厨驾驶舱/经营参谋部) | 悦舍理疗中心(悦颜坊7项+悦身堂6项+套餐4个/6位技师/预订系统) | 课点AI系统(13种生成类型/微信小程序/Word导出) | 全部教案工单评价模板免费开源</div>
+
+<!-- ============ 9. 价值膳食调研 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">📋 价值膳食调研</span>
+        <h2 class="section-title">多角色调研问卷系统</h2>
+        <p class="section-desc">7类问卷覆盖全角色 · 二维码一键分发 · 数据驱动决策</p>
+    </div>
+
+    <div class="survey-grid">
+        <div class="survey-card"><div class="icon">🎓</div><h4>在校学生版</h4><div class="target">25级、26级烹饪班全体</div></div>
+        <div class="survey-card"><div class="icon">👨‍🏫</div><h4>教师版</h4><div class="target">全校教职工</div></div>
+        <div class="survey-card"><div class="icon">🎉</div><h4>毕业生版</h4><div class="target">近3届毕业生</div></div>
+        <div class="survey-card"><div class="icon">🏢</div><h4>企业版</h4><div class="target">餐饮企业负责人</div></div>
+        <div class="survey-card"><div class="icon">👥</div><h4>社会公众版</h4><div class="target">本地市民、学生家长</div></div>
+        <div class="survey-card"><div class="icon">💼</div><h4>实习学生版</h4><div class="target">校外实习烹饪专业学生</div></div>
+        <div class="survey-card"><div class="icon">🔧</div><h4>教师值餐工坊问卷</h4><div class="target">为值餐工坊菜品升级提供意见</div></div>
+    </div>
+
+    <div style="display:flex;gap:24px;margin-top:36px;flex-wrap:wrap;justify-content:center;">
+        <div style="background:white;border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow);text-align:center;flex:1;min-width:250px;">
+            <div style="font-size:2rem;">📱</div>
+            <h4 style="margin-top:8px;color:var(--primary);">二维码生成</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">每个问卷生成专属二维码<br>后端 /api/qrcode/survey<br>扫码直接填写</p>
+        </div>
+        <div style="background:white;border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow);text-align:center;flex:1;min-width:250px;">
+            <div style="font-size:2rem;">🔐</div>
+            <h4 style="margin-top:8px;color:var(--primary);">管理员登录</h4>
+            <p style="font-size:0.85rem;color:var(--text-light);">账号密码验证<br>/api/admin/login<br>登录后跳转管理后台</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 10. 管理后台 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#dc2626,#ef4444);">⚙️ 管理后台</span>
+        <h2 class="section-title">预约管理 × 心理测评管理</h2>
+        <p class="section-desc">数据总览 · 风险分级 · CSV导出 · 二维码入口</p>
+    </div>
+
+    <!-- Booking Stats -->
+    <h3 style="color:var(--primary);margin-bottom:16px;">📅 预约管理中心</h3>
+    <div class="stat-row">
+        <div class="stat-card"><div class="num">3,847</div><div class="label">总预约数</div></div>
+        <div class="stat-card"><div class="num" style="color:#f59e0b;">128</div><div class="label">待确认</div></div>
+        <div class="stat-card"><div class="num" style="color:#10b981;">2,891</div><div class="label">已完成</div></div>
+        <div class="stat-card"><div class="num" style="color:#ef4444;">203</div><div class="label">已取消</div></div>
+        <div class="stat-card"><div class="num">47</div><div class="label">今日新增</div></div>
+        <div class="stat-card"><div class="num">312</div><div class="label">本周预约</div></div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-light);text-align:center;margin-bottom:32px;">数据来源：/api/booking/statistics | 包含服务类型统计、理疗师统计、日期趋势、实时预约列表</p>
+
+    <!-- Psy Assess -->
+    <h3 style="color:var(--primary);margin-bottom:16px;">🧠 心理测评管理</h3>
+    <div class="stat-row">
+        <div class="stat-card"><div class="num">2,156</div><div class="label">总测评数</div></div>
+        <div class="stat-card"><div class="num" style="color:#10b981;">1,520</div><div class="label"><span class="risk-badge risk-normal">正常</span></div></div>
+        <div class="stat-card"><div class="num" style="color:#f59e0b;">386</div><div class="label"><span class="risk-badge risk-mild">轻度关注</span></div></div>
+        <div class="stat-card"><div class="num" style="color:#f97316;">182</div><div class="label"><span class="risk-badge risk-moderate">中度预警</span></div></div>
+        <div class="stat-card"><div class="num" style="color:#dc2626;">52</div><div class="label"><span class="risk-badge risk-high">高度预警</span></div></div>
+        <div class="stat-card"><div class="num" style="color:#991b1b;">16</div><div class="label"><span class="risk-badge risk-critical">危机干预</span></div></div>
+    </div>
+
+    <div class="card-grid" style="margin-top:0;">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#dc2626,#ef4444);">
+                <div class="icon">🚨</div>
+                <h3>高风险预警列表</h3>
+                <p>中度预警 · 高度预警 · 危机干预</p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>张某</strong> <span class="risk-badge risk-critical">危机干预</span> <span style="font-size:0.78rem;color:var(--text-light);">普高生 · 2026-06-05</span></li>
+                    <li><strong>李某</strong> <span class="risk-badge risk-high">高度预警</span> <span style="font-size:0.78rem;color:var(--text-light);">职高生 · 2026-06-04</span></li>
+                    <li><strong>王某</strong> <span class="risk-badge risk-moderate">中度预警</span> <span style="font-size:0.78rem;color:var(--text-light);">职高生 · 2026-06-03</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                <div class="icon">📊</div>
+                <h3>测评记录 · 筛选导出</h3>
+                <p>分页 + 角色筛选 + 风险等级筛选</p>
+            </div>
+            <div class="card-body">
+                <p><strong>角色标签：</strong></p>
+                <div class="tag-row">
+                    <span class="tag" style="background:#e0e7ff;color:#3730a3;">普高生</span>
+                    <span class="tag" style="background:#fef3c7;color:#92400e;">职高生</span>
+                    <span class="tag" style="background:#fce7f3;color:#9d174d;">教师</span>
+                </div>
+                <p style="margin-top:12px;"><strong>导出功能：</strong>一键 CSV 导出全部测评数据</p>
+                <p><strong>二维码入口：</strong>生成心理测评扫码入口</p>
+                <p style="font-size:0.78rem;color:var(--text-light);margin-top:8px;">API：/api/psy-assess/statistics | /api/psy-assess/high-risk | /api/psy-assess/records | /api/psy-assess/export-csv</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 11. 知录 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">📝 知录 Zhilu</span>
+        <h2 class="section-title">全天候个人语音日记与成长分析系统</h2>
+        <p class="section-desc">五大功能标签 · AI成长洞察 · 多设备同步</p>
+    </div>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">
+                <div class="icon">📅</div><h3>今日知录</h3><p>DailyZhilu 组件</p>
+            </div>
+            <div class="card-body"><p>当天语音/文字日记记录，支持语音输入转文字，AI自动提取关键事件和情绪标签。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#0d9488);">
+                <div class="icon">📚</div><h3>历史知录</h3><p>HistoryZhilu 组件</p>
+            </div>
+            <div class="card-body"><p>历史日记浏览与检索，按日期/情绪/关键词多维度搜索，时间线可视化回顾。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#0d9488);">
+                <div class="icon">📤</div><h3>文件上传</h3><p>FileUpload 组件</p>
+            </div>
+            <div class="card-body"><p>上传文档/图片作为日记素材，AI自动提取文字内容并归档。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#0d9488);">
+                <div class="icon">📈</div><h3>成长洞察</h3><p>GrowthInsights 组件</p>
+            </div>
+            <div class="card-body"><p>AI分析个人成长趋势，情绪曲线、关键词云、成长里程碑自动生成。</p></div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#0f766e,#0d9488);">
+                <div class="icon">☁️</div><h3>设备同步</h3><p>DeviceSync 组件</p>
+            </div>
+            <div class="card-body"><p>多设备数据同步，Supabase数据库云端存储，localStorage本地缓存双写机制。</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 12. 行动教练 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#059669,#10b981);">🎯 行动教练 Coach</span>
+        <h2 class="section-title">基于AI的深度对话式行动辅导系统</h2>
+        <p class="section-desc">翡翠绿主色调 · Dieter Rams极简主义 · 顶尖商业理论融合职教智慧</p>
+    </div>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#059669,#10b981);">
+                <div class="icon">✍️</div><h3>三件事打磨</h3><p>three_things 对话模式</p>
+            </div>
+            <div class="card-body">
+                <p>从首页发送选中的三件事，AI逐一分析打磨：</p>
+                <ul>
+                    <li>第一件事：澄清目标与动机</li>
+                    <li>第二件事：拆解行动步骤</li>
+                    <li>第三件事：设置检验标准</li>
+                </ul>
+                <p style="font-size:0.82rem;color:var(--text-light);">用户上下文感知：读取三件事数据和小确幸</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#059669,#34d399);">
+                <div class="icon">🔍</div><h3>单个任务打磨</h3><p>polish_task 对话模式</p>
+            </div>
+            <div class="card-body">
+                <p>对单个任务进行深度优化，从五个维度展开：</p>
+                <ul>
+                    <li>目标清晰度 → 行动拆解 → 资源配置 → 时间规划 → 反馈机制</li>
+                </ul>
+                <p>行动教练式引导，激发用户内在动力</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#059669,#6ee7b7);">
+                <div class="icon">🌙</div><h3>晚间复盘</h3><p>coach-evening-review 模式</p>
+            </div>
+            <div class="card-body">
+                <p>回顾当天的成长与收获：</p>
+                <ul>
+                    <li>今天完成了什么？</li>
+                    <li>遇到了什么挑战？</li>
+                    <li>学到了什么？明天如何改进？</li>
+                </ul>
+                <p>用户画像感知，个性化深度回应</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:24px;padding:24px;background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-radius:var(--radius);text-align:center;">
+        <p style="color:#065f46;font-weight:600;">设计理念：基于 Dieter Rams "好设计的10原则" 与 Jony Ive 极简主义 | 翡翠绿主色调象征成长与生命力</p>
+    </div>
+</section>
+
+<!-- ============ 13. 达叔对话系统 ============ -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">💬 达叔对话 Dialogue</span>
+        <h2 class="section-title">通用AI对话引擎 · 多种专家角色</h2>
+        <p class="section-desc">专家配置系统 · TTS语音播报 · 流式回复 · 上下文持续对话</p>
+    </div>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#3b82f6);">
+                <div class="icon">🧠</div><h3>专家配置系统</h3><p>从 @/config/dadu-modules 获取配置</p>
+            </div>
+            <div class="card-body">
+                <p>不同模块对应不同的AI专家人格：</p>
+                <ul>
+                    <li>产教融合专家 · 课程设计专家</li>
+                    <li>世赛金牌教练 · 职称评审专家</li>
+                    <li>营养搭配顾问 · 中医美容师</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#60a5fa);">
+                <div class="icon">🔊</div><h3>TTS 语音播报</h3><p>磁性男声 · 播放/暂停控制</p>
+            </div>
+            <div class="card-body">
+                <p><strong>语音配置：</strong></p>
+                <ul>
+                    <li>语速：0.85（偏慢沉稳）</li>
+                    <li>音调：0.9（自然男声）</li>
+                    <li>小程序端原生支持</li>
+                    <li>H5端降级处理（不可用时静默跳过）</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head" style="background:linear-gradient(135deg,#1e3a5f,#93c5fd);">
+                <div class="icon">⚡</div><h3>对话交互</h3><p>文字输入 · AI流式回复</p>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>文字输入发送消息</li>
+                    <li>AI流式回复，逐字呈现</li>
+                    <li>上下文持续对话记忆</li>
+                    <li>支持多轮深度交流</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 14. 用户画像 ============ -->
+<section class="section" style="background:white;">
+    <div class="section-header">
+        <span class="section-tag" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);">👤 用户画像 User-tags</span>
+        <h2 class="section-title">七维标签体系 · 组合预设</h2>
+        <p class="section-desc">身份 · 性格 · 能力 · 偏好 · 场景 · 人设 · 语气风格 —— 七维刻画，精准服务</p>
+    </div>
+
+    <div class="label-grid">
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #ef4444;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">🏷️ 身份标签 identity</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#fef2f2;color:#991b1b;">学生</span>
+                <span class="tag" style="background:#fef2f2;color:#991b1b;">教师</span>
+                <span class="tag" style="background:#fef2f2;color:#991b1b;">管理者</span>
+                <span class="tag" style="background:#fef2f2;color:#991b1b;">创业者</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #f59e0b;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">🧬 性格标签 personality</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#fffbeb;color:#92400e;">理性</span>
+                <span class="tag" style="background:#fffbeb;color:#92400e;">感性</span>
+                <span class="tag" style="background:#fffbeb;color:#92400e;">内向</span>
+                <span class="tag" style="background:#fffbeb;color:#92400e;">外向</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #10b981;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">💪 能力标签 ability</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#ecfdf5;color:#065f46;">教学</span>
+                <span class="tag" style="background:#ecfdf5;color:#065f46;">管理</span>
+                <span class="tag" style="background:#ecfdf5;color:#065f46;">技术</span>
+                <span class="tag" style="background:#ecfdf5;color:#065f46;">创业</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #3b82f6;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">🎯 偏好标签 preference</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#eff6ff;color:#1e40af;">简洁</span>
+                <span class="tag" style="background:#eff6ff;color:#1e40af;">详尽</span>
+                <span class="tag" style="background:#eff6ff;color:#1e40af;">实操</span>
+                <span class="tag" style="background:#eff6ff;color:#1e40af;">理论</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #8b5cf6;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">📍 场景标签 scene</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#f5f3ff;color:#5b21b6;">备课</span>
+                <span class="tag" style="background:#f5f3ff;color:#5b21b6;">备赛</span>
+                <span class="tag" style="background:#f5f3ff;color:#5b21b6;">备考</span>
+                <span class="tag" style="background:#f5f3ff;color:#5b21b6;">管理</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #ec4899;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">🎭 人设标签 persona</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#fdf2f8;color:#9d174d;">教练</span>
+                <span class="tag" style="background:#fdf2f8;color:#9d174d;">导师</span>
+                <span class="tag" style="background:#fdf2f8;color:#9d174d;">伙伴</span>
+                <span class="tag" style="background:#fdf2f8;color:#9d174d;">顾问</span>
+            </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:4px solid #14b8a6;">
+            <h4 style="color:var(--primary);margin-bottom:8px;">🗣️ 语气风格 tone</h4>
+            <div class="tag-row">
+                <span class="tag" style="background:#f0fdfa;color:#0f766e;">专业</span>
+                <span class="tag" style="background:#f0fdfa;color:#0f766e;">亲切</span>
+                <span class="tag" style="background:#f0fdfa;color:#0f766e;">幽默</span>
+                <span class="tag" style="background:#f0fdfa;color:#0f766e;">严肃</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:24px;padding:20px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:var(--radius);text-align:center;">
+        <p style="color:#5b21b6;"><strong>组合预设：</strong>可选择预设的组合标签方案，一键应用多标签组合 | <strong>数据持久化：</strong>localStorage (key: user_tags_v1) | 影响全局AI对话的人格和语气</p>
+    </div>
+</section>
+
+</div>
+
+<footer class="footer">
+    <p>© 2026 宁强县职业高级中学 · 四真三化五链三场教学成果团队</p>
+    <p style="margin-top:8px;">
+        <a href="index.html">首页</a> · <a href="generator.html">AI系统</a> · <a href="zhican.html">值餐</a> · <a href="yushe.html">悦舍</a> · <a href="architecture.html">技术架构</a>
+    </p>
+</footer>
+
+</body>
+</html>
