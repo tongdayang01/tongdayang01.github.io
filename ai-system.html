@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>产教融合AI系统 | 宁强职中</title>
+<style>
+:root{--navy:#0f2b4c;--gold:#b8860b;--white:#fff;--bg:#f8f6f0;--border:#e2e0da;--red:#9b1b1b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Noto Serif SC","STSong","Microsoft YaHei",sans-serif;background:var(--bg);color:#2c2416;line-height:1.8;font-size:15px}
+.topbar{background:var(--navy);color:rgba(255,255,255,.7);font-size:12px;padding:8px 0;text-align:center;border-bottom:3px solid var(--gold)}
+.header{background:linear-gradient(170deg,var(--navy),#152d50);color:#fff;padding:48px 0;text-align:center}
+.header h1{color:#fff;font-size:36px;margin:0;letter-spacing:2px}
+.header .sub{color:rgba(255,255,255,.7);font-size:16px;margin-top:8px}
+.nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;display:flex;justify-content:center;flex-wrap:wrap;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.nav a{color:#2c2416;padding:14px 18px;font-size:13px;font-weight:600;text-decoration:none;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.main{max-width:1200px;margin:0 auto;padding:32px 24px}
+.card{background:#fff;border-radius:12px;padding:28px 32px;margin-bottom:24px;box-shadow:0 2px 16px rgba(0,0,0,.04);border:1px solid var(--border)}
+h2{font-size:24px;color:var(--navy);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+h3{font-size:19px;color:var(--navy);margin:20px 0 10px}
+p{color:#555;margin-bottom:10px;line-height:1.9}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+th{background:var(--navy);color:#fff;padding:10px 14px;text-align:center;font-weight:700}
+td{padding:9px 14px;border-bottom:1px solid var(--border);text-align:center}
+tr:nth-child(even) td{background:#fafaf7}
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;margin:3px}
+.tg{background:#fdf3e0;color:#7a5500}.tb{background:#e3edf8;color:#0a3d6b}.tn{background:#e3f2e9;color:#0f5c30}.tr{background:#fce9eb;color:#7a1c28}
+.code{background:#1e293b;color:#e2e8f0;padding:20px 24px;border-radius:8px;overflow-x:auto;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.6;margin:12px 0;white-space:pre-wrap}
+.arch{background:#f0efe8;border:1px dashed #ccc;border-radius:8px;padding:16px 20px;font-family:Consolas,monospace;font-size:12px;line-height:1.8;white-space:pre;overflow-x:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px}
+.gov{border:2px solid var(--red);border-radius:6px;overflow:hidden;margin:12px 0}
+.gov .gh{background:var(--red);color:#fff;text-align:center;padding:14px;font-weight:700;font-size:16px;letter-spacing:2px}
+.gov .gb{padding:16px}
+.footer{background:var(--navy);color:rgba(255,255,255,.6);text-align:center;padding:32px;margin-top:40px;font-size:13px}
+.footer a{color:#d4a843}
+@media(max-width:768px){.main{padding:16px 12px}.card{padding:18px 16px}.nav a{padding:10px 12px;font-size:11px}}
+</style>
+</head>
+<body>
+<div class="topbar">宁强县职业高级中学 · 产教融合AI系统完整技术文档 · 2026年7月</div>
+<div class="header"><h1>产教融合AI系统</h1><div class="sub">四真·三化·五链·三场 | 13种AI生成类型 | 9大专业覆盖 | 微信小程序一键生成教学设计</div></div>
+<div class="nav">
+<a href="#arch">系统架构</a><a href="#gen">13种生成类型</a><a href="#render">渲染规则</a><a href="#zhican">值餐系统</a><a href="#yushe">悦舍系统</a><a href="#tech">技术栈</a><a href="generator.html">AI工单生成器</a><a href="index.html">返回首页</a>
+</div>
+<div class="main">
+
+<div class="card" id="arch">
+<h2>系统架构总览</h2>
+<div class="arch">用户输入(前端) -> POST /api/generate -> GenerateController -> GenerateService(6411行) -> 匹配模板 -> 构建AI Prompt -> 调用AI模型 -> 返回taskId -> 前端轮询 /api/generate/result -> 渲染红头公文格式</div>
+<h3>核心理念</h3>
+<p><span class="tag tg">四真</span>真环境·真项目·真任务·真评价 <span class="tag tb">三化</span>教学项目化·项目实战化·实战产品化 <span class="tag tn">五链</span>人才链·专业链·课程链·师资链·产业链 <span class="tag tr">三场</span>认知场·转化场·实战场</p>
+<p style="margin-top:12px;font-weight:700;color:var(--navy);font-size:17px">仅需输入3项核心参数：专业 + 课程 + 产业方向 -> 5分钟自动生成完整教学设计</p>
+<p style="color:#888;font-size:13px">已覆盖管理、计算机、教育、电子信息、汽车工程、体育教育、护理养老、生物环境、应用化学等9大专业大类</p>
+</div>
+
+<div class="card" id="gen">
+<h2>13种AI生成类型完整列表</h2>
+<table>
+<tr><th>#</th><th>生成类型ID</th><th>功能说明</th><th>核心输入参数</th></tr>
+<tr><td>1</td><td><code>ie_general_manager</code></td><td>总经理统一规划方案</td><td>学校+专业+年级+教育层次+协同产品+提示词+文档</td></tr>
+<tr><td>2</td><td><code>ie_role_major_teacher</code></td><td>专业课教师方案</td><td>角色ID+总经理方案+协同产品</td></tr>
+<tr><td>3</td><td><code>ie_role_culture_teacher</code></td><td>文化课教师方案</td><td>角色ID+总经理方案+协同产品</td></tr>
+<tr><td>4</td><td><code>ie_role_enterprise_mentor</code></td><td>企业导师方案</td><td>角色ID+总经理方案+协同产品</td></tr>
+<tr><td>5</td><td><code>ie_role_product_manager</code></td><td>产品经理方案</td><td>角色ID+总经理方案+协同产品</td></tr>
+<tr><td>6</td><td><code>ie_role_student</code></td><td>学生代表方案</td><td>角色ID+总经理方案+协同产品</td></tr>
+<tr><td>7</td><td><code>ie_custom_design</code></td><td>一键生成全部角色</td><td>选中角色列表+总经理方案</td></tr>
+<tr><td>8</td><td><code>ie_typical_task</code></td><td>爆款产品/典型任务清单</td><td>专业+对接产业</td></tr>
+<tr><td>9</td><td><code>ie_product_blueprint</code></td><td>产品蓝图(四真+CCP+SOP)</td><td>协同产品+专业</td></tr>
+<tr><td>10</td><td><code>ie_product_blueprint_week</code></td><td>周度教学计划</td><td>协同产品+专业+年级</td></tr>
+<tr><td>11</td><td><code>ie_course_design</code></td><td>专业技能课教学设计(9字段)</td><td>课程名+专业+课时+课标+教材+任务+企业</td></tr>
+<tr><td>12</td><td><code>ie_culture_lesson</code>系列(4种)</td><td>文化课教学设计</td><td>学科+科目+教材+专业+周次</td></tr>
+<tr><td>13</td><td><code>graduate_requirement</code></td><td>极简助农AI挣钱系统</td><td>时间+资源+技能+意愿+项目+16快捷按钮</td></tr>
+</table>
+</div>
+
+<div class="card" id="render">
+<h2>红头公文渲染格式</h2>
+<div class="gov"><div class="gh">四真·三化·五链·三场<br>产教融合系统设计方案</div>
+<div class="gb">
+<p style="text-align:center;font-weight:700;font-size:18px">【标题区】18px粗体</p>
+<p style="text-align:center;font-size:11px;color:#888">【日期】11px灰色</p>
+<div style="background:#f8f9fa;padding:8px;text-align:center;margin:8px 0;border-radius:4px">[导出Word] &nbsp; [复制] &nbsp; [全屏] &nbsp; [续写]</div>
+<p style="font-size:13px;color:#555">【正文区】7级标题渲染：第X部分(15px) > 一、(14px) > (一)(13px) > 1.(13px) > (1)(13px) > 列表 > 段落<br>表格渲染：外边框1px黑色 + 首行灰色背景 + 最小80px列宽 + 横向滚动</p>
+<p style="text-align:right;font-size:13px;color:#888">【落款区】学校名称(右对齐) + 日期(右对齐)</p>
+</div></div>
+<h3>四大操作功能</h3>
+<p><span class="tag tg">导出Word</span>单个方案/批量合并导出(前端window.open或小程序下载) <span class="tag tb">复制</span>清理Markdown符号(Taro.setClipboardData) <span class="tag tn">全屏</span>沉浸式阅读模式 <span class="tag tr">续写</span>POST /api/generate/continue-generate -> 轮询新结果 -> 追加到原内容</p>
+</div>
+
+<div class="card" id="zhican">
+<h2>值餐系统（10个子页面）</h2>
+<div class="grid2">
+<div><h3>今日精选</h3><p>3大餐类12道菜品(悦颜4菜/康膳4菜/轻膳4菜) + 预订倒计时(17:00) + 购物车逻辑 + 菜品卡片(图片+价格+健康值+卡路里+预订)</p></div>
+<div><h3>我的价值</h3><p>积分328分 + 4Tab(口味画像5维雷达图/订单记录3条/奖励兑换5种/年度报告6指标)</p></div>
+<div><h3>信任体系</h3><p>3Tab(评价列表含厨师回复/触动统计6标签TOP贡献者/发表评价5维评分)</p></div>
+<div><h3>共创</h3><p>3Tab(菜品投票3选项/创意提案2条/教育内容4类:饮食文化+营养科学+后厨故事+人物专访)</p></div>
+<div><h3>后厨驾驶舱</h3><p>核心数据4指标 + 预警系统2条 + 订单汇总4菜 + 工位任务4组(切配/炒锅/汤品/打包)</p></div>
+<div><h3>经营参谋部</h3><p>4Tab(经营概览4指标/菜品TOP5排行/学生绩效4人/成本分析6项)</p></div>
+</div>
+</div>
+
+<div class="card" id="yushe">
+<h2>悦舍系统</h2>
+<div class="grid2">
+<div><h3>悦颜坊(7项)</h3><p>毛孔冲浪¥298 | 肌底净化¥358 | 玫瑰灌肤¥288 | 水光焕肤¥468 | 脱毛¥168-388 | 头部洗护¥198</p></div>
+<div><h3>悦身堂(6项)</h3><p>头部放松¥268 | 肩颈放松¥298 | 背部减压¥328 | 拔罐¥198 | 刮痧¥228 | 艾灸¥268</p></div>
+<div><h3>精选套餐(4个)</h3><p>头部+刮痧+洗护¥598/120min | 精油开背+拔罐¥468/90min | 肩颈+刮痧¥488/90min | 卵巢+艾灸¥588/90min</p></div>
+<div><h3>6位服务人员</h3><p>袁琪(康复理疗4.9) | 张晋雯(中医康复4.8) | 陈矾(美容理疗4.9) | 龙英(美容理疗4.7) | 张小丽(美甲4.8) | 安娥(美妆4.9)</p></div>
+</div>
+</div>
+
+<div class="card" id="tech">
+<h2>技术栈与核心API</h2>
+<table>
+<tr><th>层级</th><th>技术选型</th></tr>
+<tr><td>前端框架</td><td>Taro 4 + React 18 + TypeScript</td></tr>
+<tr><td>样式方案</td><td>Tailwind CSS 4 + weapp-tailwindcss</td></tr>
+<tr><td>组件库</td><td>shadcn/ui (Taro版) + lucide-react-taro</td></tr>
+<tr><td>后端框架</td><td>NestJS</td></tr>
+<tr><td>数据库</td><td>Supabase (PostgreSQL)</td></tr>
+<tr><td>AI模型</td><td>大语言模型API异步调用</td></tr>
+<tr><td>文件存储</td><td>TOS对象存储</td></tr>
+<tr><td>Word导出</td><td>docx库</td></tr>
+<tr><td>核心API</td><td>POST /api/generate | GET /api/generate/result | POST /api/generate/continue-generate | GET /api/export/word | GET /api/export/word-all</td></tr>
+</table>
+</div>
+
+</div>
+<div class="footer">
+<p>宁强县职业高级中学 · 杨通达团队 · 2026</p>
+<p style="margin-top:4px">四真三化五链三场 · 产教融合AI系统 · 微信小程序一键生成教学设计</p>
+<p style="margin-top:8px"><a href="generator.html">AI工单生成器</a> &nbsp;|&nbsp; <a href="index.html">返回首页</a></p>
+</div>
+</body></html>
