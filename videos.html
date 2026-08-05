@@ -113,9 +113,10 @@
 
     <!-- Video Player -->
     <div class="video-container">
-        <!-- 主申报视频 - 10分钟有声版 -->
+        <!-- 替换下方src为实际视频URL后即可播放 -->
         <video controls poster="assets/video-poster.jpg" preload="metadata" style="width:100%;display:block;">
-            <source src="/videos/main_presentation.mp4" type="video/mp4">
+            <source src="assets/videos/main_video.mp4" data-large="true" type="video/mp4">
+            <source src="assets/videos/main_video.mp4" data-large="true" type="video/mp4">
         </video>
         <div class="video-placeholder" id="videoFallback">
             <div class="icon">🎬</div>
@@ -125,7 +126,7 @@
         </div>
     </div>
     <div class="video-download">
-        <a href="/videos/main_presentation.mp4" download>⬇ 下载完整视频（10分钟有声版 / 720p）</a>
+        <a href="assets/申报视频_9分30秒.mp4" download>⬇ 下载完整视频（2.4GB / 4K）</a>
     </div>
 
     <!-- Cultural Performance Video Section -->
@@ -135,11 +136,11 @@
 
         <div class="video-container" style="margin-bottom:24px;">
             <video controls preload="metadata" style="width:100%;display:block;border-radius:12px;">
-                <source src="/videos/stage_drama.mp4" type="video/mp4">
+                <source src="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" type="video/mp4">
             </video>
         </div>
         <div class="video-download">
-            <a href="/videos/stage_drama.mp4" download>⬇ 情景舞台剧（480p / 48MB）</a>
+            <a href="assets/videos/文化馆_情景舞台剧_0-19min_480p.mp4" download>⬇ 情景舞台剧（480p / 46MB）</a>
         </div>
 
         <div class="script-block" style="margin-top:24px;">
