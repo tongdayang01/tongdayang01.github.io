@@ -6,20 +6,14 @@
     <title>县域中职三阶递进育人模式创新的十年实践 | 国家教学成果奖</title>
     <meta name="description" content="国家级职业教育教学成果特等奖申报网站 - 宁强县职业高级中学">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <!-- Google Fonts removed for China accessibility; using system font stack instead -->
-    <!-- Original: https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700 -->
-
-    <!-- Three.js CDN (with local fallback) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js & GSAP CDN -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script>window.THREE||document.write('<script src="/lib/js/three.min.js"><\/script>')</script>
-    <!-- GSAP + ScrollTrigger CDN (with local fallback) -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script>window.gsap||document.write('<script src="/lib/js/gsap.min.js"><\/script>')</script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script>window.ScrollTrigger||document.write('<script src="/lib/js/ScrollTrigger.min.js"><\/script>')</script>
-    <!-- ECharts CDN (with local fallback) -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-    <script>window.echarts||document.write('<script src="/lib/js/echarts.min.js"><\/script>')</script>
     
     <style>
         /* ===== CSS Reset & Base ===== */
@@ -1602,18 +1596,6 @@ body { background: var(--cream); }
   0%, 100% { box-shadow: 0 0 0 0 rgba(184,134,11,0.4); }
   50% { box-shadow: 0 0 0 8px rgba(184,134,11,0); }
 }
-
-
-/* ===== 对比度修复 ===== */
-.video-overlay .v-title{text-shadow:0 2px 20px rgba(0,0,0,0.9) !important}
-.video-overlay .v-sub{text-shadow:0 2px 10px rgba(0,0,0,0.8) !important}
-.compare-card.before .metric span:first-child{color:#ddd !important}
-.compare-card.after .metric span:first-child{color:#ddd !important}
-.stage-subtitle{text-shadow:0 1px 8px rgba(0,0,0,0.5)}
-.inn-card p{color:#4a4235 !important}
-.footer .info{opacity:0.55 !important}
-.chapter-markers span.active{font-weight:700}
-.stat-card .l{color:#6b6255 !important}
 
 </style>
 </head>
@@ -4004,17 +3986,6 @@ body { background: var(--cream); }
             var pb = document.getElementById('progress-bar');
             if(pb) pb.style.width = '100%';
         }, 10000);
-    </script>
-    <!-- iframe postMessage: notify parent shell of page title -->
-    <script>
-    (function(){
-        if(window.parent!==window){
-            window.parent.postMessage({type:'page-title',title:document.title},'*');
-            window.addEventListener('DOMContentLoaded',function(){
-                window.parent.postMessage({type:'iframe-loaded'},'*');
-            });
-        }
-    })();
     </script>
 </body>
 </html>
